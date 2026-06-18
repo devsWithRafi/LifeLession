@@ -1,6 +1,6 @@
+import FeaturedSection from '@/components/page-sections/FeaturedSection';
 import HeroSection from '@/components/page-sections/HeroSection';
 import NavTransparent from '@/components/shared/navber/NavTransparent';
-import React from 'react';
 
 const HomePage = () => {
   return (
@@ -8,6 +8,7 @@ const HomePage = () => {
       <NavTransparent />
       <section>
         <HeroSection />
+        <FeaturedSection />
         <section className="w-full h-screen"></section>
       </section>
     </>

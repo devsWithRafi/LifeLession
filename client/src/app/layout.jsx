@@ -3,6 +3,7 @@ import {
   Poppins,
   Roboto,
   Boldonse,
+  Playfair_Display,
 } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme/theme-provider';
@@ -31,6 +32,12 @@ const boldonse = Boldonse({
   weight: ['400'],
 });
 
+const playfair = Playfair_Display({
+  variable: '--font-playfair',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+});
+
 export const metadata = {
   title: 'LifeLessons',
   description: '',
@@ -41,7 +48,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${poppins.variable} ${roboto.variable} ${righteous.variable} ${boldonse.variable}`}
+      className={`${poppins.variable} ${roboto.variable} ${righteous.variable} ${boldonse.variable} ${playfair.variable}`}
     >
       <body className="min-h-full flex flex-col font-poppins">
         <ThemeProvider
