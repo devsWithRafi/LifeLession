@@ -63,7 +63,7 @@ const Navber = () => {
 
             <div className="flex items-center gap-1">
               <Link
-                href="/auth/sign-in"
+                href="/sign-in"
                 className={cn(
                   buttonVariants(),
                   'h-auto py-2 px-5 rounded-full',
@@ -72,7 +72,7 @@ const Navber = () => {
                 Log In
               </Link>
               <Link
-                href="/auth/sign-up"
+                href="/sign-up"
                 className={cn(
                   buttonVariants({ variant: 'outline' }),
                   'h-auto py-2 px-5 rounded-full',

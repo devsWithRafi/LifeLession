@@ -2,15 +2,16 @@
 
 import NavLogo from '@/components/NavLogo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useScrollNavBar } from '@/hooks/useScrollNavBar';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { Globe, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import NavProfileAvatar from './NavProfileAvatar';
 
 const NAV_LINKS = [
   { path: '/', name: 'Home', access: 'public' },
@@ -23,6 +24,10 @@ const NavTransparent = () => {
   const pathName = usePathname();
   const isScrolled = useScrollNavBar(10);
   const { theme } = useTheme();
+
+  const { data } = authClient.useSession();
+  const user = data?.user;
+  console.log(user);
 
   return (
     pathName === '/' && (
@@ -70,7 +75,7 @@ const NavTransparent = () => {
               <Search
                 className={cn(
                   'pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground',
-                  !isScrolled && "text-white/70"
+                  !isScrolled && 'text-white/70',
                 )}
               />
               <Input
@@ -83,36 +88,42 @@ const NavTransparent = () => {
               />
             </div>
 
-            <ThemeToggle className={!isScrolled && 'border-white/20 text-white/70'}/>
+            <ThemeToggle
+              className={!isScrolled && 'border-white/20 text-white/70'}
+            />
 
-            <div className="flex items-center gap-1">
-              <Link
-                href="/auth/sign-in"
-                className={cn(
-                  buttonVariants({
-                    variant: isScrolled ? 'default' : 'secondary',
-                  }),
-                  'h-auto py-2 px-5 rounded-full',
-                  theme === 'dark' &&
-                    !isScrolled &&
-                    'bg-gray-200 text-zinc-900',
-                )}
-              >
-                Log In
-              </Link>
-              <Link
-                href="/auth/sign-up"
-                className={cn(
-                  buttonVariants({ variant: 'outline' }),
-                  'h-auto py-2 px-5 rounded-full bg-transparent',
-                  theme === 'light' &&
-                    !isScrolled &&
-                    'text-white border-white/20',
-                )}
-              >
-                Sign Up
-              </Link>
-            </div>
+            {user ? (
+              <NavProfileAvatar user={user} />
+            ) : (
+              <div className="flex items-center gap-1">
+                <Link
+                  href="/sign-in"
+                  className={cn(
+                    buttonVariants({
+                      variant: isScrolled ? 'default' : 'secondary',
+                    }),
+                    'h-auto py-2 px-5 rounded-full',
+                    theme === 'dark' &&
+                      !isScrolled &&
+                      'bg-gray-200 text-zinc-900',
+                  )}
+                >
+                  Log In
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'h-auto py-2 px-5 rounded-full bg-transparent',
+                    theme === 'light' &&
+                      !isScrolled &&
+                      'text-white border-white/20',
+                  )}
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </nav>
       </header>
