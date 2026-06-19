@@ -12,12 +12,12 @@ import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavProfileAvatar from './NavProfileAvatar';
+import { HiOutlinePlus } from 'react-icons/hi2';
 
 const NAV_LINKS = [
-  { path: '/', name: 'Home', access: 'public' },
-  { path: '/public-lessons', name: 'Public Lessons', access: 'public' },
-  { path: '/my-lessons', name: 'My Lessons', access: 'private' },
-  { path: '/dashboard/favorites', name: 'Favorites', access: 'Private' },
+  { path: '/', name: 'Home' },
+  { path: '/public-lessons', name: 'Public Lessons' },
+  { path: '/pricing', name: 'Pricing' },
 ];
 
 const NavTransparent = () => {
@@ -27,7 +27,6 @@ const NavTransparent = () => {
 
   const { data } = authClient.useSession();
   const user = data?.user;
-  console.log(user);
 
   return (
     pathName === '/' && (
@@ -37,11 +36,11 @@ const NavTransparent = () => {
           isScrolled && 'bg-background backdrop-blur-md',
         )}
       >
-        <nav className="flex items-center justify-between gap-4 px-10 py-5 w-full">
+        <nav className="flex items-center justify-between gap-10 px-10 py-5 w-full">
           <div className="flex items-center gap-10">
             <Link href="/">
               <NavLogo
-                className={'w-40'}
+                className={'min-w-40 max-w-40'}
                 variant={
                   isScrolled ? (theme === 'light' ? 'black' : 'white') : 'white'
                 }
@@ -53,7 +52,7 @@ const NavTransparent = () => {
                   key={index}
                   href={link.path}
                   className={cn(
-                    'transition-colors py-0.5 px-2 border-b border-transparent duration-200',
+                    'transition-colors whitespace-nowrap py-0.5 px-2 border-b border-transparent duration-200',
                     pathName === link.path
                       ? isScrolled &&
                           (theme === 'light'
@@ -70,23 +69,28 @@ const NavTransparent = () => {
             </div>
           </div>
 
+          <div className="relative hidden md:block w-full">
+            <Search
+              className={cn(
+                'pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground',
+                !isScrolled && 'text-white/70',
+              )}
+            />
+            <Input
+              placeholder="Search destination..."
+              className={cn(
+                'pl-8 rounded-full py-2 w-full',
+                !isScrolled &&
+                  'text-white placeholder:text-white/70 border-white/20',
+              )}
+            />
+          </div>
+
           <div className="flex items-center gap-4">
-            <div className="relative hidden md:block w-100">
-              <Search
-                className={cn(
-                  'pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground',
-                  !isScrolled && 'text-white/70',
-                )}
-              />
-              <Input
-                placeholder="Search destination..."
-                className={cn(
-                  'pl-8 rounded-full py-2 w-full',
-                  !isScrolled &&
-                    'text-white placeholder:text-white/70 border-white/20',
-                )}
-              />
-            </div>
+            <Link href={'/add-lession'} className={cn(buttonVariants({}))}>
+              Add Lesson
+              <HiOutlinePlus />
+            </Link>
 
             <ThemeToggle
               className={!isScrolled && 'border-white/20 text-white/70'}

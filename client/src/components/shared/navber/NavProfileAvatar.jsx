@@ -13,6 +13,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 
+const NAV_LINKS = [
+  { path: '/dashboard', name: 'Dashboard' },
+  { path: '/dashboard/add-lesson', name: 'Add Lesson' },
+  { path: '/dashboard/my-lessons', name: 'My Lessons' },
+  { path: '/dashboard/profile', name: 'Profile' },
+];
+
 const NavProfileAvatar = ({ user }) => {
   return (
     <DropdownMenu>
@@ -33,12 +40,11 @@ const NavProfileAvatar = ({ user }) => {
             </p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link href="/profile">Profile</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/dashboard">Dashboard</Link>
-          </DropdownMenuItem>
+          {NAV_LINKS.map(({ path, name }, index) => (
+            <DropdownMenuItem key={index}>
+              <Link href={path}>{name}</Link>
+            </DropdownMenuItem>
+          ))}
           <DropdownMenuSeparator />
           <Button variant="destructive" className={'w-full rounded'}>
             Logout
