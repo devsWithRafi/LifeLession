@@ -19,5 +19,3 @@ export const addNewLesson = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// Lesson validation failed: author: Path `author` is required.
