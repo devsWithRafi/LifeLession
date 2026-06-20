@@ -7,12 +7,13 @@ import { Input } from '@/components/ui/input';
 import { useScrollNavBar } from '@/hooks/useScrollNavBar';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { Search } from 'lucide-react';
+import { Crown, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavProfileAvatar from './NavProfileAvatar';
 import { HiOutlinePlus } from 'react-icons/hi2';
+import SubscriptionBadge from '@/components/SubscriptionBadge';
 
 const NAV_LINKS = [
   { path: '/', name: 'Home' },
@@ -69,28 +70,32 @@ const NavTransparent = () => {
             </div>
           </div>
 
-          <div className="relative hidden md:block w-full">
-            <Search
-              className={cn(
-                'pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground',
-                !isScrolled && 'text-white/70',
-              )}
-            />
-            <Input
-              placeholder="Search destination..."
-              className={cn(
-                'pl-8 rounded-full py-2 w-full',
-                !isScrolled &&
-                  'text-white placeholder:text-white/70 border-white/20',
-              )}
-            />
-          </div>
-
           <div className="flex items-center gap-4">
-            <Link href={'/add-lession'} className={cn(buttonVariants({}))}>
-              Add Lesson
-              <HiOutlinePlus />
-            </Link>
+            {user && (
+              <>
+                <Link
+                  href={'/dashboard/add-lession'}
+                  className={cn(buttonVariants({}), 'rounded-full px-3')}
+                >
+                  Add Lesson
+                  <HiOutlinePlus />
+                </Link>
+
+                {user.plan === 'free' && (
+                  <Link href={'/pricing'}>
+                    <SubscriptionBadge
+                      hoverMode
+                      className="py-2 px-5 max-h-auto"
+                    >
+                      <span className="flex items-center gap-1">
+                        <Crown size={16} />
+                        Upgrade
+                      </span>
+                    </SubscriptionBadge>
+                  </Link>
+                )}
+              </>
+            )}
 
             <ThemeToggle
               className={!isScrolled && 'border-white/20 text-white/70'}

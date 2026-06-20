@@ -2,31 +2,31 @@
 
 import NavLogo from '@/components/NavLogo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useScrollNavBar } from '@/hooks/useScrollNavBar';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { Globe, Search } from 'lucide-react';
+import { Crown, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-
-const NAV_LINKS = [
-  { path: '/', name: 'Home', access: 'public' },
-  { path: '/public-lessons', name: 'Public Lessons', access: 'public' },
-  { path: '/my-lessons', name: 'My Lessons', access: 'private' },
-  { path: '/dashboard/favorites', name: 'Favorites', access: 'Private' },
-];
+import { HiOutlinePlus } from 'react-icons/hi2';
+import NavProfileAvatar from './NavProfileAvatar';
+import SubscriptionBadge from '@/components/SubscriptionBadge';
+import { navLinks } from './navLinks';
 
 const Navber = () => {
   const pathName = usePathname();
   const { theme } = useTheme();
 
+  const { data } = authClient.useSession();
+  const user = data?.user;
+
   return (
     pathName !== '/' && (
       <header className="fixed top-0 w-full z-20 duration-200 ease-in-out bg-background/90 backdrop-blur-md">
-        <nav className="flex items-center justify-between gap-4 px-10 py-5 w-full">
+        <nav className="flex items-center justify-between gap-4 md:px-10 px-4 py-5 w-full">
           <div className="flex items-center gap-10">
             <Link href="/">
               <NavLogo
@@ -35,7 +35,7 @@ const Navber = () => {
               />
             </Link>
             <div className="hidden items-center gap-4 text-sm font-medium text-white/90 lg:flex">
-              {NAV_LINKS.map((link, index) => (
+              {navLinks.map((link, index) => (
                 <Link
                   key={index}
                   href={link.path}
@@ -51,35 +51,62 @@ const Navber = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="relative hidden md:block w-100">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search destination..."
-                className="pl-8 rounded-full h-auto py-1.5 w-full"
-              />
-            </div>
+            <div className="flex items-center md:gap-4 gap-2">
+              {user && (
+                <>
+                  <Link
+                    href={'/dashboard/add-lession'}
+                    className={cn(
+                      buttonVariants({}),
+                      'rounded-full px-3 md:w-auto w-8 md:aspect-auto aspect-square',
+                    )}
+                  >
+                    <span className="hidden md:inline">Add Lesson</span>
+                    <HiOutlinePlus />
+                  </Link>
 
-            <ThemeToggle />
+                  {user.plan === 'free' && (
+                    <Link href={'/pricing'}>
+                      <SubscriptionBadge
+                        hoverMode
+                        className="md:py-2 md:px-5 md:max-h-auto rounded-full md:w-auto w-8 p-3 max-h-8 md:aspect-auto aspect-square"
+                      >
+                        <span className="flex items-center gap-1">
+                          <Crown size={16} />
+                          <span className="hidden md:inline">Upgrade</span>
+                        </span>
+                      </SubscriptionBadge>
+                    </Link>
+                  )}
+                </>
+              )}
 
-            <div className="flex items-center gap-1">
-              <Link
-                href="/sign-in"
-                className={cn(
-                  buttonVariants(),
-                  'h-auto py-2 px-5 rounded-full',
-                )}
-              >
-                Log In
-              </Link>
-              <Link
-                href="/sign-up"
-                className={cn(
-                  buttonVariants({ variant: 'outline' }),
-                  'h-auto py-2 px-5 rounded-full',
-                )}
-              >
-                Sign Up
-              </Link>
+              <ThemeToggle />
+
+              {user ? (
+                <NavProfileAvatar user={user} />
+              ) : (
+                <div className="flex items-center gap-1">
+                  <Link
+                    href="/sign-in"
+                    className={cn(
+                      buttonVariants(),
+                      'h-auto py-2 px-5 rounded-full',
+                    )}
+                  >
+                    Log In
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    className={cn(
+                      buttonVariants({ variant: 'outline' }),
+                      'h-auto py-2 px-5 rounded-full bg-transparent',
+                    )}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </nav>

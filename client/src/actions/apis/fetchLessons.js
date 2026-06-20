@@ -1,13 +1,6 @@
-import jsondata from '@/lib/dummy-data/lessions.json';
+import { serverMutation } from '../helpers/serverMutation';
 
 export const fetchLessons = async () => {
-  try {
-    const data = jsondata;
-    return {
-      success: true,
-      data,
-    };
-  } catch (error) {
-    console.log(error);
-  }
+  const result = await serverMutation('/api/lesson/all', 'GET', null, null);
+  return result;
 };

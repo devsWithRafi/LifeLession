@@ -25,18 +25,18 @@ const LessonCard = ({ lesson: l }) => {
     <Card>
       <CardHeader className="flex justify-between">
         <LiquidMetalButton
-          theme={l.accessType === 'premium' ? 'gold' : 'silver'}
+          theme={l.accessLevel === 'premium' ? 'gold' : 'silver'}
           variant="default"
           size="sm"
           className={'pointer-events-none select-none rounded-full'}
         >
           <div className="flex items-center">
-            {l.accessType === 'premium' ? (
+            {l.accessLevel === 'premium' ? (
               <Crown className="mr-2 h-4 w-4" />
             ) : (
               <Zap className="mr-2 h-4 w-4" />
             )}
-            <span>{l.accessType.toUpperCase()}</span>
+            <span>{l.accessLevel.toUpperCase()}</span>
           </div>
         </LiquidMetalButton>
       </CardHeader>
@@ -45,7 +45,7 @@ const LessonCard = ({ lesson: l }) => {
           <div
             className={cn(
               'justify-between flex-col flex h-full',
-              l.accessType === 'premium' && 'blur-md select-none',
+              l.accessLevel === 'premium' && 'blur-md select-none',
             )}
           >
             <span>
@@ -79,7 +79,7 @@ const LessonCard = ({ lesson: l }) => {
             </div>
           </div>
 
-          {l.accessType === 'premium' && (
+          {l.accessLevel === 'premium' && (
             <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center cursor-not-allowed">
               <span className="p-5 rounded-full bg-muted">
                 <RiLock2Line className="size-10 text-muted-foreground" />
@@ -100,7 +100,11 @@ const LessonCard = ({ lesson: l }) => {
               <h3 className="text-lg font-semibold leading-none">
                 {l.author.name}
               </h3>
-              <p className="text-sm text-muted-foreground">{l.author.bio}</p>
+              <p className="text-sm text-muted-foreground">
+                {l.author.email.length > 20
+                  ? l.author.email.slice(0, 20) + '...'
+                  : l.author.email}
+              </p>
             </div>
           </div>
 
@@ -112,11 +116,14 @@ const LessonCard = ({ lesson: l }) => {
 
         <Link
           href={`public-lessons/${l._id}`}
-          className={cn(buttonVariants(), 'h-auto py-2 rounded',
-           l.accessType === 'premium' && 'pointer-events-none select-none opacity-20'
+          className={cn(
+            buttonVariants(),
+            'h-auto py-2 rounded',
+            l.accessLevel === 'premium' &&
+              'pointer-events-none select-none opacity-20',
           )}
         >
-          {l.accessType === 'free' ? 'See Details' : 'Upgrade to Unlock'}
+          {l.accessLevel === 'free' ? 'See Details' : 'Upgrade to Unlock'}
         </Link>
       </CardContent>
     </Card>

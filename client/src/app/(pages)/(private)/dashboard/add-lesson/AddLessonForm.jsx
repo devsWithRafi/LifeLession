@@ -33,40 +33,26 @@ import {
 } from '@/lib/dummy-data/lessonCategory';
 import { Button } from '@/components/ui/button';
 import { LuImagePlus } from 'react-icons/lu';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useTransition } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { FaCircleDot } from 'react-icons/fa6';
-import { authClient } from '@/lib/auth-client';
-import { FaRegCircle } from 'react-icons/fa';
+import { authClient, getToken } from '@/lib/auth-client';
 import { RiLock2Line } from 'react-icons/ri';
 import { IoFlashOutline } from 'react-icons/io5';
 import { Crown } from 'lucide-react';
 import { LessonFormSchema } from './lessonFormSchema';
 import { Separator } from '@/components/ui/separator';
+import { AddNewLessonAction } from '@/actions/AddNewLesson.action';
+import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
 
 const AddLessonForm = () => {
   const [image, setImage] = useState('');
   const { data } = authClient.useSession();
+  const [formPending, startFormPending] = useTransition();
   const user = data?.user;
-
-  const handleFileSelect = useCallback((file) => {
-    setImage(URL.createObjectURL(file));
-    return file;
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone(
-    useCallback(
-      (acceptedFiles) => {
-        if (acceptedFiles[0]) {
-          handleFileSelect(acceptedFiles[0]);
-        }
-      },
-      [handleFileSelect],
-    ),
-  );
-
 
   const form = useForm({
     resolver: zodResolver(LessonFormSchema),
@@ -80,12 +66,47 @@ const AddLessonForm = () => {
     },
   });
 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: useCallback(
+      (acceptedFiles) => {
+        const file = acceptedFiles?.[0];
+        if (!file) return;
+        const previewUrl = URL.createObjectURL(file);
+        setImage(previewUrl);
+        form.setValue('image', file);
+      },
+      [form],
+    ),
+    accept: {
+      'image/*': [],
+    },
+  });
+
+  const handleReset = () => {
+    form.reset();
+    setImage('');
+  };
+
   const onSubmit = (values) => {
-    console.log(values);
+    startFormPending(async () => {
+      const token = await getToken();
+      const result = await AddNewLessonAction(values, token);
+      if (result.success) {
+        toast.success(result.message ?? 'Lesson added successfully');
+        handleReset();
+      } else {
+        toast.error(result.message ?? 'Error: Upload failed');
+      }
+    });
   };
 
   return (
-    <Card className={'max-w-200 mx-auto p-3 py-10 rounded-md'}>
+    <Card
+      className={cn(
+        'max-w-200 mx-auto p-3 py-10 rounded-md',
+        formPending && 'pointer-events-none opacity-40 select-none',
+      )}
+    >
       <CardContent>
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
@@ -218,21 +239,14 @@ const AddLessonForm = () => {
                   <div
                     {...getRootProps()}
                     className={cn(
-                      'w-full rounded-md border-2 border-dashed h-70 bg-muted flex flex-col items-center justify-center gap-2 duration-200',
+                      'w-full rounded-md border-2 border-dashed relative h-70 overflow-hidden bg-muted flex flex-col items-center justify-center gap-2 duration-200',
                       isDragActive && 'border-muted-foreground',
                     )}
                   >
-                    <input
-                      {...getInputProps()}
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) field.onChange(handleFileSelect(file));
-                      }}
-                    />
+                    <input {...getInputProps()} />
                     {image ? (
                       <Image
-                        width={500}
-                        height={500}
+                        fill
                         alt="preview"
                         src={image}
                         className="w-full h-full object-cover pointer-events-none select-none"
@@ -270,7 +284,7 @@ const AddLessonForm = () => {
                       {accessType.map((item) => {
                         const isSelected = field.value === item;
                         const isPremium = user?.plan === 'premium';
-                        const isPro = item === 'premium' && !isPremium
+                        const isPro = item === 'premium' && !isPremium;
                         return (
                           <Button
                             disabled={item === 'premium' && !isPremium}
@@ -281,7 +295,7 @@ const AddLessonForm = () => {
                             className={cn(
                               'capitalize w-[calc(50%-10px)] h-auto py-2 rounded-md opacity-70 justify-between',
                               isSelected && 'opacity-100 !border-primary/60',
-                              isPro && 'cursor-not-allowed'
+                              isPro && 'cursor-not-allowed',
                             )}
                           >
                             <span className="flex items-center gap-2">
@@ -309,16 +323,22 @@ const AddLessonForm = () => {
             </div>
           </FieldGroup>
 
-          <Separator className="my-10"/>
+          <Separator className="my-10" />
 
           <span className="flex justify-start gap-3">
             <Button type="submit" className="h-auto py-2 px-5">
-              Publish Wisdom
+              {formPending ? (
+                <>
+                  <Spinner /> Proccessing
+                </>
+              ) : (
+                'Publish Wisdom'
+              )}
             </Button>
             <Button
               type="button"
               variant="outline"
-              onClick={() => form.reset()}
+              onClick={handleReset}
               className="h-auto py-2 px-5"
             >
               Reset

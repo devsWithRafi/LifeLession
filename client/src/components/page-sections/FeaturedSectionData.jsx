@@ -1,16 +1,19 @@
-import { fetchLessons } from '@/actions/apis/fetchLessons';
+import { toast } from 'sonner';
 import LessonCard from '../card/LessonCard';
+import { fetchFeaturedLessons } from '@/actions/apis/fetchFeaturedLessons';
 
 const FeaturedSectionData = async () => {
-  const { data } = await fetchLessons();
+  const result = await fetchFeaturedLessons();
 
-  const filter = data.filter((d) => d.isFeatured);
-
+  if (!result?.success) {
+    toast.error(result.message ?? 'Error: Fetched failed');
+    return;
+  }
+  const data = Array.isArray(result.data) && result.data;
+  
   return (
     <div className="grid grid-cols-3 gap-5">
-      {filter.map((l) => (
-        <LessonCard key={l._id} lesson={l} />
-      ))}
+      {data && data.map((l) => <LessonCard key={l._id} lesson={l} />)}
     </div>
   );
 };

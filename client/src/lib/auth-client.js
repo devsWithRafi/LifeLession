@@ -14,8 +14,5 @@ export const getToken = async () => {
     console.log(error);
     return;
   }
-  if (data) {
-    const jwtToken = data.token;
-    return jwtToken;
-  }
+  return data?.token ?? null;
 };
