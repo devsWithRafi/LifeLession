@@ -6,10 +6,10 @@ export const addComment = async (req, res) => {
     const authUser = req.user;
     const { text, lessonId: id } = req.body;
 
-    if (!text) {
+    if (!text || !id) {
       return res
         .status(400)
-        .json({ success: false, message: 'Comment is required' });
+        .json({ success: false, message: 'Comment and lessonId is required' });
     }
 
     const comment = await Comment.create({

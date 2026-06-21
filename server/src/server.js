@@ -5,6 +5,7 @@ import cors from 'cors';
 import { connectDB } from './config/db.js';
 import lessonsRouter from './routes/lessonsRoute.js';
 import commentRouter from './routes/commentRoute.js';
+import likeRouter from './routes/likeRoute.js';
 
 dotenv.config();
 
@@ -24,9 +25,12 @@ app.get('/', (req, res) => {
   res.json({ message: 'Server is OK' });
 });
 
-app.use('/api/lesson', lessonsRouter)
-app.use('/api/comment', commentRouter)
+app.use('/api/lesson', lessonsRouter);
+app.use('/api/comment', commentRouter);
+app.use('/api/like', likeRouter);
 
 app.listen(env.PORT, () => {
   console.log('Server is running', env.PORT);
 });
+
+export default app;
