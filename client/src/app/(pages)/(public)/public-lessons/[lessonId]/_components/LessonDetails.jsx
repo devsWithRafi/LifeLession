@@ -1,28 +1,8 @@
 'use client';
 
-import { fetchOneLesson } from '@/actions/apis/fetchOneLesson';
-import { Button, buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { authClient, getToken } from '@/lib/auth-client';
 import Image from 'next/image';
-import { notFound, useParams, useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
-import { toast } from 'sonner';
-import { FiHeart } from 'react-icons/fi';
-import { BiComment } from 'react-icons/bi';
-import { FiBookmark } from 'react-icons/fi';
-import { LuShare2 } from 'react-icons/lu';
-import { FiFlag } from 'react-icons/fi';
 import Headers from './Headers';
-import CommentBox from './CommentBox';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
 import LessonDetailsRightSide from './LessonDetailsRightSide';
 import { Badge } from '@/components/ui/badge';
 import CommentSection from './CommentSection';
@@ -31,11 +11,13 @@ import LikeButton from './LikeButton';
 import SaveButton from './SaveButton';
 import ReportButton from './ReportButton';
 import ShareButton from './ShareButton';
+import { useLessonComment } from '@/context/comment-context/CommentContextProvider';
 
 const LessonDetails = () => {
   const { fetching, lesson } = useSingleLesson();
+  const { comments, fetchComment } = useLessonComment();
 
-  // console.log(lesson);
+  console.log(lesson);
 
   return fetching ? (
     <div>Fetching...</div>

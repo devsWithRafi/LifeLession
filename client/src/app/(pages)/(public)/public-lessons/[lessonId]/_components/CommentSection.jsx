@@ -8,12 +8,12 @@ import { getToken } from '@/lib/auth-client';
 import { AddNewCommentAction } from '@/actions/AddNewComment.action';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
-import { useSingleLesson } from '@/context/lessonContext/LessonContextProvider';
+import { useLessonComment } from '@/context/comment-context/CommentContextProvider';
 
 const CommentSection = ({ lesson }) => {
   const [pending, startPending] = useTransition();
   const [comment, setComment] = useState('');
-  const { fetchSingleLesson } = useSingleLesson();
+  const { comments, fetchComment } = useLessonComment();
 
   const handlePostComment = () => {
     if (!comment) {
@@ -28,7 +28,7 @@ const CommentSection = ({ lesson }) => {
       );
       if (result.success) {
         toast.success('Comment added');
-        fetchSingleLesson();
+        fetchComment(lesson._id);
         setComment('');
       } else {
         toast.error(result.message ?? 'Error: posting comment failed');
@@ -38,7 +38,7 @@ const CommentSection = ({ lesson }) => {
 
   return (
     <div>
-      <h5>{lesson.comments?.length} Comments</h5>
+      <h5>{comments.length} Comments</h5>
 
       <div className="flex flex-col gap-5 mt-5">
         <Card>
@@ -68,7 +68,7 @@ const CommentSection = ({ lesson }) => {
           </CardContent>
         </Card>
 
-        {lesson.comments.map((item) => (
+        {comments.map((item) => (
           <CommentBox key={item._id} comment={item} />
         ))}
       </div>

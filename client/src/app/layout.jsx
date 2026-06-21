@@ -8,7 +8,7 @@ import {
 import './globals.css';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from 'sonner';
-import LessonContextProvider from '@/context/lessonContext/LessonContextProvider';
+import UnivercelContextProvider from '@/context/UnivercelContextProvider';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <LessonContextProvider>{children}</LessonContextProvider>
+          <UnivercelContextProvider>{children}</UnivercelContextProvider>
           <Toaster position="top-center" />
         </ThemeProvider>
       </body>

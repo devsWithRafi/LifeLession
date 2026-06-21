@@ -2,13 +2,11 @@
 
 import { serverMutation } from './helpers/serverMutation';
 
-export const AddNewCommentAction = async (data, token) => {
-  const { text, lessonId } = data;
+export const AddLikeOnLessonAction = async (lessonId, token) => {
   const result = await serverMutation(
-    '/api/comment/create',
+    '/api/like/add',
     'POST',
     {
-      text,
       lessonId,
     },
     token,
