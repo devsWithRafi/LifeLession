@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardContent,
@@ -18,30 +20,31 @@ import { Crown, Zap } from 'lucide-react';
 import { RiLock2Line } from 'react-icons/ri';
 import { formatDate } from '@/lib/formatDate';
 import { IoMdTime } from 'react-icons/io';
-import LikeButton from '@/app/(pages)/(public)/public-lessons/[lessonId]/_components/LikeButton';
 import { FiHeart } from 'react-icons/fi';
-import { auth } from '@/lib/auth';
+import { authClient } from '@/lib/auth-client';
+import { Badge } from '../ui/badge';
 
-const LessonCard = ({ lesson: l }) => {
-  const { user } = auth.api.getSession();
-  const isLiked = l.likes.some((l) => l.user?._id === user?.id);
+const LessonCard = ({ lesson }) => {
+  const { data } = authClient.useSession();
+  const user = data?.user;
+  const isLiked = lesson.likes.some((l) => l.user?._id === user?.id);
 
   return (
     <Card>
       <CardHeader className="flex justify-between">
         <LiquidMetalButton
-          theme={l.accessLevel === 'premium' ? 'gold' : 'silver'}
+          theme={lesson.accessLevel === 'premium' ? 'gold' : 'silver'}
           variant="default"
           size="sm"
           className={'pointer-events-none select-none rounded-full'}
         >
           <div className="flex items-center">
-            {l.accessLevel === 'premium' ? (
+            {lesson.accessLevel === 'premium' ? (
               <Crown className="mr-2 h-4 w-4" />
             ) : (
               <Zap className="mr-2 h-4 w-4" />
             )}
-            <span>{l.accessLevel.toUpperCase()}</span>
+            <span>{lesson.accessLevel.toUpperCase()}</span>
           </div>
         </LiquidMetalButton>
       </CardHeader>
@@ -50,34 +53,46 @@ const LessonCard = ({ lesson: l }) => {
           <div
             className={cn(
               'justify-between flex-col flex h-full',
-              l.accessLevel === 'premium' && 'blur-md select-none',
+              lesson.accessLevel === 'premium' && 'blur-md select-none',
             )}
           >
             <span>
               <CardTitle className="text-4xl font-bold font-playfair italic w-full">
-                {`"${l.title}"`}
+                {`"${lesson.title}"`}
               </CardTitle>
               <CardDescription className="font-roboto mt-2">
-                {l.description}
+                {lesson.description}
               </CardDescription>
             </span>
 
+            <div className="flex items-center gap-3 mt-5">
+              <Badge className="bg-sky-200 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
+                {lesson.category}
+              </Badge>
+              <Badge className="bg-purple-200 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+                {lesson.emotionalTone}
+              </Badge>
+            </div>
+
             <div className="flex gap-5 justify-between bg-muted py-4 rounded mt-5 text-muted-foreground">
-              <span className={cn("flex gap-2 items-center text-sm justify-center w-full",
-                isLiked && 'text-pink-500 dark:text-pink-400'
-              )}>
+              <span
+                className={cn(
+                  'flex gap-2 items-center text-sm justify-center w-full',
+                  isLiked && 'text-pink-500 dark:text-pink-400',
+                )}
+              >
                 <FiHeart />
-                {l.likes.length}
+                {lesson.likes.length}
               </span>
               <Separator orientation="vertical" />
               <span className="flex gap-2 items-center text-sm justify-center w-full">
                 <BiComment className="size-4" />
-                {l.comments.length}
+                {lesson.comments.length}
               </span>
               <Separator orientation="vertical" />
               <span className="flex gap-2 items-center text-sm justify-center w-full">
                 <MdOutlineRemoveRedEye className="size-4.5" />
-                {l.views}
+                {lesson.views}
               </span>
               <Separator orientation="vertical" />
               <span className="flex gap-2 items-center text-sm justify-center w-full">
@@ -86,7 +101,7 @@ const LessonCard = ({ lesson: l }) => {
             </div>
           </div>
 
-          {l.accessLevel === 'premium' && (
+          {lesson.accessLevel === 'premium' && (
             <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center cursor-not-allowed">
               <span className="p-5 rounded-full bg-muted">
                 <RiLock2Line className="size-10 text-muted-foreground" />
@@ -100,37 +115,37 @@ const LessonCard = ({ lesson: l }) => {
         <div className="flex items-center gap-2 justify-between">
           <div className="flex items-center gap-2">
             <Avatar className={'size-10'}>
-              <AvatarImage src={l.author.image} />
-              <AvatarFallback>{l.author.email.charAt(0)}</AvatarFallback>
+              <AvatarImage src={lesson.author.image} />
+              <AvatarFallback>{lesson.author.email.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
               <h3 className="text-lg font-semibold leading-none">
-                {l.author.name}
+                {lesson.author.name}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {l.author.email.length > 20
-                  ? l.author.email.slice(0, 20) + '...'
-                  : l.author.email}
+                {lesson.author.email.length > 20
+                  ? lesson.author.email.slice(0, 20) + '...'
+                  : lesson.author.email}
               </p>
             </div>
           </div>
 
           <span className="text-xs text-muted-foreground flex items-center gap-1">
             <IoMdTime />
-            {formatDate(l.createdAt)}
+            {formatDate(lesson.createdAt)}
           </span>
         </div>
 
         <Link
-          href={`public-lessons/${l._id}`}
+          href={`public-lessons/${lesson._id}`}
           className={cn(
             buttonVariants(),
             'h-auto py-2 rounded',
-            l.accessLevel === 'premium' &&
+            lesson.accessLevel === 'premium' &&
               'pointer-events-none select-none opacity-20',
           )}
         >
-          {l.accessLevel === 'free' ? 'See Details' : 'Upgrade to Unlock'}
+          {lesson.accessLevel === 'free' ? 'See Details' : 'Upgrade to Unlock'}
         </Link>
       </CardContent>
     </Card>

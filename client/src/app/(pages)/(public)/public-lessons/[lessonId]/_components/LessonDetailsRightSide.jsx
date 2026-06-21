@@ -1,3 +1,5 @@
+'use client';
+
 import SubscriptionBadge from '@/components/SubscriptionBadge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -8,11 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useLessonLikes } from '@/context/like-context/LikeContextProvider';
 import { cn } from '@/lib/utils';
 import { FiHeart } from 'react-icons/fi';
 import { FiBookmark } from 'react-icons/fi';
 
 const LessonDetailsRightSide = ({ lesson }) => {
+  const { likes, liked } = useLessonLikes();
+
   return (
     <div className="lg:min-w-100 sm:min-w-60 min-w-full max-w-100 flex flex-col gap-5">
       <Card>
@@ -48,8 +53,20 @@ const LessonDetailsRightSide = ({ lesson }) => {
           className={'flex items-center justify-between gap-4 w-full'}
         >
           <span className="flex flex-col items-center justify-center gap-2 w-full">
-            <CardTitle className="text-2xl">{lesson.likes?.length}</CardTitle>
-            <CardDescription className="flex items-center gap-2">
+            <CardTitle
+              className={cn(
+                'text-2xl',
+                liked && 'dark:text-pink-400 text-pink-500',
+              )}
+            >
+              {likes}
+            </CardTitle>
+            <CardDescription
+              className={cn(
+                'flex items-center gap-2',
+                liked && 'dark:text-pink-400 text-pink-500',
+              )}
+            >
               <FiHeart size={17} />
               Likes
             </CardDescription>
