@@ -6,6 +6,7 @@ import { connectDB } from './config/db.js';
 import lessonsRouter from './routes/lessonsRoute.js';
 import commentRouter from './routes/commentRoute.js';
 import likeRouter from './routes/likeRoute.js';
+import savedRouter from './routes/savedRoute.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 app.use('/api/lesson', lessonsRouter);
 app.use('/api/comment', commentRouter);
 app.use('/api/like', likeRouter);
+app.use('/api/save', savedRouter);
 
 app.listen(env.PORT, () => {
   console.log('Server is running', env.PORT);

@@ -14,4 +14,5 @@ const savedBySchema = new mongoose.Schema({
 });
 
 export const SavedBy =
-  mongoose.models.Like || mongoose.model('SavedBy', savedBySchema);
+  mongoose.models.SavedBy ||
+  mongoose.model('SavedBy', savedBySchema, 'saved_by');
