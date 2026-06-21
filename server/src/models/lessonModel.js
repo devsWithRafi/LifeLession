@@ -27,29 +27,19 @@ const lessonModel = new mongoose.Schema(
     savedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: false,
+        ref: 'SavedBy',
       },
     ],
     comments: [
       {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-          required: false,
-        },
-        text: String,
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
       },
     ],
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: false,
+        ref: 'Like',
       },
     ],
   },

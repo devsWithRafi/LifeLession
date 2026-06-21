@@ -4,6 +4,7 @@ import { env } from './lib/env.js';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 import lessonsRouter from './routes/lessonsRoute.js';
+import commentRouter from './routes/commentRoute.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/lesson', lessonsRouter)
+app.use('/api/comment', commentRouter)
 
 app.listen(env.PORT, () => {
   console.log('Server is running', env.PORT);
