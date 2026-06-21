@@ -55,8 +55,8 @@ const LessonDetails = () => {
 
         <div className="flex items-center sm:gap-4 gap-2 w-full justify-between">
           <div className="flex items-center sm:gap-4 gap-2 text-muted-foreground">
-            <LikeButton lesson={lesson} />
-            <SaveButton lesson={lesson} />
+            <LikeButton />
+            <SaveButton />
             <ShareButton lesson={lesson} />
           </div>
           <div className="flex items-center sm:gap-4 gap-2">

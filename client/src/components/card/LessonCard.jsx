@@ -7,7 +7,6 @@ import {
 } from '../ui/card';
 import { Separator } from '../ui/separator';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
-import { AiOutlineLike } from 'react-icons/ai';
 import { BiComment } from 'react-icons/bi';
 import { RiShareBoxFill } from 'react-icons/ri';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -19,8 +18,14 @@ import { Crown, Zap } from 'lucide-react';
 import { RiLock2Line } from 'react-icons/ri';
 import { formatDate } from '@/lib/formatDate';
 import { IoMdTime } from 'react-icons/io';
+import LikeButton from '@/app/(pages)/(public)/public-lessons/[lessonId]/_components/LikeButton';
+import { FiHeart } from 'react-icons/fi';
+import { auth } from '@/lib/auth';
 
 const LessonCard = ({ lesson: l }) => {
+  const { user } = auth.api.getSession();
+  const isLiked = l.likes.some((l) => l.user?._id === user?.id);
+
   return (
     <Card>
       <CardHeader className="flex justify-between">
@@ -58,8 +63,10 @@ const LessonCard = ({ lesson: l }) => {
             </span>
 
             <div className="flex gap-5 justify-between bg-muted py-4 rounded mt-5 text-muted-foreground">
-              <span className="flex gap-2 items-center text-sm justify-center w-full">
-                <AiOutlineLike className="size-4.5" />
+              <span className={cn("flex gap-2 items-center text-sm justify-center w-full",
+                isLiked && 'text-pink-500 dark:text-pink-400'
+              )}>
+                <FiHeart />
                 {l.likes.length}
               </span>
               <Separator orientation="vertical" />

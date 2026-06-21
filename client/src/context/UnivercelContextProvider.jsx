@@ -1,10 +1,18 @@
 import CommentContextProvider from './comment-context/CommentContextProvider';
 import LessonContextProvider from './lessonContext/LessonContextProvider';
+import LikeContextProvider from './like-context/LikeContextProvider';
+import SaveLessonContextProvider from './save-lesson-context/SaveLessonContextProvider';
 
 const UnivercelContextProvider = ({ children }) => {
   return (
     <LessonContextProvider>
-      <CommentContextProvider>{children}</CommentContextProvider>
+      <CommentContextProvider>
+        <LikeContextProvider>
+          <SaveLessonContextProvider>
+            {children}
+          </SaveLessonContextProvider>
+        </LikeContextProvider>
+      </CommentContextProvider>
     </LessonContextProvider>
   );
 };
