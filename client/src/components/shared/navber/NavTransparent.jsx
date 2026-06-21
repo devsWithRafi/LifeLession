@@ -37,11 +37,11 @@ const NavTransparent = () => {
           isScrolled && 'bg-background backdrop-blur-md',
         )}
       >
-        <nav className="flex items-center justify-between gap-10 px-10 py-5 w-full">
+        <nav className="flex items-center justify-between gap-10 md:px-10 px-4 py-5 w-full">
           <div className="flex items-center gap-10">
             <Link href="/">
               <NavLogo
-                className={'min-w-40 max-w-40'}
+                className={'md:min-w-40 max-w-40'}
                 variant={
                   isScrolled ? (theme === 'light' ? 'black' : 'white') : 'white'
                 }
@@ -70,14 +70,17 @@ const NavTransparent = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center md:gap-4 gap-2">
             {user && (
               <>
                 <Link
                   href={'/dashboard/add-lession'}
-                  className={cn(buttonVariants({}), 'rounded-full px-3')}
+                  className={cn(
+                    buttonVariants({}),
+                    'rounded-full px-3 md:w-auto w-8 md:aspect-auto aspect-square',
+                  )}
                 >
-                  Add Lesson
+                  <span className="hidden md:inline">Add Lesson</span>
                   <HiOutlinePlus />
                 </Link>
 
@@ -85,11 +88,11 @@ const NavTransparent = () => {
                   <Link href={'/pricing'}>
                     <SubscriptionBadge
                       hoverMode
-                      className="py-2 px-5 max-h-auto"
+                      className="md:py-2 md:px-5 md:max-h-auto rounded-full md:w-auto w-8 p-3 max-h-8 md:aspect-auto aspect-square"
                     >
                       <span className="flex items-center gap-1">
                         <Crown size={16} />
-                        Upgrade
+                        <span className="hidden md:inline">Upgrade</span>
                       </span>
                     </SubscriptionBadge>
                   </Link>

@@ -29,10 +29,8 @@ const Navber = () => {
         <nav className="flex items-center justify-between gap-4 md:px-10 px-4 py-5 w-full">
           <div className="flex items-center gap-10">
             <Link href="/">
-              <NavLogo
-                className={'w-40'}
-                variant={theme === 'light' ? 'black' : 'white'}
-              />
+              <NavLogo className={'w-40 hidden dark:inline'} variant='white' />
+              <NavLogo className={'w-40 inline dark:hidden'} variant='black' />
             </Link>
             <div className="hidden items-center gap-4 text-sm font-medium text-white/90 lg:flex">
               {navLinks.map((link, index) => (

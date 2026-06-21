@@ -1,22 +1,21 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import React from 'react';
 
-const CommentBox = ({ className }) => {
+const CommentBox = ({ className, comment }) => {
   return (
     <div className={cn('flex items-start gap-3', className)}>
-      <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-        <AvatarFallback>Z</AvatarFallback>
-      </Avatar>
+      {comment.user && (
+        <Avatar>
+          <AvatarImage src={comment.user.image} alt={comment.user.name} />
+          <AvatarFallback>
+            {comment.user.email.charAt(0).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+      )}
       <div className="flex flex-col text-left">
-        <h4 className="font-medium">{'Saiful Islam'}</h4>
+        <h4 className="font-medium">{comment.user && comment.user.name}</h4>
         <p className="sm:text-sm text-xs text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, at
-          nesciunt sint perspiciatis natus facilis? Nesciunt, ullam sed. Illo
-          quos dolorem tempora eum. Impedit, enim quaerat. Placeat, doloremque
-          et ipsum voluptas laudantium repellat ullam, voluptatum a perspiciatis
-          porro, vitae velit?
+          {comment.text}
         </p>
       </div>
     </div>

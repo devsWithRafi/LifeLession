@@ -17,6 +17,9 @@ export const serverMutation = async (path, method, data, token) => {
     return result;
   } catch (error) {
     console.log(error);
-    return null
+    return {
+      success: false,
+      message: error.message,
+    };
   }
 };

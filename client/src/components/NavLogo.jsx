@@ -1,7 +1,6 @@
 import { assets } from '@/assets/assets';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import React from 'react';
 
 const NavLogo = ({ className, variant = 'white' }) => {
   return variant === 'white' ? (
