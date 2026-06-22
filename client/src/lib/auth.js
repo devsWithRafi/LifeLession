@@ -2,6 +2,7 @@ import { betterAuth } from 'better-auth';
 import { jwt } from 'better-auth/plugins';
 import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { db } from './db';
+import { headers } from 'next/headers';
 
 export const auth = betterAuth({
   database: mongodbAdapter(db),
@@ -38,3 +39,11 @@ export const auth = betterAuth({
 
   plugins: [jwt()],
 });
+
+export const getUserSession = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return session?.user || null;
+};

@@ -10,7 +10,7 @@ import { Crown, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
 import NavProfileAvatar from './NavProfileAvatar';
 import SubscriptionBadge from '@/components/SubscriptionBadge';
@@ -18,10 +18,10 @@ import { navLinks } from './navLinks';
 
 const Navber = () => {
   const pathName = usePathname();
-  const { theme } = useTheme();
-
   const { data } = authClient.useSession();
+
   const user = data?.user;
+  const isPremium = user?.plan === 'premium' || user?.role === 'admin';
 
   return (
     pathName !== '/' && (
@@ -29,8 +29,8 @@ const Navber = () => {
         <nav className="flex items-center justify-between gap-4 md:px-10 px-4 py-5 w-full">
           <div className="flex items-center gap-10">
             <Link href="/">
-              <NavLogo className={'w-40 hidden dark:inline'} variant='white' />
-              <NavLogo className={'w-40 inline dark:hidden'} variant='black' />
+              <NavLogo className={'w-40 hidden dark:inline'} variant="white" />
+              <NavLogo className={'w-40 inline dark:hidden'} variant="black" />
             </Link>
             <div className="hidden items-center gap-4 text-sm font-medium text-white/90 lg:flex">
               {navLinks.map((link, index) => (
@@ -53,7 +53,7 @@ const Navber = () => {
               {user && (
                 <>
                   <Link
-                    href={'/dashboard/add-lession'}
+                    href={'/dashboard/add-lesson'}
                     className={cn(
                       buttonVariants({}),
                       'rounded-full px-3 md:w-auto w-8 md:aspect-auto aspect-square',
@@ -63,7 +63,7 @@ const Navber = () => {
                     <HiOutlinePlus />
                   </Link>
 
-                  {user.plan === 'free' && (
+                  {!isPremium && (
                     <Link href={'/pricing'}>
                       <SubscriptionBadge
                         hoverMode

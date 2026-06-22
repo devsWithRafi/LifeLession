@@ -11,7 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 const NAV_LINKS = [
   { path: '/dashboard', name: 'Dashboard' },
@@ -21,6 +23,20 @@ const NAV_LINKS = [
 ];
 
 const NavProfileAvatar = ({ user }) => {
+  const handleLogOut = async () => {
+    await authClient.signOut({
+      callbackUrl: '/',
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success('Logged out successfully');
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message ?? 'Logged out successfully');
+        },
+      },
+    });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -46,7 +62,11 @@ const NavProfileAvatar = ({ user }) => {
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />
-          <Button variant="destructive" className={'w-full rounded'}>
+          <Button
+            onClick={handleLogOut}
+            variant="destructive"
+            className={'w-full rounded'}
+          >
             Logout
           </Button>
         </DropdownMenuGroup>

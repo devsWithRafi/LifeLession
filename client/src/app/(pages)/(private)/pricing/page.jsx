@@ -10,7 +10,14 @@ import { IoMdCheckmark } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 import { BsStars } from 'react-icons/bs';
 import { FaAward } from 'react-icons/fa';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import SubscriptionBadge from '@/components/SubscriptionBadge';
 import { Button } from '@/components/ui/button';
 import { LuShieldCheck } from 'react-icons/lu';
@@ -22,14 +29,26 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-
-const planItems = [
-  'Access Premium Lessons',
-  'Ad-free Experience',
-  'Community Badge',
-  'Priority Support',
-  'Export as PDF',
+import { Check, X } from 'lucide-react';
+const features = [
+  { name: 'Lessons Created', free: '10', premium: 'Unlimited' },
+  { name: 'Access Premium Lessons', free: false, premium: true },
+  { name: 'Ad-free Experience', free: false, premium: true },
+  { name: 'Community Badge', free: false, premium: true },
+  { name: 'Priority Support', free: false, premium: true },
+  { name: 'Export as PDF', free: false, premium: true },
 ];
+
+function Cell({ value }) {
+  if (typeof value === 'string') {
+    return <span className="text-sm font-medium text-foreground">{value}</span>;
+  }
+  return value ? (
+    <Check className="mx-auto size-5 text-emerald-500" strokeWidth={2.25} />
+  ) : (
+    <X className="mx-auto size-5 text-muted-foreground/50" strokeWidth={2.25} />
+  );
+}
 
 const faqs = [
   {
@@ -70,48 +89,40 @@ const PricingPage = () => {
         </div>
 
         <div className="flex md:flex-row flex-col-reverse gap-5 w-full mt-20">
-          <div style={{ minWidth: '65%' }}>
-            <Card>
-              <CardHeader>
-                <CardTitle>Feature Comparison</CardTitle>
-              </CardHeader>
-              <CardContent className="flex gap-5 justify-between">
+          <div className="bg-background" style={{ minWidth: '70%' }}>
+            <div className="mx-auto max-w-2xl">
+              <div className="overflow-hidden rounded-lg border border-border/60">
                 <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium text-muted-foreground">
-                        Lessons Created
-                      </TableCell>
-                      <TableCell className="font-medium text-muted-foreground">
-                        10
-                      </TableCell>
-                      <TableCell className="font-medium text-muted-foreground">
-                        Unlimited
-                      </TableCell>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="h-12 text-foreground p-5">
+                        Feature
+                      </TableHead>
+                      <TableHead className="h-12 text-center text-foreground p-5">
+                        Free
+                      </TableHead>
+                      <TableHead className="h-12 bg-muted/40 text-center font-semibold text-foreground p-5">
+                        Premium
+                      </TableHead>
                     </TableRow>
-                    {planItems.map((item, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium text-muted-foreground">
-                          {item}
+                  </TableHeader>
+                  <TableBody>
+                    {features.map((feature) => (
+                      <TableRow key={feature.name}>
+                        <TableCell className="font-medium text-muted p-5">
+                          {feature.name}
                         </TableCell>
-                        <TableCell>
-                          <RxCross2 size={17} className="text-red-400" />
+                        <TableCell className="text-center p-5 text-muted-foreground">
+                          <Cell value={feature.free} />
                         </TableCell>
-                        <TableCell>
-                          <IoMdCheckmark size={17} className="text-green-400" />
+                        <TableCell className="p-5 text-center text-muted-foreground">
+                          <Cell value={feature.premium} />
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-              </CardContent>
-            </Card>
-            <div className="p-5 border-l mt-5">
-              <p className="text-muted-foreground text-sm italic font-medium">
-                {
-                  "'Wisdom is not a product of schooling but of the lifelong attempt to acquire it. Your sanctuary should be as boundless as your potential.'"
-                }
-              </p>
+              </div>
             </div>
           </div>
 
@@ -132,12 +143,18 @@ const PricingPage = () => {
                 <CardTitle className="text-3xl font-bold font-boldonse text-primary">
                   ৳1500
                 </CardTitle>
-                <p classNem="!text-muted-foreground text-xs">BDT</p>
+                <p className="!text-muted-foreground text-xs">BDT</p>
               </div>
 
-              <Button className="w-full h-auto py-3 rounded-full font-medium">
-                Upgrade to Premium
-              </Button>
+              <form action="/api/checkout_sessions" method="POST">
+                <Button
+                  type="submit"
+                  role="link"
+                  className="w-full h-auto py-3 rounded-full font-medium"
+                >
+                  Upgrade to Premium
+                </Button>
+              </form>
 
               <span className="w-full p-3 rounded bg-muted flex gap-2 items-center justify-center text-muted-foreground text-xs">
                 <LuShieldCheck size={15} /> SECURE CHECKOUT VIA STRIPE
@@ -159,41 +176,46 @@ const PricingPage = () => {
           </Card>
         </div>
 
-        <div className="" style={{marginTop: "100px", marginBottom: "100px"}}>
-          <div className="container mx-auto max-w-3xl px-4">
-            <div className="mb-12 text-center">
-              <h2 className="text-2xl font-bold tracking-tight font-boldonse">
-                Frequently Asked Questions
+        <section
+          className="bg-background"
+          style={{ marginTop: '70px', padding: '50px 0px' }}
+        >
+          <div className="mx-auto max-w-2xl">
+            <div className="mb-10 text-center">
+              <p className="text-sm font-medium text-muted-foreground">FAQ</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                Frequently asked questions
               </h2>
-              <p className="mt-3 text-muted-foreground">
-                Everything you need to know about Digital Life Lessons.
+              <p className="mt-3 text-balance text-muted-foreground">
+                Everything you need to know about payments, access, and
+                security.
               </p>
             </div>
 
             <Accordion
               type="single"
               collapsible
-              className="rounded-2xl flex flex-col gap-5"
-              style={{marginTop: "50px"}}
+              className="w-full divide-y divide-border/60 rounded-lg border border-border/60"
+              style={{ marginTop: '40px' }}
             >
               {faqs.map((faq, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="px-5 bg-muted duration-200 shadow-sm"
+                  className="border-b-0 px-5"
                 >
-                  <AccordionTrigger className="py-5 text-left text-base font-medium hover:no-underline duration-200">
+                  <AccordionTrigger className="py-5 text-left text-base font-medium hover:no-underline">
                     {faq.q}
                   </AccordionTrigger>
-
-                  <AccordionContent className="mb-5 text-sm leading-7 text-muted-foreground duration-200">
+                  <AccordionContent className="mb-5 text-muted-foreground">
                     {faq.a}
                   </AccordionContent>
+                  {faq.length - 1 !== index && <Separator />}
                 </AccordionItem>
               ))}
             </Accordion>
           </div>
-        </div>
+        </section>
       </section>
     </>
   );

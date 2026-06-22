@@ -24,6 +24,10 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { authClient } from '@/lib/auth-client';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
+import { MdOutlineFeaturedPlayList } from "react-icons/md";
+import { FaUserGear } from "react-icons/fa6";
+
+
 import {
   Tooltip,
   TooltipContent,
@@ -31,6 +35,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
+import { PlusCircle, Users, BookOpen, BookMarked, Flag } from 'lucide-react';
 
 const dashboardLinks = [
   { path: '/dashboard', name: 'Overview', icon: LuLayoutDashboard },
@@ -40,6 +45,18 @@ const dashboardLinks = [
   { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
 ];
 
+const adminDashboardLinks = [
+  { path: '/dashboard/featured', name: 'Featured', icon: MdOutlineFeaturedPlayList },
+  { path: '/dashboard/manage-users', name: 'Manage Users', icon: FaUserGear },
+  { path: '/dashboard/todays-lessons', name: 'Todays Lessons', icon: BookOpen },
+  {
+    path: '/dashboard/manage-lessons',
+    name: 'Manage Lessons',
+    icon: BookMarked,
+  },
+  { path: '/dashboard/reported-lessons', name: 'Reported', icon: Flag },
+];
+
 const AppSidebar = () => {
   const pathname = usePathname();
   const { state } = useSidebar(); // "expanded" | "collapsed"
@@ -47,6 +64,7 @@ const AppSidebar = () => {
 
   const { data } = authClient.useSession();
   const user = data?.user;
+  const isAdmin = user?.role === 'admin';
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -91,7 +109,7 @@ const AppSidebar = () => {
                             asChild
                             isActive={active}
                             className={cn(
-                              'gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                              'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
                               'text-muted-foreground hover:bg-muted hover:text-primary',
                               active && 'bg-muted text-primary',
                             )}
@@ -113,6 +131,45 @@ const AppSidebar = () => {
                   );
                 })}
               </SidebarMenu>
+              {isAdmin && (
+                <>
+                  <Separator className="" style={{ margin: '20px 0' }} />
+
+                  <SidebarMenu className="gap-1">
+                    {adminDashboardLinks.map((item) => {
+                      const active = pathname === item.path;
+
+                      return (
+                        <SidebarMenuItem key={item.path}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <SidebarMenuButton
+                                asChild
+                                isActive={active}
+                                className={cn(
+                                  'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
+                                  'text-muted-foreground hover:bg-muted hover:text-primary',
+                                  active && 'bg-muted text-primary',
+                                )}
+                              >
+                                <Link href={item.path}>
+                                  <item.icon size={17} className="shrink-0" />
+                                  <span>{item.name}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                            </TooltipTrigger>
+                            {collapsed && (
+                              <TooltipContent side="right">
+                                {item.name}
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </SidebarMenuItem>
+                      );
+                    })}
+                  </SidebarMenu>
+                </>
+              )}
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>

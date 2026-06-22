@@ -3,7 +3,6 @@
 import NavLogo from '@/components/NavLogo';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { buttonVariants } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useScrollNavBar } from '@/hooks/useScrollNavBar';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
@@ -28,6 +27,7 @@ const NavTransparent = () => {
 
   const { data } = authClient.useSession();
   const user = data?.user;
+  const isPremium = user?.plan === 'premium' || user?.role === 'admin';
 
   return (
     pathName === '/' && (
@@ -74,7 +74,7 @@ const NavTransparent = () => {
             {user && (
               <>
                 <Link
-                  href={'/dashboard/add-lession'}
+                  href={'/dashboard/add-lesson'}
                   className={cn(
                     buttonVariants({}),
                     'rounded-full px-3 md:w-auto w-8 md:aspect-auto aspect-square',
@@ -84,7 +84,7 @@ const NavTransparent = () => {
                   <HiOutlinePlus />
                 </Link>
 
-                {user.plan === 'free' && (
+                {!isPremium && (
                   <Link href={'/pricing'}>
                     <SubscriptionBadge
                       hoverMode

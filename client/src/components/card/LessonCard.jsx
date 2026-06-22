@@ -27,6 +27,7 @@ import { Badge } from '../ui/badge';
 const LessonCard = ({ lesson }) => {
   const { data } = authClient.useSession();
   const user = data?.user;
+  const isPremium = user?.plan === 'premium' || user?.role === 'admin';
   const isLiked = lesson.likes.some((l) => l.user?._id === user?.id);
 
   return (
@@ -53,7 +54,9 @@ const LessonCard = ({ lesson }) => {
           <div
             className={cn(
               'justify-between flex-col flex h-full',
-              lesson.accessLevel === 'premium' && 'blur-md select-none',
+              lesson.accessLevel === 'premium' &&
+                !isPremium &&
+                'blur-md select-none',
             )}
           >
             <span>
@@ -61,7 +64,9 @@ const LessonCard = ({ lesson }) => {
                 {`"${lesson.title}"`}
               </CardTitle>
               <CardDescription className="font-roboto mt-2">
-                {lesson.description}
+                {lesson.description.length > 130
+                  ? lesson.description.slice(0, 130) + '...'
+                  : lesson.description}
               </CardDescription>
             </span>
 
@@ -101,7 +106,7 @@ const LessonCard = ({ lesson }) => {
             </div>
           </div>
 
-          {lesson.accessLevel === 'premium' && (
+          {lesson.accessLevel === 'premium' && !isPremium && (
             <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center cursor-not-allowed">
               <span className="p-5 rounded-full bg-muted">
                 <RiLock2Line className="size-10 text-muted-foreground" />
@@ -142,10 +147,13 @@ const LessonCard = ({ lesson }) => {
             buttonVariants(),
             'h-auto py-2 rounded',
             lesson.accessLevel === 'premium' &&
+              !isPremium &&
               'pointer-events-none select-none opacity-20',
           )}
         >
-          {lesson.accessLevel === 'free' ? 'See Details' : 'Upgrade to Unlock'}
+          {lesson.accessLevel === 'premium' && !isPremium
+            ? 'Upgrade to Unlock'
+            : 'See Details'}
         </Link>
       </CardContent>
     </Card>

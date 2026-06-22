@@ -17,7 +17,7 @@ export const uploadImage = async (imageFile) => {
     );
 
     const data = await res.json();
-    return data;
+    return data.data;
   } catch (error) {
     console.log('Image Uload failed: ', error);
     return;
