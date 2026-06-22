@@ -46,7 +46,7 @@ function Cell({ value }) {
   return value ? (
     <Check className="mx-auto size-5 text-emerald-500" strokeWidth={2.25} />
   ) : (
-    <X className="mx-auto size-5 text-muted-foreground/50" strokeWidth={2.25} />
+    <X className="mx-auto size-5 text-rose-400" strokeWidth={2.25} />
   );
 }
 
@@ -89,41 +89,37 @@ const PricingPage = () => {
         </div>
 
         <div className="flex md:flex-row flex-col-reverse gap-5 w-full mt-20">
-          <div className="bg-background" style={{ minWidth: '70%' }}>
-            <div className="mx-auto max-w-2xl">
-              <div className="overflow-hidden rounded-lg border border-border/60">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead className="h-12 text-foreground p-5">
-                        Feature
-                      </TableHead>
-                      <TableHead className="h-12 text-center text-foreground p-5">
-                        Free
-                      </TableHead>
-                      <TableHead className="h-12 bg-muted/40 text-center font-semibold text-foreground p-5">
-                        Premium
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {features.map((feature) => (
-                      <TableRow key={feature.name}>
-                        <TableCell className="font-medium text-muted p-5">
-                          {feature.name}
-                        </TableCell>
-                        <TableCell className="text-center p-5 text-muted-foreground">
-                          <Cell value={feature.free} />
-                        </TableCell>
-                        <TableCell className="p-5 text-center text-muted-foreground">
-                          <Cell value={feature.premium} />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
+          <div className="bg-background min-w-[70%] border rounded-xl overflow-hidden">
+            <Table className="w-full">
+              <TableHeader>
+                <TableRow className="bg-card">
+                  <TableHead className="h-12 text-foreground p-5">
+                    Feature
+                  </TableHead>
+                  <TableHead className="h-12 text-center text-foreground p-5">
+                    Free
+                  </TableHead>
+                  <TableHead className="h-12 text-center font-semibold text-foreground p-5">
+                    Premium
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {features.map((feature) => (
+                  <TableRow key={feature.name} className="">
+                    <TableCell className="font-medium p-5">
+                      {feature.name}
+                    </TableCell>
+                    <TableCell className="text-center p-5">
+                      <Cell value={feature.free}/>
+                    </TableCell>
+                    <TableCell className="p-5 text-center">
+                      <Cell value={feature.premium} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
 
           <Card className="w-full">
@@ -176,11 +172,10 @@ const PricingPage = () => {
           </Card>
         </div>
 
-        <section
-          className="bg-background"
-          style={{ marginTop: '70px', padding: '50px 0px' }}
+        <div
+          className="bg-background mt-25 py-5 w-full"
         >
-          <div className="mx-auto max-w-2xl">
+          <div className="mx-auto md:max-w-[70%]">
             <div className="mb-10 text-center">
               <p className="text-sm font-medium text-muted-foreground">FAQ</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
@@ -195,27 +190,25 @@ const PricingPage = () => {
             <Accordion
               type="single"
               collapsible
-              className="w-full divide-y divide-border/60 rounded-lg border border-border/60"
-              style={{ marginTop: '40px' }}
+              className="w-full divide-y divide-border/60 rounded-lg border border-border/60 mt-5"
             >
               {faqs.map((faq, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="border-b-0 px-5"
+                  className="px-5"
                 >
                   <AccordionTrigger className="py-5 text-left text-base font-medium hover:no-underline">
                     {faq.q}
                   </AccordionTrigger>
-                  <AccordionContent className="mb-5 text-muted-foreground">
+                  <AccordionContent className="text-muted-foreground">
                     {faq.a}
                   </AccordionContent>
-                  {faq.length - 1 !== index && <Separator />}
                 </AccordionItem>
               ))}
             </Accordion>
           </div>
-        </section>
+        </div>
       </section>
     </>
   );

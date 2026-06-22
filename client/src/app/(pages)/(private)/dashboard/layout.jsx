@@ -1,20 +1,20 @@
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import AppSidebar from '../_components/app-sideber';
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
+import { getUserSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 const DashboardLayout = async ({ children }) => {
-  const { user } = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const user = await getUserSession();
 
-  if (!user) redirect('/sign-in');
+  if (!user) {
+    redirect('/sign-in');
+  }
+
   return (
     <section>
       <SidebarProvider>
         <AppSidebar />
-        <main className="sm:p-8 p-5 w-full flex flex-col gap-5">
+        <main className="sm:p-8 p-4 w-full flex flex-col gap-5">
           <SidebarTrigger />
           {children}
         </main>

@@ -53,6 +53,8 @@ const AddLessonForm = () => {
   const { data } = authClient.useSession();
   const [formPending, startFormPending] = useTransition();
   const user = data?.user;
+    const isPremium = user?.plan === 'premium' || user?.role === 'admin';
+
 
   const form = useForm({
     resolver: zodResolver(LessonFormSchema),
@@ -283,7 +285,6 @@ const AddLessonForm = () => {
                     <div className="flex items-center gap-5 w-full">
                       {accessType.map((item) => {
                         const isSelected = field.value === item;
-                        const isPremium = user?.plan === 'premium';
                         const isPro = item === 'premium' && !isPremium;
                         return (
                           <Button

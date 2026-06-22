@@ -24,9 +24,8 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { authClient } from '@/lib/auth-client';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { MdOutlineFeaturedPlayList } from "react-icons/md";
-import { FaUserGear } from "react-icons/fa6";
-
+import { MdOutlineFeaturedPlayList } from 'react-icons/md';
+import { FaUserGear } from 'react-icons/fa6';
 
 import {
   Tooltip,
@@ -36,24 +35,31 @@ import {
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
 import { PlusCircle, Users, BookOpen, BookMarked, Flag } from 'lucide-react';
+import { toast } from 'sonner';
 
 const dashboardLinks = [
   { path: '/dashboard', name: 'Overview', icon: LuLayoutDashboard },
   { path: '/dashboard/add-lesson', name: 'Add Lesson', icon: LuCirclePlus },
   { path: '/dashboard/my-lessons', name: 'My Lessons', icon: IoMdBook },
+  { path: '/dashboard/update-lesson', name: 'Update Lesson', icon: IoMdBook },
   { path: '/dashboard/my-favorites', name: 'My Favorites', icon: FaRegHeart },
   { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
 ];
 
 const adminDashboardLinks = [
-  { path: '/dashboard/featured', name: 'Featured', icon: MdOutlineFeaturedPlayList },
+  {
+    path: '/dashboard/featured',
+    name: 'Featured',
+    icon: MdOutlineFeaturedPlayList,
+  },
+  { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
   { path: '/dashboard/manage-users', name: 'Manage Users', icon: FaUserGear },
-  { path: '/dashboard/todays-lessons', name: 'Todays Lessons', icon: BookOpen },
   {
     path: '/dashboard/manage-lessons',
     name: 'Manage Lessons',
     icon: BookMarked,
   },
+  { path: '/dashboard/todays-lessons', name: 'Todays Lessons', icon: BookOpen },
   { path: '/dashboard/reported-lessons', name: 'Reported', icon: Flag },
 ];
 
@@ -67,7 +73,17 @@ const AppSidebar = () => {
   const isAdmin = user?.role === 'admin';
 
   const handleSignOut = async () => {
-    await authClient.signOut();
+    await authClient.signOut({
+      callbackUrl: '/sign-in',
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success('Signed out successfully');
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message ?? 'An error occurred!');
+        },
+      },
+    });
   };
 
   return (
@@ -96,79 +112,76 @@ const AppSidebar = () => {
         <SidebarContent className="mt-6 px-2">
           <SidebarGroup className="p-0">
             <SidebarGroupContent>
-              <SidebarMenu className="gap-1">
-                {dashboardLinks.map((item) => {
-                  const active = pathname === item.path;
+              {!isAdmin ? (
+                <SidebarMenu className="gap-1">
+                  {dashboardLinks.map((item) => {
+                    const active = pathname === item.path;
 
-                  return (
-                    <SidebarMenuItem key={item.path}>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          {/* SidebarMenuButton handles icon-only vs icon+text automatically */}
-                          <SidebarMenuButton
-                            asChild
-                            isActive={active}
-                            className={cn(
-                              'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
-                              'text-muted-foreground hover:bg-muted hover:text-primary',
-                              active && 'bg-muted text-primary',
-                            )}
-                          >
-                            <Link href={item.path}>
-                              <item.icon size={17} className="shrink-0" />
-                              <span>{item.name}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </TooltipTrigger>
-                        {/* Tooltip only visible when collapsed */}
-                        {collapsed && (
-                          <TooltipContent side="right">
-                            {item.name}
-                          </TooltipContent>
-                        )}
-                      </Tooltip>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-              {isAdmin && (
-                <>
-                  <Separator className="" style={{ margin: '20px 0' }} />
+                    return (
+                      <SidebarMenuItem key={item.path}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            {/* SidebarMenuButton handles icon-only vs icon+text automatically */}
+                            <SidebarMenuButton
+                              asChild
+                              isActive={active}
+                              className={cn(
+                                'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
+                                'text-muted-foreground hover:bg-muted hover:text-primary',
+                                active && 'bg-muted text-primary',
+                              )}
+                            >
+                              <Link href={item.path}>
+                                <item.icon size={17} className="shrink-0" />
+                                <span>{item.name}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </TooltipTrigger>
+                          {/* Tooltip only visible when collapsed */}
+                          {collapsed && (
+                            <TooltipContent side="right">
+                              {item.name}
+                            </TooltipContent>
+                          )}
+                        </Tooltip>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              ) : (
+                <SidebarMenu className="gap-1">
+                  {adminDashboardLinks.map((item) => {
+                    const active = pathname === item.path;
 
-                  <SidebarMenu className="gap-1">
-                    {adminDashboardLinks.map((item) => {
-                      const active = pathname === item.path;
-
-                      return (
-                        <SidebarMenuItem key={item.path}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <SidebarMenuButton
-                                asChild
-                                isActive={active}
-                                className={cn(
-                                  'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
-                                  'text-muted-foreground hover:bg-muted hover:text-primary',
-                                  active && 'bg-muted text-primary',
-                                )}
-                              >
-                                <Link href={item.path}>
-                                  <item.icon size={17} className="shrink-0" />
-                                  <span>{item.name}</span>
-                                </Link>
-                              </SidebarMenuButton>
-                            </TooltipTrigger>
-                            {collapsed && (
-                              <TooltipContent side="right">
-                                {item.name}
-                              </TooltipContent>
-                            )}
-                          </Tooltip>
-                        </SidebarMenuItem>
-                      );
-                    })}
-                  </SidebarMenu>
-                </>
+                    return (
+                      <SidebarMenuItem key={item.path}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <SidebarMenuButton
+                              asChild
+                              isActive={active}
+                              className={cn(
+                                'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
+                                'text-muted-foreground hover:bg-muted hover:text-primary',
+                                active && 'bg-muted text-primary',
+                              )}
+                            >
+                              <Link href={item.path}>
+                                <item.icon size={17} className="shrink-0" />
+                                <span>{item.name}</span>
+                              </Link>
+                            </SidebarMenuButton>
+                          </TooltipTrigger>
+                          {collapsed && (
+                            <TooltipContent side="right">
+                              {item.name}
+                            </TooltipContent>
+                          )}
+                        </Tooltip>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
               )}
             </SidebarGroupContent>
           </SidebarGroup>

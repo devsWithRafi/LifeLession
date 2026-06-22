@@ -16,13 +16,14 @@ import Link from 'next/link';
 import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { LiquidMetalButton } from '../ui/liquid-metal-button';
-import { Crown, Zap } from 'lucide-react';
+import { Crown, Eye, Heart, MessageCircle, Zap } from 'lucide-react';
 import { RiLock2Line } from 'react-icons/ri';
 import { formatDate } from '@/lib/formatDate';
 import { IoMdTime } from 'react-icons/io';
 import { FiHeart } from 'react-icons/fi';
 import { authClient } from '@/lib/auth-client';
 import { Badge } from '../ui/badge';
+import { fallBackNameFormat } from '@/lib/falbackNameFormat';
 
 const LessonCard = ({ lesson }) => {
   const { data } = authClient.useSession();
@@ -37,20 +38,28 @@ const LessonCard = ({ lesson }) => {
           theme={lesson.accessLevel === 'premium' ? 'gold' : 'silver'}
           variant="default"
           size="sm"
-          className={'pointer-events-none select-none rounded-full'}
+          className={'pointer-events-none select-none rounded-full text-xs'}
         >
-          <div className="flex items-center">
+          <div className="flex items-center gap-1">
             {lesson.accessLevel === 'premium' ? (
-              <Crown className="mr-2 h-4 w-4" />
+              <Crown className="size-3.5" />
             ) : (
-              <Zap className="mr-2 h-4 w-4" />
+              <Zap className="size-3.5" />
             )}
             <span>{lesson.accessLevel.toUpperCase()}</span>
           </div>
         </LiquidMetalButton>
       </CardHeader>
       <CardContent className="flex-col flex h-full gap-6">
-        <div className="h-full relative">
+        <div className="h-full relative flex flex-col gap-5">
+          {lesson.accessLevel === 'premium' && !isPremium && (
+            <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center cursor-not-allowed">
+              <span className="p-5 rounded-full bg-muted">
+                <RiLock2Line className="size-10 text-muted-foreground" />
+              </span>
+            </div>
+          )}
+
           <div
             className={cn(
               'justify-between flex-col flex h-full',
@@ -79,67 +88,73 @@ const LessonCard = ({ lesson }) => {
               </Badge>
             </div>
 
-            <div className="flex gap-5 justify-between bg-muted py-4 rounded mt-5 text-muted-foreground">
-              <span
-                className={cn(
-                  'flex gap-2 items-center text-sm justify-center w-full',
-                  isLiked && 'text-pink-500 dark:text-pink-400',
-                )}
-              >
-                <FiHeart />
-                {lesson.likes.length}
-              </span>
-              <Separator orientation="vertical" />
-              <span className="flex gap-2 items-center text-sm justify-center w-full">
-                <BiComment className="size-4" />
-                {lesson.comments.length}
-              </span>
-              <Separator orientation="vertical" />
-              <span className="flex gap-2 items-center text-sm justify-center w-full">
-                <MdOutlineRemoveRedEye className="size-4.5" />
-                {lesson.views}
-              </span>
-              <Separator orientation="vertical" />
-              <span className="flex gap-2 items-center text-sm justify-center w-full">
-                <RiShareBoxFill className="size-4" />
-              </span>
+            <Separator className="my-5"/>
+
+            {/* user */}
+            <div className="flex items-center gap-2 justify-between">
+              <div className="flex items-center gap-2">
+                <Avatar className={'size-7'}>
+                  <AvatarImage src={lesson.author.image} />
+                  <AvatarFallback>
+                    {fallBackNameFormat(lesson.author.email)}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="text-sm font-semibold leading-none">
+                    {lesson.author.name}
+                  </h3>
+                  <span className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                    <IoMdTime className="size-2.5" />
+                    {formatDate(lesson.createdAt)}
+                  </span>
+                </div>
+              </div>
+              {/* engagements */}
+              <div className="flex items-center gap-5 text-muted-foreground">
+                <span className="flex gap-1 items-center text-xs justify-center w-full">
+                  <Eye className="size-3.5" />
+                  {lesson.views}
+                </span>
+                <span
+                  className={cn(
+                    'flex gap-1 items-center text-xs justify-center w-full',
+                    isLiked && 'text-pink-500 dark:text-pink-400',
+                  )}
+                >
+                  <Heart className="size-3.5" />
+                  {lesson.likes.length}
+                </span>
+                <span className="flex gap-1 items-center text-xs justify-center w-full">
+                  <MessageCircle className="size-3.5" />
+                  {lesson.comments.length}
+                </span>
+              </div>
             </div>
           </div>
-
-          {lesson.accessLevel === 'premium' && !isPremium && (
-            <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center cursor-not-allowed">
-              <span className="p-5 rounded-full bg-muted">
-                <RiLock2Line className="size-10 text-muted-foreground" />
-              </span>
-            </div>
-          )}
         </div>
 
-        <Separator />
-
-        <div className="flex items-center gap-2 justify-between">
-          <div className="flex items-center gap-2">
-            <Avatar className={'size-10'}>
-              <AvatarImage src={lesson.author.image} />
-              <AvatarFallback>{lesson.author.email.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="text-lg font-semibold leading-none">
-                {lesson.author.name}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {lesson.author.email.length > 20
-                  ? lesson.author.email.slice(0, 20) + '...'
-                  : lesson.author.email}
-              </p>
-            </div>
-          </div>
-
-          <span className="text-xs text-muted-foreground flex items-center gap-1">
-            <IoMdTime />
-            {formatDate(lesson.createdAt)}
+        {/* engagements */}
+        {/* <div className="flex gap-5 justify-between rounded mt-5 text-muted-foreground">
+          <span
+            className={cn(
+              'flex gap-2 items-center text-sm justify-center w-full',
+              isLiked && 'text-pink-500 dark:text-pink-400',
+            )}
+          >
+            <FiHeart />
+            {lesson.likes.length}
           </span>
-        </div>
+          <Separator orientation="vertical" />
+          <span className="flex gap-2 items-center text-sm justify-center w-full">
+            <BiComment className="size-4" />
+            {lesson.comments.length}
+          </span>
+          <Separator orientation="vertical" />
+          <span className="flex gap-2 items-center text-sm justify-center w-full">
+            <MdOutlineRemoveRedEye className="size-4.5" />
+            {lesson.views}
+          </span>
+        </div> */}
 
         <Link
           href={`public-lessons/${lesson._id}`}
