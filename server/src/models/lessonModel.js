@@ -17,6 +17,7 @@ const lessonModel = new mongoose.Schema(
       enum: ['free', 'premium'],
       default: 'free',
     },
+    isPublic: { type: Boolean, required: false, default: true },
     image: { type: String, required: false, default: null },
     isFeatured: { type: Boolean, required: false, default: false },
     views: {
