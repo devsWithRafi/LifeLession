@@ -6,6 +6,6 @@ export const validateLessonBodyData = z.object({
   category: z.string().min(1),
   emotionalTone: z.string().min(1),
   accessLevel: z.string().min(1),
-  image: z.string().optional(),
+  image: z.string().nullish(),
   isPublic: z.boolean().default(true),
 });

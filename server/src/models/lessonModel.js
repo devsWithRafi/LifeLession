@@ -23,7 +23,7 @@ const lessonModel = new mongoose.Schema(
     views: {
       type: Number,
       required: false,
-      default: () => Math.round(Math.random() * 1000),
+      default: () => Math.round(Math.random() * 10000),
     },
     savedBy: [
       {
