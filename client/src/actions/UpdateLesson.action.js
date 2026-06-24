@@ -2,10 +2,10 @@
 
 import { serverMutation } from './helpers/serverMutation';
 
-export const AddNewLessonAction = async (data, token) => {
+export const UpdateLessonAction = async (id, data, token) => {
   const result = await serverMutation(
-    '/api/lesson/create',
-    'POST',
+    `/api/lesson/update/${id}`,
+    'PUT',
     {...data},
     token,
   );

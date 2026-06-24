@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 const NAV_LINKS = [
@@ -23,15 +24,17 @@ const NAV_LINKS = [
 ];
 
 const NavProfileAvatar = ({ user }) => {
+  const router = useRouter();
   const handleLogOut = async () => {
     await authClient.signOut({
-      callbackUrl: '/',
+      callbackUrl: '/sign-in',
       fetchOptions: {
         onSuccess: () => {
-          toast.success('Logged out successfully');
+          toast.success('Signed out successfully');
+          router.push('/sign-in');
         },
         onError: (ctx) => {
-          toast.error(ctx.error.message ?? 'Logged out successfully');
+          toast.error(ctx.error.message ?? 'An error occurred!');
         },
       },
     });

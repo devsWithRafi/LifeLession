@@ -52,7 +52,7 @@ const AdminProfile = () => {
   return (
     <div className="min-h-screen bg-background text-foreground w-full">
       {/* Top accent bar */}
-      <div className="max-w-300 mx-auto py-8 space-y-6">
+      <div className="max-w-300 mx-auto space-y-6">
         {/* Hero profile card */}
         <ProfileHeader />
 

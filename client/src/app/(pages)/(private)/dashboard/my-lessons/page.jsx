@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import MyLessonData from './MyLessonData';
 
 const MyLessons = () => {
   return (
-    <div>MyLessons</div>
-  )
-}
+    <section>
+      <MyLessonData />
+    </section>
+  );
+};
 
-export default MyLessons
+export default MyLessons;

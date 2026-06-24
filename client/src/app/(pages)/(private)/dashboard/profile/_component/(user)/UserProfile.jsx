@@ -30,9 +30,9 @@ export default function UserProfile() {
         {/* Top accent — single signature element, kept tight */}
         <div className="max-w-300 mx-auto space-y-10">
           {/* ── Profile hero ─────────────────────────────────────────────── */}
-          <Card className="rounded-2xl overflow-hidden">
+          <Card className="rounded-2xl overflow-hidden p-0">
             {/* Subtle cover wash */}
-            <div className="h-24 bg-gradient-to-br from-primary/8 via-primary/4 to-transparent" />
+            <div className="h-24 bg-gradient-to-br from-primary/15 via-primary/8 to-transparent" />
 
             <CardContent className="px-6 pb-6 -mt-10">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">

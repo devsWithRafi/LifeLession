@@ -9,7 +9,7 @@ const TopContributors = async () => {
     return <div>Failed to fetch top contributors</div>;
   }
 
-  const data = Array.isArray(res.data) && res.data;
+  const data = Array.isArray(res.data) ? res.data : [];
 
   return (
     <>

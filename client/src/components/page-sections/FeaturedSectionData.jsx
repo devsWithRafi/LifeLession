@@ -17,7 +17,7 @@ const FeaturedSectionData = async () => {
       </Card>
     );
   }
-  const data = Array.isArray(result.data) && result.data;
+  const data = Array.isArray(result.data) ? result.data : [];
 
   return (
     <>

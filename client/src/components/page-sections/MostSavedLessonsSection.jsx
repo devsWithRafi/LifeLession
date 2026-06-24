@@ -30,15 +30,6 @@ const MostSavedLessonsSection = () => {
             </h4>
             <div className="flex flex-col gap-5 overflow-hidden overflow-y-auto h-full">
               <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
-              <TopContributors />
             </div>
             <Link
               href={'/dashboard/add-lesson'}

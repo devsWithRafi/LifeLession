@@ -31,7 +31,7 @@ import {
 } from '@/lib/dummy-data/lessonCategory';
 import { Button } from '@/components/ui/button';
 import { LuImagePlus } from 'react-icons/lu';
-import { useState, useCallback, useTransition } from 'react';
+import { useState, useCallback, useTransition, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -42,17 +42,21 @@ import { IoFlashOutline } from 'react-icons/io5';
 import { Crown } from 'lucide-react';
 import { LessonFormSchema } from './lessonFormSchema';
 import { Separator } from '@/components/ui/separator';
-import { AddNewLessonAction } from '@/actions/AddNewLesson.action';
 import { toast } from 'sonner';
 import { Spinner } from '@/components/ui/spinner';
+import { useParams } from 'next/navigation';
+import { fetchOneLesson } from '@/actions/apis/fetchOneLesson';
 import { Switch } from '@/components/ui/switch';
+import { UpdateLessonAction } from '@/actions/UpdateLesson.action';
 import { uploadImage } from '@/actions/helpers/uploadImage';
 
-const AddLessonForm = () => {
+const EditLessonForm = () => {
   const [imageFile, setImageFile] = useState(null);
-  const { data } = authClient.useSession();
   const [formPending, startFormPending] = useTransition();
+  const [lessonLoading, startLessonLoading] = useTransition();
+  const { data } = authClient.useSession();
   const user = data?.user;
+  const { editLessonId } = useParams();
   const isPremium = user?.plan === 'premium' || user?.role === 'admin';
 
   const form = useForm({
@@ -63,10 +67,26 @@ const AddLessonForm = () => {
       image: undefined,
       category: '',
       emotionalTone: '',
-      accessLevel: '',
       isPublic: true,
+      accessLevel: '',
     },
   });
+
+  const fetchSelectedLesson = () => {
+    startLessonLoading(async () => {
+      const token = await getToken();
+      const res = await fetchOneLesson(editLessonId, token);
+      if (res.success) {
+        form.setValues(res.data);
+      } else {
+        toast.error(res.message || 'Lesson data fetch failed');
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchSelectedLesson();
+  }, [editLessonId]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: useCallback(
@@ -86,7 +106,6 @@ const AddLessonForm = () => {
 
   const handleReset = () => {
     form.reset();
-    setImageFile(null);
   };
 
   const onSubmit = (values) => {
@@ -100,12 +119,16 @@ const AddLessonForm = () => {
           updatedValues.image = imageUrl;
         }
       }
-      const result = await AddNewLessonAction(updatedValues, token);
+      const result = await UpdateLessonAction(
+        editLessonId,
+        updatedValues,
+        token,
+      );
       if (result.success) {
-        toast.success(result.message ?? 'Lesson added successfully');
+        toast.success(result.message ?? 'Lesson updated successfully');
         handleReset();
       } else {
-        toast.error(result.message ?? 'Error: Upload failed');
+        toast.error(result.message ?? 'Error: Update failed');
       }
     });
   };
@@ -114,7 +137,8 @@ const AddLessonForm = () => {
     <Card
       className={cn(
         'max-w-200 mx-auto p-3 py-10 rounded-md',
-        formPending && 'pointer-events-none opacity-40 select-none',
+        (formPending || lessonLoading) &&
+          'pointer-events-none opacity-40 select-none',
       )}
     >
       <CardContent>
@@ -146,7 +170,6 @@ const AddLessonForm = () => {
                 </Field>
               )}
             />
-
             {/* DESCRIPTION */}
             <Controller
               name="description"
@@ -264,8 +287,8 @@ const AddLessonForm = () => {
                     {field.value ? (
                       <Image
                         fill
-                        alt="preview"
                         src={field.value}
+                        alt="preview"
                         className="w-full h-full object-cover pointer-events-none select-none"
                       />
                     ) : (
@@ -372,7 +395,7 @@ const AddLessonForm = () => {
                   <Spinner /> Proccessing
                 </>
               ) : (
-                'Publish Wisdom'
+                'Update Lesson'
               )}
             </Button>
             <Button
@@ -390,4 +413,4 @@ const AddLessonForm = () => {
   );
 };
 
-export default AddLessonForm;
+export default EditLessonForm;

@@ -10,7 +10,7 @@ const MostSavedLesson = async () => {
     return <div>Failed to fetch most saved lesson</div>;
   }
 
-  const data = Array.isArray(res.data) && res.data;
+  const data = Array.isArray(res.data) ? res.data : [];
 
   return (
     <>

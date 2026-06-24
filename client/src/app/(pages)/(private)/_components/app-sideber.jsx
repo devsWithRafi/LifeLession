@@ -19,7 +19,7 @@ import { IoMdBook } from 'react-icons/io';
 import { FaRegHeart } from 'react-icons/fa';
 import { RiUserLine } from 'react-icons/ri';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { authClient } from '@/lib/auth-client';
@@ -34,14 +34,20 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import { PlusCircle, Users, BookOpen, BookMarked, Flag } from 'lucide-react';
+import {
+  BookOpen,
+  BookMarked,
+  Flag,
+  Pencil,
+  ClipboardClock,
+} from 'lucide-react';
 import { toast } from 'sonner';
 
 const dashboardLinks = [
   { path: '/dashboard', name: 'Overview', icon: LuLayoutDashboard },
   { path: '/dashboard/add-lesson', name: 'Add Lesson', icon: LuCirclePlus },
-  { path: '/dashboard/my-lessons', name: 'My Lessons', icon: IoMdBook },
-  { path: '/dashboard/update-lesson', name: 'Update Lesson', icon: IoMdBook },
+  { path: '/dashboard/my-lessons', name: 'My Lessons', icon: BookOpen },
+  { path: '/dashboard/update-lesson', name: 'Update Lesson', icon: Pencil },
   { path: '/dashboard/my-favorites', name: 'My Favorites', icon: FaRegHeart },
   { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
 ];
@@ -52,14 +58,17 @@ const adminDashboardLinks = [
     name: 'Featured',
     icon: MdOutlineFeaturedPlayList,
   },
-  { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
   { path: '/dashboard/manage-users', name: 'Manage Users', icon: FaUserGear },
   {
     path: '/dashboard/manage-lessons',
     name: 'Manage Lessons',
     icon: BookMarked,
   },
-  { path: '/dashboard/todays-lessons', name: 'Todays Lessons', icon: BookOpen },
+  {
+    path: '/dashboard/todays-lessons',
+    name: 'Todays Lessons',
+    icon: ClipboardClock,
+  },
   { path: '/dashboard/reported-lessons', name: 'Reported', icon: Flag },
 ];
 
@@ -67,6 +76,7 @@ const AppSidebar = () => {
   const pathname = usePathname();
   const { state } = useSidebar(); // "expanded" | "collapsed"
   const collapsed = state === 'collapsed';
+  const router = useRouter();
 
   const { data } = authClient.useSession();
   const user = data?.user;
@@ -78,6 +88,7 @@ const AppSidebar = () => {
       fetchOptions: {
         onSuccess: () => {
           toast.success('Signed out successfully');
+          router.push('/sign-in');
         },
         onError: (ctx) => {
           toast.error(ctx.error.message ?? 'An error occurred!');
@@ -112,43 +123,45 @@ const AppSidebar = () => {
         <SidebarContent className="mt-6 px-2">
           <SidebarGroup className="p-0">
             <SidebarGroupContent>
-              {!isAdmin ? (
-                <SidebarMenu className="gap-1">
-                  {dashboardLinks.map((item) => {
-                    const active = pathname === item.path;
+              <SidebarMenu className="gap-1">
+                {dashboardLinks.map((item) => {
+                  const active = pathname === item.path;
 
-                    return (
-                      <SidebarMenuItem key={item.path}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            {/* SidebarMenuButton handles icon-only vs icon+text automatically */}
-                            <SidebarMenuButton
-                              asChild
-                              isActive={active}
-                              className={cn(
-                                'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
-                                'text-muted-foreground hover:bg-muted hover:text-primary',
-                                active && 'bg-muted text-primary',
-                              )}
-                            >
-                              <Link href={item.path}>
-                                <item.icon size={17} className="shrink-0" />
-                                <span>{item.name}</span>
-                              </Link>
-                            </SidebarMenuButton>
-                          </TooltipTrigger>
-                          {/* Tooltip only visible when collapsed */}
-                          {collapsed && (
-                            <TooltipContent side="right">
-                              {item.name}
-                            </TooltipContent>
-                          )}
-                        </Tooltip>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              ) : (
+                  return (
+                    <SidebarMenuItem key={item.path}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          {/* SidebarMenuButton handles icon-only vs icon+text automatically */}
+                          <SidebarMenuButton
+                            asChild
+                            isActive={active}
+                            className={cn(
+                              'gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors',
+                              'text-muted-foreground hover:bg-muted hover:text-primary',
+                              active && 'bg-muted text-primary',
+                            )}
+                          >
+                            <Link href={item.path}>
+                              <item.icon size={17} className="shrink-0" />
+                              <span>{item.name}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </TooltipTrigger>
+                        {/* Tooltip only visible when collapsed */}
+                        {collapsed && (
+                          <TooltipContent side="right">
+                            {item.name}
+                          </TooltipContent>
+                        )}
+                      </Tooltip>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+
+              {isAdmin && <Separator className="my-5" />}
+
+              {isAdmin && (
                 <SidebarMenu className="gap-1">
                   {adminDashboardLinks.map((item) => {
                     const active = pathname === item.path;
