@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,101 +14,15 @@ import UserProfileUpdateModal from '../UserProfileUpdateModal';
 import { authClient } from '@/lib/auth-client';
 import { fallBackNameFormat } from '@/lib/falbackNameFormat';
 import SubscriptionBadge from '@/components/SubscriptionBadge';
-
-// ─── Mock data ────────────────────────────────────────────────────────────────
-
-const user = {
-  _id: '6a34e8e0f6eb18b5a5af6258',
-  name: 'Mr Rafi',
-  email: 'mrrafixyz@gmail.com',
-  emailVerified: true,
-  image:
-    'https://lh3.googleusercontent.com/a/ACg8ocIsj_LWlWpnGMxa_SpQlaHDjoWV6UMEC7k_NMagBCMCBdJ295UX=s96-c',
-  plan: 'premium',
-  savedLessons: 12,
-};
-
-const myLessons = [
-  {
-    _id: '1',
-    title: 'Kindness is an underestimated strength.',
-    description:
-      'The ability to care deeply often changes lives more than talent does.',
-    category: 'Relationships',
-    emotionalTone: 'Realization',
-    accessLevel: 'premium',
-    views: 684,
-    likes: [],
-    comments: [],
-    createdAt: '2026-06-19T18:45:54.118Z',
-    author: {
-      _id: '6a34e8e0f6eb18b5a5af6258',
-      name: 'Mr Rafi',
-      email: 'mrrafixyz@gmail.com',
-      emailVerified: true,
-      image:
-        'https://lh3.googleusercontent.com/a/ACg8ocIsj_LWlWpnGMxa_SpQlaHDjoWV6UMEC7k_NMagBCMCBdJ295UX=s96-c',
-      plan: 'premium',
-      savedLessons: 12,
-    },
-  },
-  {
-    _id: '2',
-    title: 'Silence is often the loudest answer.',
-    description: "What people don't say reveals more than what they do.",
-    category: 'Psychology',
-    emotionalTone: 'Reflection',
-    accessLevel: 'free',
-    views: 222,
-    likes: [],
-    comments: [],
-    createdAt: '2026-06-16T10:22:00.000Z',
-    author: {
-      _id: '6a34e8e0f6eb18b5a5af6258',
-      name: 'Mr Rafi',
-      email: 'mrrafixyz@gmail.com',
-      emailVerified: true,
-      image:
-        'https://lh3.googleusercontent.com/a/ACg8ocIsj_LWlWpnGMxa_SpQlaHDjoWV6UMEC7k_NMagBCMCBdJ295UX=s96-c',
-      plan: 'premium',
-      savedLessons: 12,
-    },
-  },
-  {
-    _id: '3',
-    title: 'Growth feels uncomfortable by design.',
-    description:
-      'Every stretch beyond comfort is the body learning to hold more.',
-    category: 'Mindset',
-    emotionalTone: 'Motivation',
-    accessLevel: 'free',
-    views: 319,
-    likes: [],
-    comments: [],
-    createdAt: '2026-06-12T08:00:00.000Z',
-    author: {
-      _id: '6a34e8e0f6eb18b5a5af6258',
-      name: 'Mr Rafi',
-      email: 'mrrafixyz@gmail.com',
-      emailVerified: true,
-      image:
-        'https://lh3.googleusercontent.com/a/ACg8ocIsj_LWlWpnGMxa_SpQlaHDjoWV6UMEC7k_NMagBCMCBdJ295UX=s96-c',
-      plan: 'premium',
-      savedLessons: 12,
-    },
-  },
-];
-
-// Sorted newest first (already sorted in mock, but in real use: .sort)
-const sortedLessons = [...myLessons].sort(
-  (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-);
+import { useMyLessons } from '@/context/my-lessons-context/MyLessonContextProvider';
 
 export default function UserProfile() {
   const { data } = authClient.useSession();
   const user = data?.user;
   const isPremium = user?.plan === 'premium';
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { loading, myLessons } = useMyLessons();
 
   return (
     <TooltipProvider>
@@ -207,12 +121,12 @@ export default function UserProfile() {
                   Public lessons
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Sorted by newest first · {sortedLessons.length} total
+                  Sorted by newest first · {myLessons.length} total
                 </p>
               </div>
             </div>
 
-            {sortedLessons.length === 0 ? (
+            {myLessons.length === 0 ? (
               <Card className="rounded-2xl">
                 <CardContent className="flex flex-col items-center justify-center py-16 gap-3 text-center">
                   <BookOpen className="w-10 h-10 text-muted-foreground/40" />
@@ -229,7 +143,7 @@ export default function UserProfile() {
               </Card>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {sortedLessons.map((lesson) => (
+                {myLessons.map((lesson) => (
                   <LessonCard key={lesson._id} lesson={lesson} />
                 ))}
               </div>
