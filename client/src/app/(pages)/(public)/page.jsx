@@ -1,3 +1,4 @@
+import ExploreSection from '@/components/page-sections/ExploreSection';
 import FeaturedSection from '@/components/page-sections/FeaturedSection';
 import HeroSection from '@/components/page-sections/HeroSection';
 import MostSavedLessonsSection from '@/components/page-sections/MostSavedLessonsSection';
@@ -13,6 +14,7 @@ const HomePage = () => {
         <FeaturedSection />
         <WhyLearningSection />
         <MostSavedLessonsSection />
+        <ExploreSection />
         <section className="w-full h-screen"></section>
       </section>
     </>
