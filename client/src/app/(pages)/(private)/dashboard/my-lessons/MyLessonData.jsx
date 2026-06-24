@@ -50,21 +50,26 @@ import {
 import DeleteModal from './DeleteModal';
 import { useMyLessons } from '@/context/my-lessons-context/MyLessonContextProvider';
 import Image from 'next/image';
-import { useSession } from '@/lib/auth-client';
+import { getToken, useSession } from '@/lib/auth-client';
 import Link from 'next/link';
 import { Spinner } from '@/components/ui/spinner';
 import { CardBadgeColors } from '@/components/card/CardBadgeColors';
 import { formatDate } from '@/lib/formatDate';
 import StatPill from './StatPill';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
+import { UpdateLessonAction } from '@/actions/UpdateLesson.action';
 
 export default function MyLessonsPage() {
   const { data } = useSession();
   const user = data?.user;
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [editLesson, setEditLesson] = useState(null);
   const [deleteLesson, setDeleteLesson] = useState(null);
   const { myLessons, fetchMyLessons, loading } = useMyLessons();
   const isPremium = user?.plan === 'premium' || user?.role === 'admin';
+
+  const initialEdit = { type: '', loading: false, lessonId: null };
+  const [editLoading, startEditLoading] = useState(initialEdit);
 
   // Summary stats
   const totalViews = myLessons.reduce((s, l) => s + l.views, 0);
@@ -78,22 +83,57 @@ export default function MyLessonsPage() {
     { label: 'Saves', value: totalSaves, icon: Bookmark },
   ];
 
+  const handleEditLesson = async (lesson, type) => {
+    const updatedValue = { ...lesson };
+    if (type === 'access') {
+      if (!isPremium) {
+        toast.error('You need to be a premium user to change this access type');
+        return;
+      } else {
+        updatedValue.accessLevel =
+          lesson.accessLevel === 'free' ? 'premium' : 'free';
+      }
+    }
+    if (type === 'visibility') {
+      updatedValue.isPublic = lesson.isPublic === true ? false : true;
+    }
+    try {
+      startEditLoading({ type, loading: true, lessonId: lesson._id });
+      const token = await getToken();
+      const result = await UpdateLessonAction(lesson._id, updatedValue, token);
+      if (result.success) {
+        toast.success(result.message ?? 'Lesson updated successfully');
+        fetchMyLessons(token);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      return;
+    } finally {
+      startEditLoading(initialEdit);
+    }
+  };
+
+  const handleDelete = (lesson) => {
+    setDeleteModalOpen(true);
+    setDeleteLesson(lesson);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto sm:px-6 space-y-8">
         {/* ── Summary Cards ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {summary.map(({ label, value, icon: Icon }) => (
             <Card key={label} className="py-0">
-              <CardContent className="py-8 px-8 flex items-center gap-3">
-                <div className="flex p-4 aspect-square shrink-0 items-center justify-center rounded-lg bg-muted">
+              <CardContent className="sm:p-8 p-3 flex items-center gap-3">
+                <div className="flex sm:p-4 p-3 aspect-square shrink-0 items-center justify-center rounded-lg bg-muted">
                   <Icon className="size-5 text-muted-foreground" />
                 </div>
                 <div>
-                  <p className="text-xl font-bold tabular-nums leading-none">
+                  <p className="sm:text-xl text-sm font-bold tabular-nums leading-none">
                     {value}
                   </p>
-                  <p className="text-sm text-muted-foreground mt-0.5">
+                  <p className="sm:text-sm text-xs text-muted-foreground mt-0.5">
                     {label}
                   </p>
                 </div>
@@ -103,9 +143,13 @@ export default function MyLessonsPage() {
         </div>
 
         {/* ── Table ── */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">All lessons</CardTitle>
+        <Card
+          className={cn(
+            editLoading.loading && 'opacity-30 pointer-events-none select-none',
+          )}
+        >
+          <CardHeader className="sm:pb-3">
+            <CardTitle className="sm:text-base text-sm">All lessons</CardTitle>
             <CardDescription>
               Manage visibility, access, and content for each lesson.
             </CardDescription>
@@ -115,7 +159,9 @@ export default function MyLessonsPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="hover:bg-transparent">
-                    <TableHead className="pl-6 w-[300px]">Lesson</TableHead>
+                    <TableHead className="sm:pl-6 pl-4 w-[250px]">
+                      Lesson
+                    </TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead>Visibility</TableHead>
                     <TableHead>Access</TableHead>
@@ -151,7 +197,7 @@ export default function MyLessonsPage() {
                     myLessons.map((lesson) => (
                       <TableRow key={lesson._id} className="group">
                         {/* Title + description */}
-                        <TableCell className="pl-6 py-4">
+                        <TableCell className="sm:pl-6 pl-4 py-4">
                           <div className="flex items-center gap-3 relative">
                             {lesson.image ? (
                               <div className="w-10 max-w-10 h-10 aspect-square rounded-md overflow-hidden border relative">
@@ -186,7 +232,7 @@ export default function MyLessonsPage() {
                         <TableCell>
                           <div className="flex flex-col gap-1.5">
                             <span
-                              className={`inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-medium 
+                              className={`inline-flex w-fit items-center rounded-full px-3 py-1 sm:text-xs text-[10px] font-medium 
                              ${
                                CardBadgeColors.category[
                                  lesson.category
@@ -206,6 +252,9 @@ export default function MyLessonsPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <button
+                                  onClick={() =>
+                                    handleEditLesson(lesson, 'visibility')
+                                  }
                                   className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer border
                                   ${
                                     lesson.isPublic
@@ -222,6 +271,11 @@ export default function MyLessonsPage() {
                                       <EyeOff className="h-3 w-3" /> Private
                                     </>
                                   )}
+                                  {editLoading.lessonId === lesson._id &&
+                                    editLoading.type === 'visibility' &&
+                                    editLoading.loading && (
+                                      <Spinner className="h-3 w-3" />
+                                    )}
                                 </button>
                               </TooltipTrigger>
                               <TooltipContent side="top" className="text-xs">
@@ -238,7 +292,9 @@ export default function MyLessonsPage() {
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <button
-                                  onClick={() => toggleAccess(lesson._id)}
+                                  onClick={() =>
+                                    handleEditLesson(lesson, 'access')
+                                  }
                                   disabled={!isPremium}
                                   className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-colors border
                                   ${
@@ -257,6 +313,11 @@ export default function MyLessonsPage() {
                                       <Globe className="h-3 w-3" /> Free
                                     </>
                                   )}
+                                  {editLoading.lessonId === lesson._id &&
+                                    editLoading.type === 'access' &&
+                                    editLoading.loading && (
+                                      <Spinner className="h-3 w-3" />
+                                    )}
                                 </button>
                               </TooltipTrigger>
                               <TooltipContent side="top" className="text-xs">
@@ -313,20 +374,21 @@ export default function MyLessonsPage() {
                             <DropdownMenuContent align="end" className="w-44">
                               <Link href={`/public-lessons/${lesson._id}`}>
                                 <DropdownMenuItem>
-                                  <Info className="h-4 w-4 mr-2" /> View details
+                                  <Info className="h-4 w-4 mr-2" /> 
+                                  View details
                                 </DropdownMenuItem>
                               </Link>
-                              <Link href={`/dashboard/my-lessons/edit/${lesson._id}`}>
-                                <DropdownMenuItem
-                                  onClick={() => setEditLesson(lesson)}
-                                >
-                                  <Pencil className="h-4 w-4 mr-2" /> Edit
-                                  lesson
+                              <Link
+                                href={`/dashboard/my-lessons/edit/${lesson._id}`}
+                              >
+                                <DropdownMenuItem>
+                                  <Pencil className="h-4 w-4 mr-2" />
+                                  Edit lesson
                                 </DropdownMenuItem>
                               </Link>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
-                                onClick={() => setDeleteLesson(lesson)}
+                                onClick={() => handleDelete(lesson)}
                                 className="text-destructive focus:text-destructive"
                               >
                                 <Trash2 className="h-4 w-4 mr-2" /> Delete
@@ -342,14 +404,7 @@ export default function MyLessonsPage() {
           </CardContent>
         </Card>
 
-        {/* ── Dialogs ── */}
-        {/* <LessonDetailDialog
-          lesson={detailLesson}
-          open={!!detailLesson}
-          onClose={() => setDetailLesson(null)}
-        />
-       */}
-
+        {/* Delete modal */}
         <DeleteModal
           lesson={deleteLesson}
           open={deleteModalOpen}

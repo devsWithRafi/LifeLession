@@ -10,7 +10,7 @@ export const serverMutation = async (path, method, data, token) => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      ...(method !== 'GET' ? { body: JSON.stringify(data) } : {}),
+      ...(method !== 'GET' && method !== 'DELETE' ? { body: JSON.stringify(data) } : {}),
     });
 
     const result = await res.json();

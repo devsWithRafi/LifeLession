@@ -77,7 +77,7 @@ const EditLessonForm = () => {
       const token = await getToken();
       const res = await fetchOneLesson(editLessonId, token);
       if (res.success) {
-        form.setValues(res.data);
+        form.setValues({ ...res.data, image: res.data.image ?? undefined });
       } else {
         toast.error(res.message || 'Lesson data fetch failed');
       }
