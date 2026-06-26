@@ -3,22 +3,34 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { formatDate } from '@/lib/formatDate';
+import { Clock8, GlobeCheck } from 'lucide-react';
 import React from 'react';
 import { MdOutlineDateRange, MdOutlineRemoveRedEye } from 'react-icons/md';
 
 const Headers = ({ lesson }) => {
   return (
     <>
-      <h1 className="sm:text-3xl text-xl leading-tight font-semibold font-boldonse">{lesson.title}</h1>
-      <div className="flex items-center gap-5">
+      <h1 className="sm:text-3xl text-xl leading-tight font-semibold font-boldonse">
+        {lesson.title}
+      </h1>
+      <div className="flex flex-wrap items-center sm:gap-5 gap-2">
         <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
-          <MdOutlineDateRange size={17} />
+          <MdOutlineDateRange className="sm:size-4 size-3" />
           {formatDate(lesson.createdAt)}
         </span>
         <Separator orientation="vertical" />
         <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
-          <MdOutlineRemoveRedEye size={17} />
+          <MdOutlineRemoveRedEye className="sm:size-4 size-3" />
           {lesson.views} Views
+        </span>
+        <Separator orientation="vertical" />
+        <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
+          <Clock8 className="sm:size-4 size-3" />5 min read
+        </span>
+        <Separator orientation="vertical" />
+        <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
+          <GlobeCheck className="sm:size-4 size-3" />
+          {lesson.isPublic ? 'Public' : 'Private'}
         </span>
       </div>
 
@@ -33,8 +45,10 @@ const Headers = ({ lesson }) => {
           <div className="flex flex-col text-left">
             <h4 className="font-medium flex items-center gap-2">
               {lesson.author?.name}
-              {lesson.author?.plan !== 'free' && (
-                <SubscriptionBadge>Pro</SubscriptionBadge>
+              {lesson.author?.plan === 'premium' && (
+                <SubscriptionBadge className="text-[11px] rounded px-3 h-5">
+                  Pro
+                </SubscriptionBadge>
               )}
             </h4>
             <p className="text-muted-foreground text-sm">

@@ -41,7 +41,7 @@ export default function UserProfile() {
                   <Avatar className="w-20 h-20 ring-4 ring-background shadow-md text-lg">
                     <AvatarImage src={user?.image} alt="profile" />
                     <AvatarFallback className="text-lg font-semibold">
-                      {fallBackNameFormat(user?.email)}
+                      {fallBackNameFormat(user?.name)}
                     </AvatarFallback>
                   </Avatar>
                 </div>

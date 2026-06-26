@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, MessagesSquare } from 'lucide-react';
 import LinkArrowButton from '../LinkArrowButton';
 import { assets } from '@/assets/assets';
 
@@ -53,7 +53,7 @@ const ExploreSection = () => {
             </div>
             <div className="w-full h-full bg-black/30 p-5 flex flex-col items-start gap-4 absolute left-0 right-0 top-0 bottom-0">
               <span className="bg-white/40 backdrop-blur-[1px] rounded-2xl p-5">
-                <BookOpen className="text-white/80" />
+                <MessagesSquare className="text-white/80" />
               </span>
               <span className="flex flex-col items-start justify-end gap-4 h-full">
                 <h3 className="font-medium text-md max-w-[80%] font-boldonse text-white">
@@ -61,7 +61,7 @@ const ExploreSection = () => {
                 </h3>
                 <p className="text-white/70 drop-shadow-sm text-sm">
                   Contribute your life lessons and make positive impact on
-                  someone's journey.
+                  someone&apos;s journey.
                 </p>
                 <Link href="/dashboard/add-lesson">
                   <LinkArrowButton text="Share Now" />

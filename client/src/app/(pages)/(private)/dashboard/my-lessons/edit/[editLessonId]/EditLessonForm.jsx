@@ -39,7 +39,7 @@ import { FaCircleDot } from 'react-icons/fa6';
 import { authClient, getToken } from '@/lib/auth-client';
 import { RiLock2Line } from 'react-icons/ri';
 import { IoFlashOutline } from 'react-icons/io5';
-import { Crown } from 'lucide-react';
+import { Crown, X } from 'lucide-react';
 import { LessonFormSchema } from './lessonFormSchema';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
@@ -103,6 +103,12 @@ const EditLessonForm = () => {
       'image/*': [],
     },
   });
+
+  const handleCancelImage = (e) => {
+    e.stopPropagation();
+    setImageFile(null);
+    form.setValue('image', undefined);
+  };
 
   const handleReset = () => {
     form.reset();
@@ -285,12 +291,22 @@ const EditLessonForm = () => {
                   >
                     <input {...getInputProps()} />
                     {field.value ? (
-                      <Image
-                        fill
-                        src={field.value}
-                        alt="preview"
-                        className="w-full h-full object-cover pointer-events-none select-none"
-                      />
+                      <div className="w-full h-full relative">
+                        <Image
+                          fill
+                          src={field.value}
+                          alt="preview"
+                          className="w-full h-full object-cover pointer-events-none select-none"
+                        />
+                        <Button
+                          type="button"
+                          variant={'destructive'}
+                          onClick={handleCancelImage}
+                          className="absolute top-2 right-2 w-8 h-8 rounded-full z-1"
+                        >
+                          <X />
+                        </Button>
+                      </div>
                     ) : (
                       <>
                         <LuImagePlus className="size-12 text-muted-foreground" />

@@ -5,8 +5,9 @@
     "description": "A profound look at why sustainable growth often feels frustratingly slow, yet leads to permanent transformation.",
     "category": "personal development",
     "emotionalTone": "motivational",
-    "accessType": "premium",
+    "accessLevel": "premium",
     "isFeatured": false,
+    "isPublic": true,
     "image": "",
     "author": {
       "_id": "a-1",
@@ -21,6 +22,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-01T00:00:00.000Z",
     "updatedAt": "2023-01-01T00:00:00.000Z"
   },
@@ -30,8 +34,9 @@
     "description": "Discover how tiny, consistent actions quietly compound into remarkable achievements over time.",
     "category": "personal development",
     "emotionalTone": "inspirational",
-    "accessType": "free",
+    "accessLevel": "free",
     "isFeatured": true,
+    "isPublic": true,
     "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
     "author": {
       "_id": "a-2",
@@ -46,6 +51,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-02T00:00:00.000Z",
     "updatedAt": "2023-01-02T00:00:00.000Z"
   },
@@ -55,8 +63,9 @@
     "description": "Growth begins where certainty ends and courage chooses to move forward.",
     "category": "personal development",
     "emotionalTone": "motivational",
-    "accessType": "free",
+    "accessLevel": "free",
     "isFeatured": true,
+    "isPublic": true,
     "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
     "author": {
       "_id": "a-3",
@@ -71,6 +80,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-03T00:00:00.000Z",
     "updatedAt": "2023-01-03T00:00:00.000Z"
   },
@@ -80,8 +92,10 @@
     "description": "Burnout isn't a badge of honor. Recovery fuels meaningful progress.",
     "category": "mental health",
     "emotionalTone": "calm",
-    "accessType": "premium",
+    "accessLevel": "premium",
     "isFeatured": true,
+    "isPublic": true,
+
     "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9",
     "author": {
       "_id": "a-4",
@@ -96,6 +110,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-04T00:00:00.000Z",
     "updatedAt": "2023-01-04T00:00:00.000Z"
   },
@@ -105,8 +122,10 @@
     "description": "Curiosity creates opportunities that certainty often overlooks.",
     "category": "self-awareness",
     "emotionalTone": "thoughtful",
-    "accessType": "premium",
+    "accessLevel": "premium",
     "isFeatured": true,
+    "isPublic": true,
+
     "image": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
     "author": {
       "_id": "a-5",
@@ -121,6 +140,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-05T00:00:00.000Z",
     "updatedAt": "2023-01-05T00:00:00.000Z"
   },
@@ -130,8 +152,10 @@
     "description": "Success often feels messy because meaningful growth includes setbacks.",
     "category": "personal development",
     "emotionalTone": "encouraging",
-    "accessType": "free",
+    "accessLevel": "free",
+    "isPublic": true,
     "isFeatured": false,
+
     "image": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df",
     "author": {
       "_id": "a-6",
@@ -146,6 +170,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-06T00:00:00.000Z",
     "updatedAt": "2023-01-06T00:00:00.000Z"
   },
@@ -155,8 +182,10 @@
     "description": "The ability to care deeply often changes lives more than talent does.",
     "category": "relationships",
     "emotionalTone": "heartwarming",
-    "accessType": "free",
+    "accessLevel": "free",
+    "isPublic": true,
     "isFeatured": false,
+
     "image": "https://images.unsplash.com/photo-1499952127939-9bbf5af6c51c",
     "author": {
       "_id": "a-7",
@@ -171,6 +200,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-07T00:00:00.000Z",
     "updatedAt": "2023-01-07T00:00:00.000Z"
   },
@@ -180,8 +212,10 @@
     "description": "Loss often creates the opportunity for reinvention and renewal.",
     "category": "life lessons",
     "emotionalTone": "hopeful",
-    "accessType": "free",
+    "accessLevel": "free",
+    "isPublic": true,
     "isFeatured": false,
+
     "image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f",
     "author": {
       "_id": "a-8",
@@ -196,6 +230,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-08T00:00:00.000Z",
     "updatedAt": "2023-01-08T00:00:00.000Z"
   },
@@ -205,8 +242,10 @@
     "description": "Keeping promises to yourself creates unshakable self-trust.",
     "category": "self-confidence",
     "emotionalTone": "motivational",
-    "accessType": "free",
+    "accessLevel": "free",
+    "isPublic": true,
     "isFeatured": false,
+
     "image": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1",
     "author": {
       "_id": "a-9",
@@ -221,6 +260,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-09T00:00:00.000Z",
     "updatedAt": "2023-01-09T00:00:00.000Z"
   },
@@ -230,8 +272,10 @@
     "description": "Waiting for perfect timing often delays the very growth you seek.",
     "category": "career",
     "emotionalTone": "empowering",
-    "accessType": "free",
+    "accessLevel": "free",
+    "isPublic": true,
     "isFeatured": false,
+
     "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
     "author": {
       "_id": "a-10",
@@ -246,6 +290,9 @@
     "saved": [],
     "comments": [],
     "likes": [],
+    "likeCount": 100,
+    "commentCount": 100,
+    "savedCount": 10,
     "createdAt": "2023-01-10T00:00:00.000Z",
     "updatedAt": "2023-01-10T00:00:00.000Z"
   }

@@ -12,11 +12,11 @@ import {
   Shield,
   Zap,
 } from 'lucide-react';
-import AdminTooltip from './AdminTooltip';
 import { authClient } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
 import UserProfileUpdateModal from '../UserProfileUpdateModal';
 import { useState } from 'react';
+import { fallBackNameFormat } from '@/lib/falbackNameFormat';
 
 const formateDate = (date) =>
   new Date(date).toLocaleDateString('en-US', {
@@ -46,16 +46,22 @@ const ProfileHeader = () => {
               <Avatar className="size-30">
                 <AvatarImage src={user?.image} alt="profile" />
                 <AvatarFallback>
-                  {user?.email?.charAt(0).toUpperCase()}
+                  {fallBackNameFormat(user?.name)}
                 </AvatarFallback>
               </Avatar>
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              <Badge variant="outline" className="bg-orange-300/10 dark:border-orange-200/30 border-orange-300 dark:text-orange-200 text-orange-400 capitalize">
+              <Badge
+                variant="outline"
+                className="bg-orange-300/10 dark:border-orange-200/30 border-orange-300 dark:text-orange-200 text-orange-400 capitalize"
+              >
                 <Shield className="w-3 h-3" /> {user?.role}
               </Badge>
-              <Badge variant="outline" className="bg-green-300/10 dark:border-green-200/30 border-green-300 dark:text-green-200 text-green-500 capitalize">
+              <Badge
+                variant="outline"
+                className="bg-green-300/10 dark:border-green-200/30 border-green-300 dark:text-green-200 text-green-500 capitalize"
+              >
                 <Zap className="w-3 h-3" /> Active
               </Badge>
               <Badge variant="outline" className="capitalize">

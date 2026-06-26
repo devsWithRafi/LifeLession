@@ -91,7 +91,7 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
                 <Avatar className="w-20 h-20 text-lg shadow">
                   <AvatarImage src={avatarPreview} alt="profile" />
                   <AvatarFallback className="text-lg font-semibold">
-                    {fallBackNameFormat('dd dd')}s
+                    {fallBackNameFormat(user?.name)}
                   </AvatarFallback>
                 </Avatar>
                 <button

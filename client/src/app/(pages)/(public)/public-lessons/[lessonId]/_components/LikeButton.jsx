@@ -23,7 +23,7 @@ const LikeButton = ({ className }) => {
         <Spinner />
       ) : (
         <>
-          <FiHeart /> <span className="hidden sm:inline">{likes}</span>
+          <FiHeart /> <span>{likes}</span>
         </>
       )}
     </Button>

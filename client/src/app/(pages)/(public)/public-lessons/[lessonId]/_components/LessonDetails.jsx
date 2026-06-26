@@ -17,8 +17,6 @@ const LessonDetails = () => {
   const { fetching, lesson } = useSingleLesson();
   const { comments, fetchComment } = useLessonComment();
 
-  console.log(lesson);
-
   return fetching ? (
     <div>Fetching...</div>
   ) : !lesson ? (

@@ -13,8 +13,8 @@ const HomePage = () => {
         <HeroSection />
         <FeaturedSection />
         <WhyLearningSection />
+        <ExploreSection /> 
         <MostSavedLessonsSection />
-        <ExploreSection />
         {/* <section className="w-full h-screen"></section> */}
       </section>
     </>

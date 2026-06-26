@@ -6,10 +6,5 @@ export default async function AdminPage() {
   const user = await getUserSession();
   const isAdmin = user?.role === 'admin';
 
-  return (
-    <>
-      <AdminProfile />
-      {/* <UserProfile /> */}
-    </>
-  );
+  return <>{isAdmin ? <AdminProfile /> : <UserProfile />}</>;
 }

@@ -8,22 +8,19 @@ import {
   CardTitle,
 } from '../ui/card';
 import { Separator } from '../ui/separator';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
-import { BiComment } from 'react-icons/bi';
-import { RiShareBoxFill } from 'react-icons/ri';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import Link from 'next/link';
 import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { LiquidMetalButton } from '../ui/liquid-metal-button';
-import { Crown, Eye, Heart, MessageCircle, Zap } from 'lucide-react';
+import { BookOpen, Crown, Eye, Heart, MessageCircle, Zap } from 'lucide-react';
 import { RiLock2Line } from 'react-icons/ri';
 import { formatDate } from '@/lib/formatDate';
 import { IoMdTime } from 'react-icons/io';
-import { FiHeart } from 'react-icons/fi';
 import { authClient } from '@/lib/auth-client';
 import { Badge } from '../ui/badge';
 import { fallBackNameFormat } from '@/lib/falbackNameFormat';
+import Image from 'next/image';
 
 const LessonCard = ({ lesson }) => {
   const { data } = authClient.useSession();
@@ -32,13 +29,22 @@ const LessonCard = ({ lesson }) => {
   const isLiked = lesson.likes.some((l) => l.user?._id === user?.id);
 
   return (
-    <Card>
-      <CardHeader className="flex justify-between">
+    <Card className={cn('relative')}>
+      {lesson.accessLevel === 'premium' && !isPremium && (
+        <div className="w-full h-full absolute left-0 backdrop-blur-sm z-1 top-0 flex items-center justify-center cursor-not-allowed">
+          <span className="p-5 rounded-full bg-muted">
+            <RiLock2Line className="size-10 text-muted-foreground" />
+          </span>
+        </div>
+      )}
+      <CardHeader className={cn('flex justify-between relative')}>
         <LiquidMetalButton
           theme={lesson.accessLevel === 'premium' ? 'gold' : 'silver'}
           variant="default"
           size="sm"
-          className={'pointer-events-none select-none rounded-full text-xs'}
+          className={
+            'pointer-events-none select-none rounded-full text-xs absolute top-0 z-1'
+          }
         >
           <div className="flex items-center gap-1">
             {lesson.accessLevel === 'premium' ? (
@@ -49,27 +55,31 @@ const LessonCard = ({ lesson }) => {
             <span>{lesson.accessLevel.toUpperCase()}</span>
           </div>
         </LiquidMetalButton>
+        <div className="w-full h-40 rounded overflow-hidden bg-muted relative flex items-center justify-center">
+          {lesson.image ? (
+            <Image
+              src={lesson.image}
+              alt={lesson.title}
+              fill
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <BookOpen className="size-10 text-muted-foreground" />
+          )}
+        </div>
       </CardHeader>
       <CardContent className="flex-col flex h-full gap-6">
         <div className="h-full relative flex flex-col gap-5">
-          {lesson.accessLevel === 'premium' && !isPremium && (
-            <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center cursor-not-allowed">
-              <span className="p-5 rounded-full bg-muted">
-                <RiLock2Line className="size-10 text-muted-foreground" />
-              </span>
-            </div>
-          )}
-
           <div
             className={cn(
               'justify-between flex-col flex h-full',
-              lesson.accessLevel === 'premium' &&
-                !isPremium &&
-                'blur-md select-none',
+              // lesson.accessLevel === 'premium' &&
+              //   !isPremium &&
+              //   'blur-md select-none',
             )}
           >
             <span>
-              <CardTitle className="text-4xl font-bold font-playfair italic w-full">
+              <CardTitle className="text-3xl font-bold font-playfair italic w-full">
                 {`"${lesson.title}"`}
               </CardTitle>
               <CardDescription className="font-roboto mt-2">
@@ -88,7 +98,7 @@ const LessonCard = ({ lesson }) => {
               </Badge>
             </div>
 
-            <Separator className="my-5"/>
+            <Separator className="my-5" />
 
             {/* user */}
             <div className="flex items-center gap-2 justify-between">
@@ -122,11 +132,11 @@ const LessonCard = ({ lesson }) => {
                   )}
                 >
                   <Heart className="size-3.5" />
-                  {lesson.likes.length}
+                  {lesson.likeCount}
                 </span>
                 <span className="flex gap-1 items-center text-xs justify-center w-full">
                   <MessageCircle className="size-3.5" />
-                  {lesson.comments.length}
+                  {lesson.commentCount}
                 </span>
               </div>
             </div>

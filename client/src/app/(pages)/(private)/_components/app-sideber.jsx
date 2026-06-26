@@ -47,7 +47,6 @@ const dashboardLinks = [
   { path: '/dashboard', name: 'Overview', icon: LuLayoutDashboard },
   { path: '/dashboard/add-lesson', name: 'Add Lesson', icon: LuCirclePlus },
   { path: '/dashboard/my-lessons', name: 'My Lessons', icon: BookOpen },
-  { path: '/dashboard/update-lesson', name: 'Update Lesson', icon: Pencil },
   { path: '/dashboard/my-favorites', name: 'My Favorites', icon: FaRegHeart },
   { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
 ];
