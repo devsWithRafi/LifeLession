@@ -9,6 +9,7 @@ import likeRouter from './routes/likeRoute.js';
 import savedRouter from './routes/savedRoute.js';
 import userRouter from './routes/userRoute.js';
 import adminRouter from './routes/adminRoute.js';
+import reportRoute from './routes/reportRoute.js';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use('/api/lesson', lessonsRouter);
 app.use('/api/comment', commentRouter);
 app.use('/api/like', likeRouter);
 app.use('/api/save', savedRouter);
+app.use('/api/report', reportRoute);  
 app.use('/api/me', userRouter);
 app.use('/api/admin', adminRouter);
 

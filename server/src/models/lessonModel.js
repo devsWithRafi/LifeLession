@@ -43,6 +43,12 @@ const lessonModel = new mongoose.Schema(
         ref: 'Like',
       },
     ],
+    reports: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Report',
+      },
+    ],
   },
   {
     timestamps: true,

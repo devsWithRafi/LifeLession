@@ -20,9 +20,17 @@ export const getFeaturedLessons = async (req, res) => {
       .populate({ path: 'savedBy', populate: { path: 'user', model: 'User' } })
       .sort({ createdAt: -1 });
 
+    const formateLessonData = lessons.map((lesson) => {
+      const obj = lesson.toObject();
+      obj.likeCount = lesson.likes.length;
+      obj.commentCount = lesson.comments.length;
+      obj.savedCount = lesson.savedBy.length;
+      return obj;
+    });
+
     return res.status(200).json({
       success: true,
-      data: lessons,
+      data: formateLessonData,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

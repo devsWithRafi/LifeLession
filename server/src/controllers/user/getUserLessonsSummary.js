@@ -4,27 +4,22 @@ import { Comment } from '../../models/commentModel.js';
 import { User } from '../../models/userModel.js';
 import { SavedBy } from '../../models/savedByModel.js';
 import { Like } from '../../models/likeModel.js';
+import { success } from 'zod';
 
-export const getAllLessons = async (req, res) => {
-  const { limit, page, category, emotionalTone, accessLevel, title } =
-    req.query;
-
-  const options = {};
-
-  if (category) options.category = { $regex: category, $options: 'i' };
-  if (title) options.title = { $regex: title, $options: 'i' };
-  if (emotionalTone)
-    options.emotionalTone = { $regex: emotionalTone, $options: 'i' };
-  if (accessLevel) options.accessLevel = { $regex: accessLevel, $options: 'i' };
-
-  const skip = (Number(page) - 1) * Number(limit);
+export const getUserLessonsSummary = async (req, res) => {
+  const { userId } = req.params;
 
   try {
-    const total = await Lesson.countDocuments(options);
+    const user = await User.findOne({ _id: userId });
 
-    const lessons = await Lesson.find(options)
-      .skip(skip)
-      .limit(Number(limit))
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found!',
+      });
+    }
+
+    const lessons = await Lesson.find({ author: user._id })
       .populate('author')
       .populate({
         path: 'comments',
@@ -48,16 +43,29 @@ export const getAllLessons = async (req, res) => {
       return obj;
     });
 
-    const totalPage = Math.ceil(total / Number(limit));
+    const totalLikes = formateLessonData.reduce(
+      (acc, l) => acc + l.likeCount,
+      0,
+    );
+    const totalComments = formateLessonData.reduce(
+      (acc, l) => acc + l.commentCount,
+      0,
+    );
+    const totalSaved = formateLessonData.reduce(
+      (acc, l) => acc + l.savedCount,
+      0,
+    );
+    const totalViews = formateLessonData.reduce((acc, l) => acc + l.views, 0);
 
     return res.status(200).json({
       success: true,
-      data: formateLessonData,
-      pagination: {
-        page: Number(page),
-        limit: Number(limit),
-        total,
-        totalPage,
+      data: {
+        user,
+        lessons: formateLessonData,
+        totalLikes,
+        totalComments,
+        totalSaved,
+        totalViews,
       },
     });
   } catch (error) {

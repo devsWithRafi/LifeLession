@@ -27,7 +27,7 @@ export const getDashboardData = async (req, res) => {
       userGrowth,
     ] = await Promise.all([
       User.countDocuments(),
-      Lesson.countDocuments({ accessLevel: 'free' }),
+      Lesson.countDocuments({ isPublic: true }),
       Lesson.countDocuments({
         createdAt: {
           $gte: start,

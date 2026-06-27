@@ -4,6 +4,8 @@ import { Like } from '../../models/likeModel.js';
 import { Comment } from '../../models/commentModel.js';
 import { User } from '../../models/userModel.js';
 import { SavedBy } from '../../models/savedByModel.js';
+import { Report } from '../../models/reportModel.js';
+
 export const getSingleLesson = async (req, res) => {
   try {
     const { id } = req.params;
@@ -18,10 +20,16 @@ export const getSingleLesson = async (req, res) => {
         populate: { path: 'user', model: 'User' },
       })
       .populate({ path: 'savedBy', populate: { path: 'user', model: 'User' } })
+      .populate('reports');
+
+    const formateLesson = lesson.toObject();
+    formateLesson.likeCount = lesson.likes.length;
+    formateLesson.commentCount = lesson.comments.length;
+    formateLesson.savedCount = lesson.savedBy.length;
 
     return res.status(200).json({
       success: true,
-      data: lesson,
+      data: formateLesson,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
