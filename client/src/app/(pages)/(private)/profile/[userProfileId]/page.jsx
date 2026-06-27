@@ -1,14 +1,14 @@
 import Navber from '@/components/shared/navber/Navber';
-import ProfileData from './_components/ProfileData';
+import ProfileData from '../_components/ProfileData';
 import Image from 'next/image';
-import Footer from '@/components/shared/footer/Footer';
 import { getRandomCoverImage } from '@/lib/getRandomCover';
+import Footer from '@/components/shared/footer/Footer';
 
 export const metadata = {
   title: 'LifeLesson | Profile',
 };
 
-const PublicProfilePage = () => {
+const UserProfile = () => {
   return (
     <>
       <Navber />
@@ -18,7 +18,7 @@ const PublicProfilePage = () => {
           <div className="relative h-35 w-full overflow-hidden rounded-2xl border">
             <Image
               src={getRandomCoverImage()}
-              alt=""
+              alt="Random cover image"
               fill
               className="w-full h-full object-cover select-none pointer-events-none"
             />
@@ -31,4 +31,4 @@ const PublicProfilePage = () => {
   );
 };
 
-export default PublicProfilePage;
+export default UserProfile;

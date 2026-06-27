@@ -21,6 +21,7 @@ import { authClient } from '@/lib/auth-client';
 import { Badge } from '../ui/badge';
 import { fallBackNameFormat } from '@/lib/falbackNameFormat';
 import Image from 'next/image';
+import { formateNumber } from '@/lib/formateNumber';
 
 const LessonCard = ({ lesson }) => {
   const { data } = authClient.useSession();
@@ -30,20 +31,13 @@ const LessonCard = ({ lesson }) => {
 
   return (
     <Card className={cn('relative')}>
-      {lesson.accessLevel === 'premium' && !isPremium && (
-        <div className="w-full h-full absolute left-0 backdrop-blur-sm z-1 top-0 flex items-center justify-center cursor-not-allowed">
-          <span className="p-5 rounded-full bg-muted">
-            <RiLock2Line className="size-10 text-muted-foreground" />
-          </span>
-        </div>
-      )}
       <CardHeader className={cn('flex justify-between relative')}>
         <LiquidMetalButton
           theme={lesson.accessLevel === 'premium' ? 'gold' : 'silver'}
           variant="default"
           size="sm"
           className={
-            'pointer-events-none select-none rounded-full text-xs absolute top-0 z-1'
+            'pointer-events-none select-none rounded-full text-xs absolute top-0 shadow-sm z-1'
           }
         >
           <div className="flex items-center gap-1">
@@ -55,7 +49,15 @@ const LessonCard = ({ lesson }) => {
             <span>{lesson.accessLevel.toUpperCase()}</span>
           </div>
         </LiquidMetalButton>
-        <div className="w-full h-40 rounded overflow-hidden bg-muted relative flex items-center justify-center">
+
+        <div
+          className={cn(
+            'w-full h-40 rounded overflow-hidden bg-muted relative flex items-center justify-center',
+            lesson.accessLevel === 'premium' &&
+              !isPremium &&
+              'blur-sm select-none pointer-events-none',
+          )}
+        >
           {lesson.image ? (
             <Image
               src={lesson.image}
@@ -67,35 +69,42 @@ const LessonCard = ({ lesson }) => {
             <BookOpen className="size-10 text-muted-foreground" />
           )}
         </div>
+
+        {lesson.accessLevel === 'premium' && !isPremium && (
+          <span className="w-full h-full absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center">
+            <RiLock2Line className="size-8 text-white/80" />
+          </span>
+        )}
       </CardHeader>
       <CardContent className="flex-col flex h-full gap-6">
         <div className="h-full relative flex flex-col gap-5">
-          <div
-            className={cn(
-              'justify-between flex-col flex h-full',
-              // lesson.accessLevel === 'premium' &&
-              //   !isPremium &&
-              //   'blur-md select-none',
-            )}
-          >
-            <span>
-              <CardTitle className="text-3xl font-bold font-playfair italic w-full">
-                {`"${lesson.title}"`}
-              </CardTitle>
-              <CardDescription className="font-roboto mt-2">
-                {lesson.description.length > 130
-                  ? lesson.description.slice(0, 130) + '...'
-                  : lesson.description}
-              </CardDescription>
-            </span>
+          <div className={cn('justify-between flex-col flex h-full')}>
+            <div
+              className={cn(
+                lesson.accessLevel === 'premium' &&
+                  !isPremium &&
+                  'blur-sm select-none pointer-events-none',
+              )}
+            >
+              <span>
+                <CardTitle className="text-3xl font-bold font-playfair italic w-full">
+                  {`"${lesson.title}"`}
+                </CardTitle>
+                <CardDescription className="font-roboto mt-2">
+                  {lesson.description.length > 130
+                    ? lesson.description.slice(0, 130) + '...'
+                    : lesson.description}
+                </CardDescription>
+              </span>
 
-            <div className="flex items-center gap-3 mt-5">
-              <Badge className="bg-sky-200 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
-                {lesson.category}
-              </Badge>
-              <Badge className="bg-purple-200 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
-                {lesson.emotionalTone}
-              </Badge>
+              <div className="flex items-center gap-3 mt-5">
+                <Badge className="bg-sky-200 text-sky-700 dark:bg-sky-950 dark:text-sky-300">
+                  {lesson.category}
+                </Badge>
+                <Badge className="bg-purple-200 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+                  {lesson.emotionalTone}
+                </Badge>
+              </div>
             </div>
 
             <Separator className="my-5" />
@@ -119,11 +128,12 @@ const LessonCard = ({ lesson }) => {
                   </span>
                 </div>
               </div>
+
               {/* engagements */}
               <div className="flex items-center gap-5 text-muted-foreground">
                 <span className="flex gap-1 items-center text-xs justify-center w-full">
                   <Eye className="size-3.5" />
-                  {lesson.views}
+                  {formateNumber(lesson.views)}
                 </span>
                 <span
                   className={cn(
@@ -132,54 +142,40 @@ const LessonCard = ({ lesson }) => {
                   )}
                 >
                   <Heart className="size-3.5" />
-                  {lesson.likeCount}
+                  {formateNumber(lesson.likeCount)}
                 </span>
                 <span className="flex gap-1 items-center text-xs justify-center w-full">
                   <MessageCircle className="size-3.5" />
-                  {lesson.commentCount}
+                  {formateNumber(lesson.commentCount)}
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* engagements */}
-        {/* <div className="flex gap-5 justify-between rounded mt-5 text-muted-foreground">
-          <span
-            className={cn(
-              'flex gap-2 items-center text-sm justify-center w-full',
-              isLiked && 'text-pink-500 dark:text-pink-400',
-            )}
+        {lesson.accessLevel === 'premium' && !isPremium ? (
+          <Link href={'/pricing'} className="hover:opacity-90 duration-100">
+            <LiquidMetalButton
+              theme={'gold'}
+              variant="default"
+              size="sm"
+              className={
+                'rounded-full h-9 w-full text-sm font-normal pointer-events-none select-none'
+              }
+            >
+              <div className="flex items-center gap-1">
+                <RiLock2Line className="size-4" /> Upgrade
+              </div>
+            </LiquidMetalButton>
+          </Link>
+        ) : (
+          <Link
+            href={`/public-lessons/${lesson._id}`}
+            className={cn(buttonVariants(), 'h-9 rounded-full')}
           >
-            <FiHeart />
-            {lesson.likes.length}
-          </span>
-          <Separator orientation="vertical" />
-          <span className="flex gap-2 items-center text-sm justify-center w-full">
-            <BiComment className="size-4" />
-            {lesson.comments.length}
-          </span>
-          <Separator orientation="vertical" />
-          <span className="flex gap-2 items-center text-sm justify-center w-full">
-            <MdOutlineRemoveRedEye className="size-4.5" />
-            {lesson.views}
-          </span>
-        </div> */}
-
-        <Link
-          href={`public-lessons/${lesson._id}`}
-          className={cn(
-            buttonVariants(),
-            'h-auto py-2 rounded',
-            lesson.accessLevel === 'premium' &&
-              !isPremium &&
-              'pointer-events-none select-none opacity-20',
-          )}
-        >
-          {lesson.accessLevel === 'premium' && !isPremium
-            ? 'Upgrade to Unlock'
-            : 'See Details'}
-        </Link>
+            See Details
+          </Link>
+        )}
       </CardContent>
     </Card>
   );

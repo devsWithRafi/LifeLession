@@ -2,7 +2,9 @@ import SubscriptionBadge from '@/components/SubscriptionBadge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { calculateReadingTime } from '@/lib/calculateReadingTime';
 import { formatDate } from '@/lib/formatDate';
+import { formateNumber } from '@/lib/formateNumber';
 import { Clock8, GlobeCheck } from 'lucide-react';
 import React from 'react';
 import { MdOutlineDateRange, MdOutlineRemoveRedEye } from 'react-icons/md';
@@ -21,11 +23,12 @@ const Headers = ({ lesson }) => {
         <Separator orientation="vertical" />
         <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
           <MdOutlineRemoveRedEye className="sm:size-4 size-3" />
-          {lesson.views} Views
+          {formateNumber(lesson.views)} Views
         </span>
         <Separator orientation="vertical" />
         <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">
-          <Clock8 className="sm:size-4 size-3" />5 min read
+          <Clock8 className="sm:size-4 size-3" />
+          {calculateReadingTime(lesson.description)} min read
         </span>
         <Separator orientation="vertical" />
         <span className="flex items-center gap-1 text-muted-foreground text-xs sm:text-sm">

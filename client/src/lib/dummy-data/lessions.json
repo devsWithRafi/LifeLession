@@ -16,7 +16,7 @@
       "bio": "Psychologist & Author",
       "image": "",
       "role": "user",
-      "accountType": "premium"
+      "plan": "premium"
     },
     "views": 110,
     "saved": [],
@@ -45,7 +45,7 @@
       "bio": "Mindset Coach & Writer",
       "image": "https://randomuser.me/api/portraits/women/44.jpg",
       "role": "user",
-      "accountType": "premium"
+      "plan": "premium"
     },
     "views": 110,
     "saved": [],
@@ -74,7 +74,7 @@
       "bio": "Leadership Mentor",
       "image": "https://randomuser.me/api/portraits/men/32.jpg",
       "role": "user",
-      "accountType": "free"
+      "plan": "free"
     },
     "views": 20,
     "saved": [],
@@ -104,7 +104,7 @@
       "bio": "Wellness Educator",
       "image": "https://randomuser.me/api/portraits/women/68.jpg",
       "role": "user",
-      "accountType": "free"
+      "plan": "free"
     },
     "views": 30,
     "saved": [],
@@ -134,7 +134,7 @@
       "bio": "Life Strategist",
       "image": "https://randomuser.me/api/portraits/men/41.jpg",
       "role": "user",
-      "accountType": "premium"
+      "plan": "premium"
     },
     "views": 0,
     "saved": [],
@@ -164,7 +164,7 @@
       "bio": "Growth Coach",
       "image": "https://randomuser.me/api/portraits/women/22.jpg",
       "role": "user",
-      "accountType": "free"
+      "plan": "free"
     },
     "views": 0,
     "saved": [],
@@ -194,7 +194,7 @@
       "bio": "Relationship Author",
       "image": "https://randomuser.me/api/portraits/women/35.jpg",
       "role": "user",
-      "accountType": "free"
+      "plan": "free"
     },
     "views": 0,
     "saved": [],
@@ -224,7 +224,7 @@
       "bio": "Author & Speaker",
       "image": "https://randomuser.me/api/portraits/men/29.jpg",
       "role": "user",
-      "accountType": "premium"
+      "plan": "premium"
     },
     "views": 0,
     "saved": [],
@@ -254,7 +254,7 @@
       "bio": "Confidence Trainer",
       "image": "https://randomuser.me/api/portraits/men/56.jpg",
       "role": "user",
-      "accountType": "free"
+      "plan": "free"
     },
     "views": 0,
     "saved": [],
@@ -284,7 +284,7 @@
       "bio": "Career Advisor",
       "image": "https://randomuser.me/api/portraits/women/52.jpg",
       "role": "user",
-      "accountType": "free"
+      "plan": "free"
     },
     "views": 0,
     "saved": [],

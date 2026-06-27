@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -27,12 +26,17 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
   const user = data?.user;
   const fileRef = useRef(null);
   const [displayName, setDisplayName] = useState('');
+  const [userBio, setUserBio] = useState('');
   const [avatarPreview, setAvatarPreview] = useState('');
   const [profileEditPending, startProfileEditPending] = useTransition();
 
   useEffect(() => {
-    setAvatarPreview(user?.image);
-    setDisplayName(user?.name);
+    const loadPrevData = () => {
+      setAvatarPreview(user?.image);
+      setDisplayName(user?.name);
+      setUserBio(user?.bio);
+    };
+    loadPrevData();
   }, [open]);
 
   function handleAvatarPick(e) {
@@ -48,6 +52,7 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
         const payload = {
           name: displayName,
           image: user?.image,
+          bio: userBio,
         };
 
         const imageFile = fileRef.current?.files[0];
@@ -131,7 +136,25 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Your name"
-                className="rounded-xl"
+                className="rounded-md"
+                onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+              />
+            </div>
+
+            {/* Bio field */}
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="bio"
+                className="text-xs font-medium text-muted-foreground uppercase tracking-wide"
+              >
+                Bio
+              </Label>
+              <Input
+                id="bio"
+                value={userBio}
+                onChange={(e) => setUserBio(e.target.value)}
+                placeholder="Your bio"
+                className="rounded-md"
                 onKeyDown={(e) => e.key === 'Enter' && handleSave()}
               />
             </div>
@@ -148,7 +171,7 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
                 className="rounded-xl opacity-60 cursor-not-allowed"
               />
               <p className="text-xs text-muted-foreground">
-                Email can't be changed here.
+                Email can&apos;t be changed here.
               </p>
             </div>
           </div>

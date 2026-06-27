@@ -49,11 +49,13 @@ import { fetchOneLesson } from '@/actions/apis/fetchOneLesson';
 import { Switch } from '@/components/ui/switch';
 import { UpdateLessonAction } from '@/actions/UpdateLesson.action';
 import { uploadImage } from '@/actions/helpers/uploadImage';
+import { useMyLessons } from '@/context/my-lessons-context/MyLessonContextProvider';
 
 const EditLessonForm = () => {
   const [imageFile, setImageFile] = useState(null);
   const [formPending, startFormPending] = useTransition();
   const [lessonLoading, startLessonLoading] = useTransition();
+  const { fetchMyLessons } = useMyLessons();
   const { data } = authClient.useSession();
   const user = data?.user;
   const { editLessonId } = useParams();
@@ -133,6 +135,7 @@ const EditLessonForm = () => {
       if (result.success) {
         toast.success(result.message ?? 'Lesson updated successfully');
         handleReset();
+        fetchMyLessons();
       } else {
         toast.error(result.message ?? 'Error: Update failed');
       }

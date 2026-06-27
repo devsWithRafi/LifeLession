@@ -78,7 +78,7 @@ const LessonDetailsRightSide = ({ lesson }) => {
           </CardDescription>
           <CardDescription>{lesson.author?.bio}</CardDescription>
           <Link
-            href="/"
+            href={`/profile/${lesson.author?._id}`}
             className={cn(
               buttonVariants({ variant: 'outline' }),
               'w-full mt-7 rounded-sm',

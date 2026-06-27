@@ -34,6 +34,12 @@ export const auth = betterAuth({
         input: false,
         required: false,
       },
+      bio: {
+        type: String,
+        defaultValue: 'Proud member of the LifeLesson community',
+        input: true,
+        required: false,
+      },
     },
   },
 

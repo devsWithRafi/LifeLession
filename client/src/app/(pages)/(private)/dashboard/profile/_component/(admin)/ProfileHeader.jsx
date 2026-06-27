@@ -3,20 +3,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import {
-  Award,
-  Calendar,
-  Camera,
-  Edit3,
-  Mail,
-  Shield,
-  Zap,
-} from 'lucide-react';
+import { Award, Calendar, Edit3, Mail, Shield, Zap } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
 import { Button } from '@/components/ui/button';
 import UserProfileUpdateModal from '../UserProfileUpdateModal';
 import { useState } from 'react';
 import { fallBackNameFormat } from '@/lib/falbackNameFormat';
+import Image from 'next/image';
+import { getRandomCoverImage } from '@/lib/getRandomCover';
 
 const formateDate = (date) =>
   new Date(date).toLocaleDateString('en-US', {
@@ -35,8 +29,13 @@ const ProfileHeader = () => {
     <>
       <Card className="overflow-hidden p-0">
         {/* Cover gradient */}
-        <div className="h-32 bg-gradient-to-br from-violet-600/20 via-primary/15 to-blue-600/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-400/10 via-transparent to-transparent min-h-full" />
+        <div className="h-32 w-full relative overflow-hidden">
+          <Image
+            src={getRandomCoverImage()}
+            alt=""
+            fill
+            className="w-full h-full object-cover"
+          />
         </div>
 
         <div className="px-6 pb-6">
@@ -89,6 +88,7 @@ const ProfileHeader = () => {
                   </Button>
                 </div>
               </div>
+              <p className="text-muted-foreground text-sm">{user?.bio}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-sm text-muted-foreground">

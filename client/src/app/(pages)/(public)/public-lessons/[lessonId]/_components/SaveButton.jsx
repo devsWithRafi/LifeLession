@@ -13,7 +13,7 @@ const SaveButton = () => {
     <Button
       onClick={handleSaveLesson}
       variant="outline"
-      className={cn(saved && '!border-primary')}
+      className={cn(saved && '!border-primary/80 text-primary')}
     >
       {loading ? (
         <Spinner />

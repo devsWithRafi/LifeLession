@@ -59,6 +59,7 @@ import StatPill from './StatPill';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { UpdateLessonAction } from '@/actions/UpdateLesson.action';
+import { formateNumber } from '@/lib/formateNumber';
 
 export default function MyLessonsPage() {
   const { data } = useSession();
@@ -77,10 +78,10 @@ export default function MyLessonsPage() {
   const totalSaves = myLessons.reduce((s, l) => s + l.savedCount, 0);
 
   const summary = [
-    { label: 'Lessons', value: myLessons.length, icon: BookOpen },
-    { label: 'Total views', value: totalViews.toLocaleString(), icon: Eye },
-    { label: 'Reactions', value: totalLikes, icon: Heart },
-    { label: 'Saves', value: totalSaves, icon: Bookmark },
+    { label: 'Lessons', value: formateNumber(myLessons.length), icon: BookOpen },
+    { label: 'Total views', value: formateNumber(totalViews), icon: Eye },
+    { label: 'Reactions', value: formateNumber(totalLikes), icon: Heart },
+    { label: 'Saves', value: formateNumber(totalSaves), icon: Bookmark },
   ];
 
   const handleEditLesson = async (lesson, type) => {
@@ -120,12 +121,12 @@ export default function MyLessonsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-7xl mx-auto sm:px-6 space-y-8">
+      <div className="w-full mx-auto sm:px-6 space-y-8">
         {/* ── Summary Cards ── */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {summary.map(({ label, value, icon: Icon }) => (
             <Card key={label} className="py-0">
-              <CardContent className="sm:p-8 p-3 flex items-center gap-3">
+              <CardContent className="sm:p-5 p-3 flex items-center gap-3">
                 <div className="flex sm:p-4 p-3 aspect-square shrink-0 items-center justify-center rounded-lg bg-muted">
                   <Icon className="size-5 text-muted-foreground" />
                 </div>
@@ -334,17 +335,17 @@ export default function MyLessonsPage() {
                           <div className="flex flex-col gap-1">
                             <StatPill
                               icon={Eye}
-                              value={lesson.views}
+                              value={formateNumber(lesson.views)}
                               label="Views"
                             />
                             <StatPill
                               icon={Heart}
-                              value={lesson.likeCount}
+                              value={formateNumber(lesson.likeCount)}
                               label="Likes"
                             />
                             <StatPill
                               icon={Bookmark}
-                              value={lesson.savedCount}
+                              value={formateNumber(lesson.savedCount)}
                               label="Saves"
                             />
                           </div>

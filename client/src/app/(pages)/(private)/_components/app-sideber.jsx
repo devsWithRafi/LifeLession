@@ -38,7 +38,6 @@ import {
   BookOpen,
   BookMarked,
   Flag,
-  Pencil,
   ClipboardClock,
 } from 'lucide-react';
 import { toast } from 'sonner';
