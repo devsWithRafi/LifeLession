@@ -145,11 +145,11 @@ export default function MyLessonsPage() {
 
         {/* ── Table ── */}
         <Card
-          className={cn(
+          className={cn("p-0",
             editLoading.loading && 'opacity-30 pointer-events-none select-none',
           )}
         >
-          <CardHeader className="sm:pb-3">
+          <CardHeader className="py-3">
             <CardTitle className="sm:text-base text-sm">All lessons</CardTitle>
             <CardDescription>
               Manage visibility, access, and content for each lesson.
