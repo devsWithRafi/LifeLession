@@ -18,8 +18,6 @@ export const saveLesson = async (req, res) => {
       lesson: lessonId,
     });
 
-    console.log('isSaved', isSaved)
-
     if (isSaved) {
       await SavedBy.findByIdAndDelete(isSaved._id);
       await Lesson.findByIdAndUpdate(lessonId, {
@@ -40,8 +38,6 @@ export const saveLesson = async (req, res) => {
       user: authUser.id,
       lesson: lessonId,
     });
-
-    console.log('savedBy', savedBy)
 
     await Lesson.findByIdAndUpdate(lessonId, {
       $addToSet: {
