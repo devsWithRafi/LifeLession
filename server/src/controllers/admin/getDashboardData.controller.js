@@ -1,5 +1,6 @@
 import { Lesson } from '../../models/lessonModel.js';
 import { User } from '../../models/userModel.js';
+import { Report } from '../../models/reportModel.js';
 
 export const getDashboardData = async (req, res) => {
   try {
@@ -21,6 +22,7 @@ export const getDashboardData = async (req, res) => {
     const [
       totalUsers,
       totalPublicLessons,
+      totalReports,
       todayLessons,
       contributors,
       lessonGrowth,
@@ -28,6 +30,7 @@ export const getDashboardData = async (req, res) => {
     ] = await Promise.all([
       User.countDocuments(),
       Lesson.countDocuments({ isPublic: true }),
+      Report.countDocuments(),
       Lesson.countDocuments({
         createdAt: {
           $gte: start,
@@ -98,6 +101,7 @@ export const getDashboardData = async (req, res) => {
       data: {
         totalUsers,
         totalPublicLessons,
+        totalReports,
         todayLessons,
         contributors,
         lessonGrowth,

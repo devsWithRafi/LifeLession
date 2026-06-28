@@ -28,10 +28,9 @@ export const addReport = async (req, res) => {
 
     // Add report
     const report = await Report.create({
-      reporterUserId: authUser.id,
-      reporterEmail: authUser.email,
+      reporter: authUser.id,
       reportedUserEmail: reportedUserEmail,
-      lessonId: lessonId,
+      lesson: lessonId,
       reason: reason,
       details: details,
     });

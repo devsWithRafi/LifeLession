@@ -18,8 +18,8 @@ const lessonModel = new mongoose.Schema(
       default: 'free',
     },
     isPublic: { type: Boolean, required: false, default: true },
-    image: { type: String, required: false, default: null },
     isFeatured: { type: Boolean, required: false, default: false },
+    image: { type: String, required: false, default: null },
     views: {
       type: Number,
       required: false,

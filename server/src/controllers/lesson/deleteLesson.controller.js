@@ -6,10 +6,24 @@ export const deleteLesson = async (req, res) => {
     const authUser = req.user;
     const { lessonId } = req.params;
 
-    const lesson = await Lesson.findOneAndDelete({
-      _id: lessonId,
-      author: authUser.id,
-    });
+    if (!lessonId) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Lesson id is required' });
+    }
+
+    let lesson; // define the lesson
+
+    if (authUser.role === 'admin') {
+      lesson = await Lesson.findOneAndDelete({
+        _id: lessonId,
+      });
+    } else {
+      lesson = await Lesson.findOneAndDelete({
+        _id: lessonId,
+        author: authUser.id,
+      });
+    }
 
     if (!lesson) {
       return res

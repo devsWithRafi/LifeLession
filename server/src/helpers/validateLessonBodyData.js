@@ -8,4 +8,5 @@ export const validateLessonBodyData = z.object({
   accessLevel: z.string().min(1),
   image: z.string().nullish(),
   isPublic: z.boolean().default(true),
+  isFeatured: z.boolean().default(false),
 });

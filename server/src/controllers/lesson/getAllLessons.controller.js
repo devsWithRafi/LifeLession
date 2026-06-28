@@ -26,6 +26,7 @@ export const getAllLessons = async (req, res) => {
       .skip(skip)
       .limit(Number(limit))
       .populate('author')
+      .populate('reports')
       .populate({
         path: 'comments',
         populate: { path: 'user', model: 'User' },

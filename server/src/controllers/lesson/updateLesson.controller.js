@@ -27,7 +27,7 @@ export const updateLesson = async (req, res) => {
       },
     );
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       data: lesson,
       message: 'Your lesson has updated successfully',

@@ -2,14 +2,13 @@ import mongoose from 'mongoose';
 
 const reportSchema = new mongoose.Schema(
   {
-    reporterUserId: {
+    reporter: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    reporterEmail: String,
     reportedUserEmail: String,
-    lessonId: {
+    lesson: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Lesson',
       required: true,
