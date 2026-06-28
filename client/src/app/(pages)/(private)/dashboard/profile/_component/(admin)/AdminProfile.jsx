@@ -1,18 +1,9 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+
 import { Card } from '@/components/ui/card';
 import {
-  Award,
   BookOpen,
-  Calendar,
-  Camera,
-  Check,
-  Edit3,
   Eye,
-  Mail,
-  Shield,
   Users,
-  X,
   Zap,
 } from 'lucide-react';
 import ActivityItem from './ActivityItem';
@@ -52,7 +43,7 @@ const AdminProfile = () => {
   return (
     <div className="min-h-screen bg-background text-foreground w-full">
       {/* Top accent bar */}
-      <div className="max-w-300 mx-auto space-y-6">
+      <div className="w-full mx-auto space-y-6">
         {/* Hero profile card */}
         <ProfileHeader />
 

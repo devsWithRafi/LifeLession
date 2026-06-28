@@ -1,3 +1,5 @@
+import AllLessonsContextProvider from './all-lessons-context/AllLessonsContextProvider';
+import AllUsersContextProvider from './all-user-context/AllUsersContextProvider';
 import CommentContextProvider from './comment-context/CommentContextProvider';
 import LessonContextProvider from './lessonContext/LessonContextProvider';
 import LikeContextProvider from './like-context/LikeContextProvider';
@@ -17,7 +19,11 @@ const UnivercelContextProvider = ({ children }) => {
               <UserProfileContextProvider>
                 <ReportContextProvider>
                   <MyFavoriteLessonContextProvider>
-                    {children}
+                    <AllUsersContextProvider>
+                      <AllLessonsContextProvider>
+                        {children}
+                      </AllLessonsContextProvider>
+                    </AllUsersContextProvider>
                   </MyFavoriteLessonContextProvider>
                 </ReportContextProvider>
               </UserProfileContextProvider>

@@ -62,7 +62,7 @@ const DashboardDataLoader = () => {
   const stats = {
     totalUsers: d.totalUsers ?? 0,
     totalPublicLessons: d.totalPublicLessons ?? 0,
-    reportedLessons: d.reportedLessons ?? 0, // not returned by the API yet
+    reportedLessons: d.totalReports ?? 0, // not returned by the API yet
     todaysNewLessons: d.todayLessons ?? 0,
   };
 

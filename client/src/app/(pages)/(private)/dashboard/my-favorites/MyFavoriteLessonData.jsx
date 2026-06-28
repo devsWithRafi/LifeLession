@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
   Eye,
   EyeOff,
@@ -44,7 +43,7 @@ import { cn } from '@/lib/utils';
 import { formateNumber } from '@/lib/formateNumber';
 import { useMyFavoriteLessons } from '@/context/my-favorite-context/MyFavoriteLessonContextProvider';
 import { getToken, useSession } from '@/lib/auth-client';
-import StatPill from '../my-lessons/StatPill';
+import StatPill from '../../_components/StatPill';
 import MyFavoriteLessonHeader from './MyFavoriteLessonHeader';
 import { useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
@@ -89,7 +88,7 @@ export default function MyFavoriteLessonData() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="w-full mx-auto sm:px-6 space-y-8">
         {/* ── Table ── */}
-        <MyFavoriteLessonHeader />
+        <MyFavoriteLessonHeader myFavoriteLessons={myFavoriteLessons} />
 
         <Card
           className={cn(
@@ -108,7 +107,7 @@ export default function MyFavoriteLessonData() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="hover:bg-transparent">
+                  <TableRow className="hover:bg-transparent uppercase">
                     <TableHead className="sm:pl-6 pl-4 w-[250px]">
                       Lesson
                     </TableHead>

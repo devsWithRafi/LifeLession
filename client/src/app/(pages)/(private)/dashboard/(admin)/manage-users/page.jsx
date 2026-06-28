@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import ManageUserData from './ManageUserData';
 
 const ManageUsers = () => {
   return (
-    <div>ManageUsers</div>
-  )
-}
+    <section>
+      <ManageUserData />
+    </section>
+  );
+};
 
-export default ManageUsers
+export default ManageUsers;

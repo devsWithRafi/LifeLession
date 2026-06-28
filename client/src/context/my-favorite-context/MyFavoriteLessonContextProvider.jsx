@@ -14,7 +14,6 @@ const MyFavoriteLessonContextProvider = ({ children }) => {
     startLoading(async () => {
       const token = await getToken();
       const res = await fetchMyFavoriteLessons(token);
-      console.log(res)
       if (res.success) {
         setMyFavoriteLessons(res.data);
       } else {

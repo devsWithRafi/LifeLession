@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import ManageAllLessonsData from './ManageLessonsData';
 
 const ManageLesson = () => {
   return (
-    <div>ManageLesson</div>
-  )
-}
+    <section>
+      <ManageAllLessonsData />
+    </section>
+  );
+};
 
-export default ManageLesson
+export default ManageLesson;

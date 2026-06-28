@@ -17,7 +17,6 @@ const CommentSection = ({ lesson }) => {
 
   const handlePostComment = () => {
     if (!comment) {
-      toast.warning('Comment box is empty');
       return;
     }
     startPending(async () => {
@@ -41,32 +40,27 @@ const CommentSection = ({ lesson }) => {
       <h5>{comments.length} Comments</h5>
 
       <div className="flex flex-col gap-5 mt-5">
-        <Card>
-          <CardHeader>
-            <CardTitle>Add Your Comment</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col sm:gap-5 gap-2 items-end">
-            <Textarea
-              onChange={(e) => setComment(e.target.value)}
-              value={comment}
-              placeholder="What did this lesson help you to learn?"
-              className="sm:min-h-40 min-h-25 sm:text-sm text-xs"
-            />
-            <Button
-              disabled={pending}
-              onClick={handlePostComment}
-              className="rounded-full px-4"
-            >
-              {pending ? (
-                <>
-                  <Spinner /> Posting...
-                </>
-              ) : (
-                <>Post Comment</>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="w-full relative">
+          <Textarea
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+            placeholder="Add comment..."
+            className="min-h-35 sm:text-sm text-xs  resize-none w-full bg-muted p-5"
+          />
+          <Button
+            disabled={pending || !comment}
+            onClick={handlePostComment}
+            className="rounded-md px-4 py-2 h-auto absolute right-2 bottom-2"
+          >
+            {pending ? (
+              <>
+                <Spinner /> Posting...
+              </>
+            ) : (
+              <>Post Comment</>
+            )}
+          </Button>
+        </div>
 
         {comments.map((item) => (
           <CommentBox key={item._id} comment={item} />

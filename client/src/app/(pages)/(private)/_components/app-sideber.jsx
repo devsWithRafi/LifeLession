@@ -11,7 +11,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
   useSidebar,
 } from '@/components/ui/sidebar';
 import { LuLayoutDashboard, LuCirclePlus, LuLogOut } from 'react-icons/lu';
@@ -34,12 +33,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import {
-  BookOpen,
-  BookMarked,
-  Flag,
-  ClipboardClock,
-} from 'lucide-react';
+import { BookOpen, BookMarked, Flag, ClipboardClock } from 'lucide-react';
 import { toast } from 'sonner';
 
 const dashboardLinks = [
@@ -51,11 +45,6 @@ const dashboardLinks = [
 ];
 
 const adminDashboardLinks = [
-  {
-    path: '/dashboard/featured',
-    name: 'Featured',
-    icon: MdOutlineFeaturedPlayList,
-  },
   { path: '/dashboard/manage-users', name: 'Manage Users', icon: FaUserGear },
   {
     path: '/dashboard/manage-lessons',

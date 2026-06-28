@@ -1,5 +1,6 @@
 'use client';
-import { DeleteLessonAction } from '@/actions/DeleteLessonAction.action';
+
+import { DeleteUserAction } from '@/actions/DeleteUserAction.action';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -10,30 +11,32 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { useMyLessons } from '@/context/my-lessons-context/MyLessonContextProvider';
+import { useAllUsers } from '@/context/all-user-context/AllUsersContextProvider';
 import { getToken } from '@/lib/auth-client';
 import { AlertTriangle } from 'lucide-react';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 
-const DeleteModal = ({ lesson, open, onClose }) => {
-  const { fetchMyLessons } = useMyLessons();
+const ManageUsersDeleteModal = ({ user, open, onClose }) => {
+  const { fetchUsers } = useAllUsers();
   const [loading, startLoading] = useTransition();
 
   const handleDelete = () => {
-    if (!lesson) {
-      toast.error('Lesson not found');
+    if (!user) {
+      toast.error('User not found');
       return;
     }
     startLoading(async () => {
       const token = await getToken();
-      const result = await DeleteLessonAction(lesson._id, token);
+      const result = await DeleteUserAction(user._id, token);
       if (result.success) {
-        toast.success(result.message ?? 'Lesson deleted successfully');
-        fetchMyLessons();
+        toast.success(
+          result.message ?? `User ${user.name} deleted successfully`,
+        );
+        fetchUsers();
         onClose();
       } else {
-        toast.error(result.message ?? 'Error: deleting lesson failed');
+        toast.error(result.message ?? 'Error: deleting user failed');
       }
     });
   };
@@ -47,21 +50,20 @@ const DeleteModal = ({ lesson, open, onClose }) => {
               <AlertTriangle className="h-5 w-5 text-destructive" />
             </div>
             <div>
-              <DialogTitle>Delete lesson?</DialogTitle>
+              <DialogTitle>Delete User?</DialogTitle>
               <DialogDescription className="text-xs mt-0.5">
-                This cannot be undone.
+                This action cannot be undone.
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        {lesson && (
+        {user && (
           <p className="text-sm text-muted-foreground px-1">
             <span className="font-medium text-foreground">
-              &quot;{lesson.title}&quot;
+              &quot;{user.name}&quot;
             </span>{' '}
-            will be permanently removed, including all its stats, comments, and
-            reactions.
+            will be permanently removed, including all his activity.
           </p>
         )}
 
@@ -75,7 +77,7 @@ const DeleteModal = ({ lesson, open, onClose }) => {
                 <Spinner /> Deleting...
               </>
             ) : (
-              <>Delete permanently</>
+              <>Delete</>
             )}
           </Button>
         </DialogFooter>
@@ -84,4 +86,4 @@ const DeleteModal = ({ lesson, open, onClose }) => {
   );
 };
 
-export default DeleteModal;
+export default ManageUsersDeleteModal;

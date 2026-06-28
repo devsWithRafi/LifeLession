@@ -47,7 +47,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import DeleteModal from './DeleteModal';
 import { useMyLessons } from '@/context/my-lessons-context/MyLessonContextProvider';
 import Image from 'next/image';
 import { getToken, useSession } from '@/lib/auth-client';
@@ -55,11 +54,12 @@ import Link from 'next/link';
 import { Spinner } from '@/components/ui/spinner';
 import { CardBadgeColors } from '@/components/card/CardBadgeColors';
 import { formatDate } from '@/lib/formatDate';
-import StatPill from './StatPill';
+import StatPill from '../../_components/StatPill';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { UpdateLessonAction } from '@/actions/UpdateLesson.action';
 import { formateNumber } from '@/lib/formateNumber';
+import DeleteLessonModal from '../../_components/DeleteLessonModal';
 
 export default function MyLessonsPage() {
   const { data } = useSession();
@@ -78,7 +78,11 @@ export default function MyLessonsPage() {
   const totalSaves = myLessons.reduce((s, l) => s + l.savedCount, 0);
 
   const summary = [
-    { label: 'Lessons', value: formateNumber(myLessons.length), icon: BookOpen },
+    {
+      label: 'Lessons',
+      value: formateNumber(myLessons.length),
+      icon: BookOpen,
+    },
     { label: 'Total views', value: formateNumber(totalViews), icon: Eye },
     { label: 'Reactions', value: formateNumber(totalLikes), icon: Heart },
     { label: 'Saves', value: formateNumber(totalSaves), icon: Bookmark },
@@ -145,7 +149,8 @@ export default function MyLessonsPage() {
 
         {/* ── Table ── */}
         <Card
-          className={cn("p-0",
+          className={cn(
+            'p-0',
             editLoading.loading && 'opacity-30 pointer-events-none select-none',
           )}
         >
@@ -159,7 +164,7 @@ export default function MyLessonsPage() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="hover:bg-transparent">
+                  <TableRow className="hover:bg-transparent uppercase">
                     <TableHead className="sm:pl-6 pl-4 w-[250px]">
                       Lesson
                     </TableHead>
@@ -375,7 +380,7 @@ export default function MyLessonsPage() {
                             <DropdownMenuContent align="end" className="w-44">
                               <Link href={`/public-lessons/${lesson._id}`}>
                                 <DropdownMenuItem>
-                                  <Info className="h-4 w-4 mr-2" /> 
+                                  <Info className="h-4 w-4 mr-2" />
                                   View details
                                 </DropdownMenuItem>
                               </Link>
@@ -406,7 +411,7 @@ export default function MyLessonsPage() {
         </Card>
 
         {/* Delete modal */}
-        <DeleteModal
+        <DeleteLessonModal
           lesson={deleteLesson}
           open={deleteModalOpen}
           onClose={() => setDeleteModalOpen(false)}

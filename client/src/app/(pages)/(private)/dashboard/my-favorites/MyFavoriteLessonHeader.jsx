@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -19,7 +18,7 @@ import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const MyFavoriteLessonHeader = () => {
+const MyFavoriteLessonHeader = ({ myFavoriteLessons }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const defaultQuery = { category: '', emotionalTone: '', title: '' };
@@ -44,7 +43,7 @@ const MyFavoriteLessonHeader = () => {
       <div>
         <h2 className="sm:text-lg font-medium text-sm">My Favorite Lessons</h2>
         <p className="sm:text-sm text-xs text-muted-foreground">
-          Manage your favorite lessons
+          {myFavoriteLessons.length} Lessons saved
         </p>
       </div>
 
