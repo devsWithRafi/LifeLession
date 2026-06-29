@@ -37,8 +37,8 @@ app.use('/api/report', reportRoute);
 app.use('/api/me', userRouter);
 app.use('/api/admin', adminRouter);
 
-app.listen(env.PORT, () => {
-  console.log('Server is running', env.PORT);
-});
+// app.listen(env.PORT, () => {
+//   console.log('Server is running', env.PORT);
+// });
 
 export default app;

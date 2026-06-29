@@ -6,16 +6,21 @@ import { SavedBy } from '../../models/savedByModel.js';
 import { Like } from '../../models/likeModel.js';
 
 export const getAllLessons = async (req, res) => {
-  const { limit, page, category, emotionalTone, accessLevel, title } =
+  const { limit, page, category, emotionalTone, accessLevel, title, sortBy } =
     req.query;
 
   const options = {};
+  let sortOption = { createdAt: -1 };
 
   if (category) options.category = { $regex: category, $options: 'i' };
   if (title) options.title = { $regex: title, $options: 'i' };
   if (emotionalTone)
     options.emotionalTone = { $regex: emotionalTone, $options: 'i' };
   if (accessLevel) options.accessLevel = { $regex: accessLevel, $options: 'i' };
+
+  if (sortBy === 'oldest') sortOption = { createdAt: 1 };
+  else if (sortBy === 'newest') sortOption = { createdAt: -1 };
+  else sortOption = { createdAt: -1 };
 
   const skip = (Number(page) - 1) * Number(limit);
 
@@ -39,7 +44,7 @@ export const getAllLessons = async (req, res) => {
         path: 'savedBy',
         populate: { path: 'user', model: 'User' },
       })
-      .sort({ createdAt: -1 });
+      .sort(sortOption);
 
     const formateLessonData = lessons.map((lesson) => {
       const obj = lesson.toObject();
@@ -48,6 +53,10 @@ export const getAllLessons = async (req, res) => {
       obj.savedCount = lesson.savedBy.length;
       return obj;
     });
+
+    if (sortBy === 'most-saved') {
+      formateLessonData.sort((a, b) => b.savedCount - a.savedCount);
+    }
 
     const totalPage = Math.ceil(total / Number(limit));
 

@@ -23,7 +23,7 @@ export const updateLesson = async (req, res) => {
         author: authUser.id,
       },
       {
-        new: true,
+        returnDocument: 'after',
       },
     );
 
