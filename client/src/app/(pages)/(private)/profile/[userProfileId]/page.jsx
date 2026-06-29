@@ -1,5 +1,5 @@
 import Navber from '@/components/shared/navber/Navber';
-import ProfileData from '../_components/ProfileData';
+// import ProfileData from '../_components/ProfileData';
 import Image from 'next/image';
 import { getRandomCoverImage } from '@/lib/getRandomCover';
 import Footer from '@/components/shared/footer/Footer';
@@ -23,7 +23,7 @@ const UserProfile = () => {
               className="w-full h-full object-cover select-none pointer-events-none"
             />
           </div>
-          <ProfileData />
+          {/* <ProfileData /> */}
         </div>
       </div>
       <Footer />

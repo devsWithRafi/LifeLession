@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useContext, useEffect, useState, useTransition } from 'react';
 import { UserProfileContext } from './UserProfileContext';
 import { authClient, getToken } from '@/lib/auth-client';
