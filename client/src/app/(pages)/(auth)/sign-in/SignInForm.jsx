@@ -14,7 +14,7 @@ import {
 import Link from 'next/link';
 import { IoEyeOffOutline } from 'react-icons/io5';
 import { IoEyeOutline } from 'react-icons/io5';
-import { signIn, signUp } from '@/lib/auth-client';
+import { signIn } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { signInSchema } from '../authSchema';
@@ -41,7 +41,7 @@ const SignInForm = () => {
 
   function onSubmit(values) {
     startEmailSignInPending(async () => {
-      await signUp.email({
+      await signIn.email({
         ...values,
         callbackURL: '/',
         fetchOptions: {
