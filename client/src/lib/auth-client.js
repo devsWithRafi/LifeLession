@@ -9,10 +9,15 @@ export const authClient = createAuthClient({
 export const { signIn, signUp, useSession, signOut } = authClient;
 
 export const getToken = async () => {
-  const { data, error } = await authClient.token();
-  if (error) {
+  try {
+    const { data, error } = await authClient.token();
+    if (error) {
+      console.log(error);
+      return;
+    }
+    return data?.token ?? null;
+  } catch (error) {
     console.log(error);
-    return;
+    return null;
   }
-  return data?.token ?? null;
 };

@@ -53,16 +53,16 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} ${roboto.variable} ${righteous.variable} ${boldonse.variable} ${playfair.variable}`}
     >
       <body className="min-h-full flex flex-col font-poppins">
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {/* <UnivercelContextProvider>{children}</UnivercelContextProvider> */}
-          {children}
+          <UnivercelContextProvider>{children}</UnivercelContextProvider>
           <Toaster position="top-center" />
-        </ThemeProvider>
+        </ThemeProvider> */}
+        {children}
       </body>
     </html>
   );

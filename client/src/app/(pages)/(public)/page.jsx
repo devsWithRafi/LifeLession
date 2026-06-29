@@ -12,11 +12,12 @@ const HomePage = () => {
     <>
       <NavTransparent />
       <section className="flex flex-col gap-20">
-        <HeroSection />
+        {/* <HeroSection />
         <FeaturedSection />
         <WhyLearningSection />
         <ExploreSection />
-        <MostSavedLessonsSection />
+        <MostSavedLessonsSection /> */}
+        Home page
       </section>
     </>
   );
