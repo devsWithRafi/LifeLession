@@ -12,7 +12,7 @@ const ProfileData = () => {
   const { loading, userData } = useUserProfileData();
   const [selectedCat, setSelectedCat] = useState('All');
 
-  const { user, lessons, totalLikes, totalComments, totalSaved, totalViews } =
+  const { user, lessons, totalLikes, totalSaved, totalViews } =
     userData;
 
   const categories =

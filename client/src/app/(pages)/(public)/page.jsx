@@ -17,7 +17,6 @@ const HomePage = () => {
         <WhyLearningSection />
         <ExploreSection />
         <MostSavedLessonsSection />
-
       </section>
     </>
   );

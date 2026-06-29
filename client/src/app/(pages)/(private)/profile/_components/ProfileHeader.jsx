@@ -1,3 +1,4 @@
+"use client"
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
