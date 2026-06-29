@@ -3,6 +3,9 @@ import LessonList from './LessonList';
 import SearchContainer from './SearchContainer';
 import { Spinner } from '@/components/ui/spinner';
 
+export const dynamic = 'force-dynamic';
+
+
 export const metadata = {
   title: 'LifeLessons | Community Wisdom',
   description: '',

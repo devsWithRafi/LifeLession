@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 import MostSavedLesson from './MostSavedLesson';
 import TopContributors from './TopContributors';
 
+export const dynamic = 'force-dynamic';
+
 const MostSavedLessonsSection = () => {
   return (
     <section className="w-full mx-auto max-w-375 p-5">
