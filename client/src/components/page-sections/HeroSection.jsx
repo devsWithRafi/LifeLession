@@ -73,7 +73,7 @@ export default function HeroSection() {
                         Start Writing
                       </Link>
                       <Link
-                        href="/public-lessions"
+                        href="/public-lesson"
                         className={cn(
                           buttonVariants({ variant: 'outline' }),
                           'h-auto py-2.5 px-7 rounded-full bg-transparent hover:bg-transparent text-white/80 hover:text-white border-white/50',
