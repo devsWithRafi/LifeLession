@@ -57,7 +57,11 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
 
         const imageFile = fileRef.current?.files[0];
         if (imageFile) {
-          const { url } = await uploadImage(imageFile);
+          const image = await uploadImage(imageFile);
+          if (!image) {
+            toast.error('Image upload failed');
+            return;
+          }
           payload.image = url;
         }
         await authClient.updateUser({
