@@ -51,7 +51,7 @@ const LessonDetailsRightSmiliers = ({ lesson }) => {
                 index === similarLessons.length - 1 && 'border-none',
               )}
             >
-              <div className="aspect-square rounded w-15 bg-muted relative flex items-center justify-center">
+              <div className="aspect-square rounded w-15 overflow-hidden text-xs text-muted-foreground bg-muted relative flex items-center justify-center">
                 {l.image ? (
                   <Image
                     src={l.image}
