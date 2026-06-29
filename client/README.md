@@ -83,8 +83,8 @@ The admin dashboard also shows platform-wide analytics: total users, public less
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/lifelesson-frontend.git
-cd lifelesson-frontend
+git clone https://github.com/devsWithRafi/LifeLession.git
+cd LifeLession/client
 
 # 2. Install dependencies
 npm install
@@ -96,6 +96,7 @@ cp .env.example .env.local
 # 4. Run the development server
 npm run dev
 ```
+
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
