@@ -15,7 +15,6 @@ const HomePage = () => {
         <WhyLearningSection />
         <ExploreSection /> 
         <MostSavedLessonsSection />
-        {/* <section className="w-full h-screen"></section> */}
       </section>
     </>
   );

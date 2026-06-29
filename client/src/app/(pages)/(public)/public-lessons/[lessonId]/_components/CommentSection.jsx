@@ -50,7 +50,7 @@ const CommentSection = ({ lesson }) => {
           <Button
             disabled={pending || !comment}
             onClick={handlePostComment}
-            className="rounded-md px-4 py-2 h-auto absolute right-2 bottom-2"
+            className="rounded-md px-4 py-2 h-auto absolute right-2 bottom-2 sm:text-sm text-xs"
           >
             {pending ? (
               <>

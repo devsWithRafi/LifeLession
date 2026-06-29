@@ -1,5 +1,9 @@
-import React from 'react';
 import ManageAllLessonsData from './ManageLessonsData';
+
+export const metadata = {
+  title: 'LifeLesson | Manage Lessons',
+  description: '',
+};
 
 const ManageLesson = () => {
   return (

@@ -1,5 +1,10 @@
-import React from 'react';
 import MyLessonData from './MyLessonData';
+
+export const metadata = {
+  title: 'LifeLesson | My Lessons',
+  description: '',
+};
+
 
 const MyLessons = () => {
   return (

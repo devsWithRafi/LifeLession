@@ -24,7 +24,7 @@ const UserProfileContextProvider = ({ children }) => {
       if (res.success) {
         setUserData(res.data);
       } else {
-        toast.error(res.message || 'User profile data load failed!');
+        console.log(res.message || 'User profile data load failed!');
         return;
       }
     });

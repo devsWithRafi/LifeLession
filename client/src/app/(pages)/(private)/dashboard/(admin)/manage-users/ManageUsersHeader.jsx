@@ -47,8 +47,8 @@ const ManageUsersHeader = ({ users }) => {
             onChange={(e) =>
               setQuery((prev) => ({ ...prev, search: e.target.value }))
             }
-            placeholder="Search by name or email"
-            className="w-full min-w-100 pl-8 h-9 rounded-md grow"
+            placeholder="Search by name or email..."
+            className="w-full sm:min-w-100 pl-8 h-9 rounded-md grow"
           />
           <Search className="absolute left-3 size-4 text-muted-foreground" />
         </div>

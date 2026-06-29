@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useEffect, useState, useTransition } from 'react';
-import { getToken } from '@/lib/auth-client';
+import { getToken, useSession } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { AllUsersContext } from './AllUsersContext';
 import { fetchAllUsers } from '@/actions/apis/fetchAllUsers';
@@ -9,6 +9,9 @@ import { fetchAllUsers } from '@/actions/apis/fetchAllUsers';
 const AllUsersContextProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [loading, startLoading] = useTransition();
+  const { data: session } = useSession();
+  const user = session?.user;
+  const isAdmin = user?.role === 'admin';
 
   const fetchUsers = () => {
     startLoading(async () => {
@@ -17,14 +20,17 @@ const AllUsersContextProvider = ({ children }) => {
       if (res.success) {
         setUsers(res.data);
       } else {
-        toast.error(res.message || 'Users data fetch failed');
+        // toast.error(res.message || 'Users data fetch failed');
+        console.log(res.message || 'Users data fetch failed');
       }
     });
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    if (isAdmin) {
+      fetchUsers();
+    }
+  }, [isAdmin]);
 
   return (
     <AllUsersContext.Provider value={{ users, fetchUsers, loading }}>

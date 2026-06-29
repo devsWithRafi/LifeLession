@@ -1,5 +1,10 @@
-import React from 'react';
 import MyFavoriteLessonData from './MyFavoriteLessonData';
+
+export const metadata = {
+  title: 'LifeLesson | My Favorites',
+  description: '',
+};
+
 
 const MyFavoritePage = () => {
   return (

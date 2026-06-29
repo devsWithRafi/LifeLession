@@ -1,7 +1,7 @@
 'use client';
 
 import { fetchDashboardStates } from '@/actions/apis/fetchDashboardStates';
-import { getToken } from '@/lib/auth-client';
+import { getToken, useSession } from '@/lib/auth-client';
 import { useEffect, useState } from 'react';
 import GrowthChart from './GrowthChart';
 import StatCard from './StatCard';
@@ -28,13 +28,12 @@ const MONTHS = [
   'Dec',
 ];
 
-
 const formatDay = (iso) => {
- if (!iso) return '';
- const parts = String(iso).split('-');
- const m = Number(parts[1]);
- const dd = Number(parts[2]);
- return m && dd ? `${MONTHS[m - 1]} ${dd}` : String(iso);
+  if (!iso) return '';
+  const parts = String(iso).split('-');
+  const m = Number(parts[1]);
+  const dd = Number(parts[2]);
+  return m && dd ? `${MONTHS[m - 1]} ${dd}` : String(iso);
 };
 
 const buildCumulative = (arr, key) => {
@@ -46,16 +45,22 @@ const buildCumulative = (arr, key) => {
 };
 
 const DashboardDataLoader = () => {
+  const { data: session } = useSession();
+  const user = session?.user;
+  const isAdmin = user?.role === 'admin';
+
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const loadData = async () => {
-      const token = await getToken();
-      const res = await fetchDashboardStates(token);
-      setData(res.data);
-    };
-    loadData();
-  }, []);
+    if (isAdmin) {
+      const loadData = async () => {
+        const token = await getToken();
+        const res = await fetchDashboardStates(token);
+        setData(res.data);
+      };
+      loadData();
+    }
+  }, [isAdmin]);
 
   const d = data?.data ?? data ?? {};
 

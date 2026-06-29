@@ -17,7 +17,7 @@ const MyFavoriteLessonContextProvider = ({ children }) => {
       if (res.success) {
         setMyFavoriteLessons(res.data);
       } else {
-        toast.error(res.message || 'My favorite lesson data fetch failed');
+        console.log(res.message || 'My favorite lesson data fetch failed');
       }
     });
   };

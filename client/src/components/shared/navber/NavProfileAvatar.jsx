@@ -51,10 +51,10 @@ const NavProfileAvatar = ({ user }) => {
       <DropdownMenuContent align="end" className="min-w-40">
         <DropdownMenuGroup>
           <DropdownMenuLabel>
-            <h3 className="font-medium font-poppins text-primary text-sm">
+            <h3 className="font-medium font-poppins text-primary text-sm max-w-[95%] overflow-hidden text-ellipsis whitespace-nowrap">
               {user?.name}
             </h3>
-            <p className="text-xs text-muted-foreground font-poppins">
+            <p className="text-xs text-muted-foreground font-poppins max-w-[95%] overflow-hidden text-ellipsis whitespace-nowrap">
               {user?.email}
             </p>
           </DropdownMenuLabel>

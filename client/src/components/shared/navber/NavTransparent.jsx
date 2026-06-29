@@ -6,24 +6,21 @@ import { buttonVariants } from '@/components/ui/button';
 import { useScrollNavBar } from '@/hooks/useScrollNavBar';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { Crown, Search } from 'lucide-react';
+import { Crown, TextAlignJustify, X } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavProfileAvatar from './NavProfileAvatar';
 import { HiOutlinePlus } from 'react-icons/hi2';
 import SubscriptionBadge from '@/components/SubscriptionBadge';
-
-const NAV_LINKS = [
-  { path: '/', name: 'Home' },
-  { path: '/public-lessons', name: 'Public Lessons' },
-  { path: '/pricing', name: 'Pricing' },
-];
+import { useState } from 'react';
+import MobileNav from './MobileNav';
+import { navLinks } from './navLinks';
 
 const NavTransparent = () => {
   const pathName = usePathname();
   const isScrolled = useScrollNavBar(10);
-  const { theme } = useTheme();
+  const [navMobileOpen, setNavMobileOpen] = useState(false);
 
   const { data } = authClient.useSession();
   const user = data?.user;
@@ -34,34 +31,61 @@ const NavTransparent = () => {
       <header
         className={cn(
           'fixed top-0 w-full z-20 duration-200 ease-in-out',
-          isScrolled && 'bg-background backdrop-blur-md',
+          (isScrolled || navMobileOpen) && 'bg-background/90 backdrop-blur-md',
         )}
       >
-        <nav className="flex items-center justify-between gap-10 md:px-10 px-4 py-5 w-full">
-          <div className="flex items-center gap-10">
-            <Link href="/">
-              <NavLogo
-                className={'md:min-w-40 max-w-40'}
-                variant={
-                  isScrolled ? (theme === 'light' ? 'black' : 'white') : 'white'
-                }
-              />
+        <nav className="flex items-center justify-between gap-10 md:px-5 px-4 py-5 w-full">
+          <div className="flex items-center md:gap-10 gap-3">
+            {/* menu button */}
+            <button
+              onClick={() => setNavMobileOpen((prev) => !prev)}
+              className={cn(
+                'text-white md:hidden',
+                (isScrolled || navMobileOpen) && 'dark:text-white text-black',
+              )}
+            >
+              {navMobileOpen ? (
+                <X className="size-6.5" />
+              ) : (
+                <TextAlignJustify className="size-6" />
+              )}
+            </button>
+
+            {/* logo */}
+            <Link
+              href="/"
+              className="relative flex items-center md:min-w-40 md:max-w-40 max-w-30"
+            >
+              <>
+                <NavLogo
+                  className={cn(
+                    'w-full dark:block',
+                    isScrolled || navMobileOpen ? 'hidden' : 'block',
+                  )}
+                  variant="white"
+                />
+                <NavLogo
+                  className={cn(
+                    'w-full dark:hidden block',
+                    isScrolled || navMobileOpen ? 'block' : 'hidden',
+                  )}
+                  variant="black"
+                />
+              </>
             </Link>
-            <div className="hidden items-center gap-4 text-sm font-medium text-white/90 lg:flex">
-              {NAV_LINKS.map((link, index) => (
+
+            <div className="hidden items-center gap-4 text-sm font-medium text-white/90 md:flex">
+              {navLinks.map((link, index) => (
                 <Link
                   key={index}
                   href={link.path}
                   className={cn(
-                    'transition-colors whitespace-nowrap py-0.5 px-2 border-b border-transparent duration-200',
+                    'transition-colors whitespace-nowrap py-0.5 px-2 border-b border-transparent duration-200 text-white/60 hover:text-white text-sm ',
                     pathName === link.path
-                      ? isScrolled &&
-                          (theme === 'light'
-                            ? 'border-black text-black'
-                            : 'border-white text-white')
-                      : isScrolled && theme === 'light'
-                        ? 'hover:text-black text-black/70'
-                        : 'hover:text-white text-white/70',
+                      ? (isScrolled || navMobileOpen) &&
+                          'dark:text-white text-black dark:border-white border-black'
+                      : (isScrolled || navMobileOpen) &&
+                          'dark:text-white/60 text-black/60',
                   )}
                 >
                   {link.name}
@@ -107,7 +131,7 @@ const NavTransparent = () => {
             {user ? (
               <NavProfileAvatar user={user} />
             ) : (
-              <div className="flex items-center gap-1">
+              <div className="md:flex hidden items-center gap-1">
                 <Link
                   href="/sign-in"
                   className={cn(
@@ -115,9 +139,7 @@ const NavTransparent = () => {
                       variant: isScrolled ? 'default' : 'secondary',
                     }),
                     'h-auto py-2 px-5 rounded-full',
-                    theme === 'dark' &&
-                      !isScrolled &&
-                      'bg-gray-200 text-zinc-900',
+                    !isScrolled && 'dark:bg-gray-200 dark:text-zinc-900',
                   )}
                 >
                   Log In
@@ -127,9 +149,7 @@ const NavTransparent = () => {
                   className={cn(
                     buttonVariants({ variant: 'outline' }),
                     'h-auto py-2 px-5 rounded-full bg-transparent',
-                    theme === 'light' &&
-                      !isScrolled &&
-                      'text-white border-white/20',
+                    !isScrolled && 'text-white border-white/20',
                   )}
                 >
                   Sign Up
@@ -138,6 +158,9 @@ const NavTransparent = () => {
             )}
           </div>
         </nav>
+
+        {/* nav mobile */}
+        <MobileNav open={navMobileOpen} user={user} />
       </header>
     )
   );

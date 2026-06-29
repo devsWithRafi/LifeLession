@@ -15,10 +15,10 @@ const DashboardLayout = async ({ children }) => {
       <SidebarProvider>
         <AppSidebar />
         <main className="w-full">
-          <div className="w-full bg-card sm:px-8 px-4 py-4">
-            <SidebarTrigger className={'p-2 text-muted-foreground'}/>
+          <div className="w-full sm:px-5 px-4 h-10 flex items-center">
+            <SidebarTrigger className={'p-4 text-muted-foreground'}/>
           </div>
-          <div className="md:p-8 pt-0 p-4 min-w-full flex flex-col gap-5">
+          <div className="md:p-5 pt-0 p-4 min-w-full flex flex-col gap-5">
             {children}
           </div>
         </main>

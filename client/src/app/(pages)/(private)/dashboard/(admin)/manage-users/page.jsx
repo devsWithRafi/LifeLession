@@ -1,5 +1,10 @@
-import React from 'react';
 import ManageUserData from './ManageUserData';
+
+export const metadata = {
+  title: 'LifeLesson | Manage Users',
+  description: '',
+};
+
 
 const ManageUsers = () => {
   return (

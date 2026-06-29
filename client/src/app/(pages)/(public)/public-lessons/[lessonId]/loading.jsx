@@ -1,9 +1,7 @@
-import React from 'react'
+import PageLoader from '@/components/PageLoader'
 
 const loading = () => {
-  return (
-    <div>loading...</div>
-  )
+  return <PageLoader/>
 }
 
 export default loading

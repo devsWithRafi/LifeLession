@@ -13,8 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { LuLayoutDashboard, LuCirclePlus, LuLogOut } from 'react-icons/lu';
-import { IoMdBook } from 'react-icons/io';
+import { LuLayoutDashboard, LuLogOut } from 'react-icons/lu';
 import { FaRegHeart } from 'react-icons/fa';
 import { RiUserLine } from 'react-icons/ri';
 import Link from 'next/link';
@@ -23,7 +22,6 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { authClient } from '@/lib/auth-client';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
-import { MdOutlineFeaturedPlayList } from 'react-icons/md';
 import { FaUserGear } from 'react-icons/fa6';
 
 import {
@@ -33,12 +31,12 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
-import { BookOpen, BookMarked, Flag, ClipboardClock } from 'lucide-react';
+import { BookOpen, BookMarked, Flag, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
 const dashboardLinks = [
   { path: '/dashboard', name: 'Overview', icon: LuLayoutDashboard },
-  { path: '/dashboard/add-lesson', name: 'Add Lesson', icon: LuCirclePlus },
+  { path: '/dashboard/add-lesson', name: 'Add Lesson', icon: Plus },
   { path: '/dashboard/my-lessons', name: 'My Lessons', icon: BookOpen },
   { path: '/dashboard/my-favorites', name: 'My Favorites', icon: FaRegHeart },
   { path: '/dashboard/profile', name: 'Profile', icon: RiUserLine },
@@ -50,11 +48,6 @@ const adminDashboardLinks = [
     path: '/dashboard/manage-lessons',
     name: 'Manage Lessons',
     icon: BookMarked,
-  },
-  {
-    path: '/dashboard/todays-lessons',
-    name: 'Todays Lessons',
-    icon: ClipboardClock,
   },
   { path: '/dashboard/reported-lessons', name: 'Reported', icon: Flag },
 ];

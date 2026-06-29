@@ -8,6 +8,9 @@ import {
   Info,
   Trash2,
   EyeOff,
+  Flag,
+  X,
+  Check,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -23,7 +26,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { formatDate } from '@/lib/formatDate';
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getToken } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { useSearchParams } from 'next/navigation';
@@ -37,41 +40,40 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Switch } from '@/components/ui/switch';
-import { UpdateLessonAction } from '@/actions/UpdateLesson.action';
 import DeleteLessonModal from '../../../_components/DeleteLessonModal';
-import ManageLessonsHeader from './ManageLessonsHeader';
+import { CardBadgeColors } from '@/components/card/CardBadgeColors';
+import ViewReportModal from './ViewReportModal';
+import { DeleteAllReportsAction } from '@/actions/DeleteAllReportsAction';
+import ReportedLessonsHeader from './ReportedLessonsHeader';
 
-const ManageAllLessonsData = () => {
+const ReportedLessonsData = () => {
   const searchParams = useSearchParams();
-  const { lessons, fetchLessonsData, loading } = useAllLessons();
+  const { lessons: allLessons, fetchLessonsData, loading } = useAllLessons();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [lessonToDelete, setLessonToDelete] = useState(null);
-  const [isFeatured, setIsFeatured] = useState({});
-  const [updateFeatured, setUpdateFeatured] = useState({
+  const [viewReportModalOpen, setViewReportModalOpen] = useState(false);
+  const [lessonToViewReport, setLessonToViewReport] = useState(null);
+  const [ignoringAll, setIgnoringAll] = useState({
     loading: false,
     lessonId: null,
   });
 
-  useEffect(() => {
-    (() => {
-      const featured = {};
-      lessons.forEach((lesson) => {
-        featured[lesson._id] = lesson.isFeatured;
-      });
-      setIsFeatured(featured);
-    })();
-  }, [lessons]);
+  const lessons = allLessons.filter((lesson) => lesson.reports.length > 0);
+  const lastReport = (lesson) => {
+    return [...lesson.reports].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    )[0];
+  };
 
-  const filteredLessons = lessons.filter((lesson) => {
+  const filteredReportedLessons = lessons.filter((lesson) => {
     const search = searchParams.get('search');
     const category = searchParams.get('category');
-    const emotionalTone = searchParams.get('emotionalTone');
     const plan = searchParams.get('plan');
     return (
-      (!search || lesson.title.toLowerCase().includes(search.toLowerCase())) &&
+      (!search ||
+        lesson.title.toLowerCase().includes(search.toLowerCase()) ||
+        lesson.author.name.toLowerCase().includes(search.toLowerCase())) &&
       (!category || lesson.category === category) &&
-      (!emotionalTone || lesson.emotionalTone === emotionalTone) &&
       (!plan || lesson.accessLevel === plan)
     );
   });
@@ -81,25 +83,24 @@ const ManageAllLessonsData = () => {
     setLessonToDelete(lesson);
   };
 
-  const handleChangeFeatured = async (lesson, value) => {
-    setIsFeatured({ ...isFeatured, [lesson._id]: value });
-    setUpdateFeatured({ loading: true, lessonId: lesson._id });
+  const handleViewReport = (lesson) => {
+    setViewReportModalOpen(true);
+    setLessonToViewReport(lesson);
+  };
+
+  const handleIgonringAll = async (lesson) => {
     try {
+      setIgnoringAll({ loading: true, lessonId: lesson._id });
       const token = await getToken();
-      const res = await UpdateLessonAction(
-        lesson._id,
-        { ...lesson, isFeatured: value },
-        token,
-      );
+      const res = await DeleteAllReportsAction(lesson._id, token);
       if (res.success) {
-        toast.success(res.message);
+        toast.success('Reports deleted successfully');
         fetchLessonsData();
       }
     } catch (error) {
       toast.error(error.message);
-      return;
     } finally {
-      setUpdateFeatured({ loading: false, lessonId: null });
+      setIgnoringAll({ loading: false, lessonId: null });
     }
   };
 
@@ -108,7 +109,7 @@ const ManageAllLessonsData = () => {
       <div className="min-h-screen bg-background text-foreground">
         <div className="w-full mx-auto sm:px-6 space-y-8">
           {/* ── Table ── */}
-          <ManageLessonsHeader lessons={lessons} />
+          <ReportedLessonsHeader flaggedLessons={lessons} />
 
           {/* content */}
           <Card className={cn('relative p-0')}>
@@ -121,16 +122,17 @@ const ManageAllLessonsData = () => {
                         Lesson
                       </TableHead>
                       <TableHead>Author</TableHead>
+                      <TableHead>Category</TableHead>
                       <TableHead>Visibility</TableHead>
-                      <TableHead>Plan</TableHead>
-                      <TableHead>Featured</TableHead>
-                      <TableHead>Created</TableHead>
+                      <TableHead>Access</TableHead>
+                      <TableHead>Reports</TableHead>
+                      <TableHead>Last Reported</TableHead>
                       <TableHead className="pr-6 text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
 
                   <TableBody>
-                    {filteredLessons.length === 0 && (
+                    {filteredReportedLessons.length === 0 && (
                       <TableRow>
                         {loading ? (
                           <TableCell colSpan={10} className="h-32 text-center">
@@ -139,11 +141,16 @@ const ManageAllLessonsData = () => {
                             </div>
                           </TableCell>
                         ) : (
-                          <TableCell colSpan={7} className="h-32 text-center">
+                          <TableCell colSpan={8} className="h-50 text-center">
                             <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                              <BookOpen className="h-8 w-8 opacity-30" />
-                              <p className="text-sm">
-                                No lessons yet. Create your first one!
+                              <span className="flex items-center justify-center p-3 rounded-full bg-muted">
+                                <Check className="size-7 text-muted-foreground" />
+                              </span>
+                              <h2 className="text-primary font-medium mt-3">
+                                All clear — no reported lessons
+                              </h2>
+                              <p className="text-sm text-muted-foreground">
+                                The community is in good shape.
                               </p>
                             </div>
                           </TableCell>
@@ -151,19 +158,19 @@ const ManageAllLessonsData = () => {
                       </TableRow>
                     )}
 
-                    {filteredLessons.length > 0 &&
-                      filteredLessons.map((lesson) => {
+                    {filteredReportedLessons.length > 0 &&
+                      filteredReportedLessons.map((lesson) => {
                         return (
                           <TableRow
                             key={lesson._id}
                             className={cn(
                               'group',
-                              updateFeatured.loading &&
-                                updateFeatured.lessonId === lesson._id &&
-                                'opacity-50 pointer-events-none',
+                              ignoringAll.loading &&
+                                ignoringAll.lessonId === lesson._id &&
+                                'opacity-50 pointer-events-none select-none',
                             )}
                           >
-                            {/* Title + description */}
+                            {/* Title */}
                             <TableCell className="sm:pl-6 pl-4 py-4">
                               <div className="flex items-center gap-3 relative">
                                 {lesson.image ? (
@@ -202,6 +209,24 @@ const ManageAllLessonsData = () => {
                               </div>
                             </TableCell>
 
+                            {/* Category */}
+                            <TableCell>
+                              <div className="flex flex-col gap-1.5">
+                                <span
+                                  className={`inline-flex w-fit items-center rounded-full px-3 py-1 sm:text-xs text-[10px] font-medium 
+                             ${
+                               CardBadgeColors.category[
+                                 lesson.category
+                                   .toLowerCase()
+                                   .replaceAll(' ', '_')
+                               ] ?? 'bg-muted text-muted-foreground'
+                             }`}
+                                >
+                                  {lesson.category}
+                                </span>
+                              </div>
+                            </TableCell>
+
                             {/* Visibility */}
                             <TableCell>
                               <span
@@ -224,7 +249,7 @@ const ManageAllLessonsData = () => {
                               </span>
                             </TableCell>
 
-                            {/* Lesson Plan */}
+                            {/* Lesson Access Level */}
                             <TableCell>
                               <div
                                 className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium font-sans
@@ -247,22 +272,18 @@ const ManageAllLessonsData = () => {
                               </div>
                             </TableCell>
 
-                            {/* Featured */}
+                            {/* Reports */}
                             <TableCell>
-                              <span>
-                                <Switch
-                                  checked={isFeatured[lesson._id] || false}
-                                  onCheckedChange={(value) =>
-                                    handleChangeFeatured(lesson, value)
-                                  }
-                                />
+                              <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium font-sans bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400">
+                                <Flag className="h-3 w-3" />{' '}
+                                {lesson.reports?.length}
                               </span>
                             </TableCell>
 
-                            {/* Created */}
+                            {/* Last Reported */}
                             <TableCell>
                               <span className="text-sm text-muted-foreground">
-                                {formatDate(lesson.createdAt)}
+                                {formatDate(lastReport(lesson).createdAt)}
                               </span>
                             </TableCell>
 
@@ -287,10 +308,26 @@ const ManageAllLessonsData = () => {
                                   </Link>
                                   <DropdownMenuSeparator />
                                   <DropdownMenuItem
+                                    onClick={() => handleViewReport(lesson)}
+                                    className="p-2 text-xs"
+                                  >
+                                    <Flag className="size-3.5" />
+                                    View Reports
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    onClick={() => handleIgonringAll(lesson)}
+                                    className="p-2 text-xs"
+                                  >
+                                    <X className="size-3.5" />
+                                    Ignore all
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
                                     onClick={() => handleDelete(lesson)}
                                     className="text-destructive focus:text-destructive whitespace-nowrap p-2 text-xs"
                                   >
-                                    <Trash2 className="size-3" /> Delete
+                                    <Trash2 className="size-3" /> Delete Lesson
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
@@ -306,6 +343,13 @@ const ManageAllLessonsData = () => {
         </div>
       </div>
 
+      {/* view reported lesson modal */}
+      <ViewReportModal
+        open={viewReportModalOpen}
+        onClose={() => setViewReportModalOpen(false)}
+        lesson={lessonToViewReport}
+      />
+
       {/* delete lesson modal */}
       <DeleteLessonModal
         open={deleteModalOpen}
@@ -316,4 +360,4 @@ const ManageAllLessonsData = () => {
   );
 };
 
-export default ManageAllLessonsData;
+export default ReportedLessonsData;

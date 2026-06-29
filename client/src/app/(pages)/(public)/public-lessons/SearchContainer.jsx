@@ -28,7 +28,7 @@ const SearchContainer = () => {
     title: ''.toLowerCase(),
     category: ''.toLowerCase(),
     emotionalTone: ''.toLowerCase(),
-    accessLevel: ''.toLowerCase(),
+    sortBy: ''.toLowerCase(),
   };
 
   const [query, setQuery] = useState(defaultQuery);
@@ -48,22 +48,22 @@ const SearchContainer = () => {
   };
 
   return (
-    <div className="mt-10 w-full grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 items-end gap-2">
+    <div className="sm:mt-10 w-full grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 items-end gap-2">
       <div className="flex flex-col gap-3 col-span-2">
-        <Label>Search Lessons</Label>
+        <Label className="sm:block hidden">Search Lessons</Label>
         <div className="flex items-center gap-2 w-full relative">
-          <Search className="text-muted-foreground absolute left-3 size-5" />
+          <Search className="text-muted-foreground absolute left-3 sm:size-5 size-4.5" />
           <Input
             value={query.title}
             onChange={(e) => setQuery({ ...query, title: e.target.value })}
             placeholder="Search by title"
-            className={'min-w-full rounded-md px-4 h-11 pl-9'}
+            className={'min-w-full rounded-md px-4 h-11 pl-9 text-sm'}
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-3">
-        <Label>Category</Label>
+        <Label className="sm:block hidden">Category</Label>
         <Select
           value={query.category}
           onValueChange={(value) => setQuery({ ...query, category: value })}
@@ -84,7 +84,7 @@ const SearchContainer = () => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <Label>Emotional Tone</Label>
+        <Label className="sm:block hidden">Emotional Tone</Label>
         <Select
           value={query.emotionalTone}
           onValueChange={(value) =>
@@ -107,19 +107,19 @@ const SearchContainer = () => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <Label>Access Level</Label>
+        <Label className="sm:block hidden">Sort By</Label>
         <Select
-          value={query.accessLevel}
-          onValueChange={(value) => setQuery({ ...query, accessLevel: value })}
+          value={query.sortBy}
+          onValueChange={(value) => setQuery({ ...query, sortBy: value })}
         >
           <SelectTrigger className="w-full min-h-11 px-4 capitalize rounded-md">
-            <SelectValue placeholder="Select Level" />
+            <SelectValue placeholder="Select Sort" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {['premium', 'free'].map((acc, index) => (
+              {['newest', 'oldest', 'most-saved'].map((acc, index) => (
                 <SelectItem key={index} value={acc} className="capitalize">
-                  {acc}
+                  {acc.replaceAll('-', ' ')}
                 </SelectItem>
               ))}
             </SelectGroup>

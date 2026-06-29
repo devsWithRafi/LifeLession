@@ -234,7 +234,7 @@ export default function MyLessonsPage() {
                           </div>
                         </TableCell>
 
-                        {/* Category + tone */}
+                        {/* Category */}
                         <TableCell>
                           <div className="flex flex-col gap-1.5">
                             <span

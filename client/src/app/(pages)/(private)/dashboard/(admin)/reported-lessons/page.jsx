@@ -1,9 +1,17 @@
-import React from 'react'
+import ReportedLessonsData from './ReportedLessonsData';
+
+export const metadata = {
+  title: 'LifeLesson | Reported Lessons',
+  description: '',
+};
+
 
 const ReportedLessonPage = () => {
   return (
-    <div>ReportedLessonPage</div>
-  )
-}
+    <section>
+      <ReportedLessonsData />
+    </section>
+  );
+};
 
-export default ReportedLessonPage
+export default ReportedLessonPage;

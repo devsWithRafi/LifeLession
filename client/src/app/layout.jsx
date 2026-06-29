@@ -41,7 +41,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: 'LifeLessons',
+  title: 'LifeLesson',
   description: '',
 };
 

@@ -20,7 +20,7 @@ const CommentContextProvider = ({ children }) => {
       const result = await fetchLessonComment(id, token);
       if (result?.success) setComments(result.data);
       else {
-        toast.error(result?.message || 'LessonDetails fetch failed');
+        console.log(result?.message || 'LessonDetails fetch failed');
       }
     });
   };

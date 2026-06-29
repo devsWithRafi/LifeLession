@@ -31,12 +31,14 @@ import ManageUsersHeader from './ManageUsersHeader';
 import { useState } from 'react';
 import ManageUsersDeleteModal from './ManageUsersDeleteModal';
 import { PromoteUserAction } from '@/actions/PromoteUserAction';
-import { getToken } from '@/lib/auth-client';
+import { getToken, useSession } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import { useSearchParams } from 'next/navigation';
 
 const ManageUserData = () => {
   const searchParams = useSearchParams();
+  const { data } = useSession();
+  const currentUser = data?.user;
   const { users: allUsers, fetchUsers, loading } = useAllUsers();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
@@ -132,11 +134,18 @@ const ManageUserData = () => {
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex flex-col">
-                                <p className="text-sm font-medium">
-                                  {user.name.length > 15
-                                    ? user.name.slice(0, 25) + '...'
-                                    : user.name}
-                                </p>
+                                <div className="flex items-center gap-2">
+                                  <p className="text-sm font-medium">
+                                    {user.name.length > 15
+                                      ? user.name.slice(0, 25) + '...'
+                                      : user.name}
+                                  </p>
+                                  {user._id === currentUser.id && (
+                                    <p className="text-xs text-muted-foreground bg-muted px-3 font-sans rounded-full">
+                                      You
+                                    </p>
+                                  )}
+                                </div>
                                 <p className="text-xs text-muted-foreground">
                                   {user.email.length > 25
                                     ? user.email.slice(0, 25) + '...'
@@ -209,7 +218,7 @@ const ManageUserData = () => {
                           {/* Lessons */}
                           <TableCell>
                             {user.emailVerified ? (
-                              <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium bg-green-500/20 text-green-500 font-sans">
+                              <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium dark:bg-green-500/20 bg-green-500/10 dark:text-green-500 text-green-600 font-sans">
                                 <Check className="h-3.5 w-3.5" />
                                 Verified
                               </span>
@@ -222,9 +231,16 @@ const ManageUserData = () => {
                           </TableCell>
 
                           {/* Actions */}
-                          <TableCell className="pr-6 text-right">
+                          <TableCell
+                            className={cn(
+                              'pr-6 text-right',
+                              user._id === currentUser.id &&
+                                'cursor-not-allowed',
+                            )}
+                          >
                             <div>
                               <Button
+                                disabled={user._id === currentUser.id}
                                 onClick={() => promoteUserRole(user)}
                                 variant="outline"
                                 className="rounded-md h-8"
@@ -239,6 +255,7 @@ const ManageUserData = () => {
                                 )}
                               </Button>
                               <Button
+                                disabled={user._id === currentUser.id}
                                 onClick={() => handleDelete(user)}
                                 variant="destructive"
                                 className="ml-2 sm:w-auto w-8 h-8 sm:rounded-md rounded-full"

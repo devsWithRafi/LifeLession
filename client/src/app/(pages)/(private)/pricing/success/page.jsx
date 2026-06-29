@@ -13,6 +13,12 @@ import {
 import { cn } from '@/lib/utils';
 import { stripe } from '@/lib/stripe';
 
+export const metadata = {
+  title: 'LifeLesson | Success',
+  description: '',
+};
+
+
 async function SuccessContent({ searchParams }) {
   const { session_id } = await searchParams;
 

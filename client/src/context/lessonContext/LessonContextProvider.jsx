@@ -19,7 +19,7 @@ const LessonContextProvider = ({ children }) => {
       const result = await fetchOneLesson(lessonId, token);
       if (result?.success) setLesson(result.data);
       else {
-        toast.error(result?.message || 'LessonDetails fetch failed');
+        console.log(result?.message || 'LessonDetails fetch failed');
       }
     });
   };

@@ -11,14 +11,13 @@ import LikeButton from './LikeButton';
 import SaveButton from './SaveButton';
 import ReportButton from './ReportButton';
 import ShareButton from './ShareButton';
-import { useLessonComment } from '@/context/comment-context/CommentContextProvider';
+import PageLoader from '@/components/PageLoader';
 
 const LessonDetails = () => {
   const { fetching, lesson } = useSingleLesson();
-  const { comments, fetchComment } = useLessonComment();
 
   return fetching ? (
-    <div>Fetching...</div>
+    <PageLoader className="w-full h-[calc(100vh-200px)]" />
   ) : !lesson ? (
     <div>No data found</div>
   ) : (

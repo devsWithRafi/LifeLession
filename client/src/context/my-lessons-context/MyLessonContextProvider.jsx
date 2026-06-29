@@ -17,7 +17,7 @@ const MyLessonContextProvider = ({ children }) => {
       if (res.success) {
         setMyLessons(res.data);
       } else {
-        toast.error(res.message || 'My lesson data fetch failed');
+        console.log(res.message || 'My lesson data fetch failed');
       }
     });
   };

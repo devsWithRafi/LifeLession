@@ -12,6 +12,11 @@ import {
 import { cn } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 
+export const metadata = {
+  title: 'LifeLesson | Payment Canceled',
+  description: '',
+};
+
 async function ErrorContent({ searchParams }) {
   const { reason, session_id } = await searchParams;
 

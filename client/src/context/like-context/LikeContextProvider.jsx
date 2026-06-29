@@ -31,7 +31,7 @@ const LikeContextProvider = ({ children }) => {
         setLiked((prev) => !prev);
         setLikes((prev) => (liked ? prev - 1 : prev + 1));
       } else {
-        toast.error(result.message ?? 'Error: adding like failed');
+        console.log(result.message ?? 'Error: adding like failed');
         setLiked(false);
       }
     });

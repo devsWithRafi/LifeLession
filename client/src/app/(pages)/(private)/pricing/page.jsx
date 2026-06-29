@@ -6,8 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { IoMdCheckmark } from 'react-icons/io';
-import { RxCross2 } from 'react-icons/rx';
 import { BsStars } from 'react-icons/bs';
 import { FaAward } from 'react-icons/fa';
 import {
@@ -19,7 +17,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import SubscriptionBadge from '@/components/SubscriptionBadge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { LuShieldCheck } from 'react-icons/lu';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +28,17 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Check, X } from 'lucide-react';
+import { getUserSession } from '@/lib/auth';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+
+// ======================================================================
+export const metadata = {
+  title: 'LifeLesson | Pricing',
+  description: '',
+};
+// ======================================================================
+
 const features = [
   { name: 'Lessons Created', free: '10', premium: 'Unlimited' },
   { name: 'Access Premium Lessons', free: false, premium: true },
@@ -69,7 +78,10 @@ const faqs = [
   },
 ];
 
-const PricingPage = () => {
+const PricingPage = async () => {
+  const user = await getUserSession();
+  const isPremium = user?.plan === 'premium' || user?.role === 'admin';
+
   return (
     <>
       <Navber />
@@ -111,7 +123,7 @@ const PricingPage = () => {
                       {feature.name}
                     </TableCell>
                     <TableCell className="text-center p-5">
-                      <Cell value={feature.free}/>
+                      <Cell value={feature.free} />
                     </TableCell>
                     <TableCell className="p-5 text-center">
                       <Cell value={feature.premium} />
@@ -142,15 +154,36 @@ const PricingPage = () => {
                 <p className="!text-muted-foreground text-xs">BDT</p>
               </div>
 
-              <form action="/api/checkout_sessions" method="POST">
-                <Button
-                  type="submit"
-                  role="link"
-                  className="w-full h-auto py-3 rounded-full font-medium"
+              {user ? (
+                <form
+                  action="/api/checkout_sessions"
+                  method="POST"
+                  className={cn(isPremium && 'cursor-not-allowed')}
+                >
+                  <Button
+                    type="submit"
+                    disabled={isPremium}
+                    role="link"
+                    className="w-full h-auto py-3 rounded-full font-medium"
+                  >
+                    {isPremium
+                      ? user.role === 'admin'
+                        ? 'You are Admin'
+                        : 'Already Subscribed'
+                      : 'Upgrade to Premium'}
+                  </Button>
+                </form>
+              ) : (
+                <Link
+                  href={'/sign-in'}
+                  className={cn(
+                    buttonVariants(),
+                    'w-full h-auto py-3 rounded-full font-medium',
+                  )}
                 >
                   Upgrade to Premium
-                </Button>
-              </form>
+                </Link>
+              )}
 
               <span className="w-full p-3 rounded bg-muted flex gap-2 items-center justify-center text-muted-foreground text-xs">
                 <LuShieldCheck size={15} /> SECURE CHECKOUT VIA STRIPE
@@ -172,9 +205,7 @@ const PricingPage = () => {
           </Card>
         </div>
 
-        <div
-          className="bg-background mt-25 py-5 w-full"
-        >
+        <div className="bg-background mt-25 py-5 w-full">
           <div className="mx-auto md:max-w-[70%]">
             <div className="mb-10 text-center">
               <p className="text-sm font-medium text-muted-foreground">FAQ</p>

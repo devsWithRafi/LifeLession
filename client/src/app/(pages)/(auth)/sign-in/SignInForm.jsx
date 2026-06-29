@@ -110,7 +110,7 @@ const SignInForm = () => {
           isFormLoading && 'opacity-30 pointer-events-none',
         )}
       >
-        <h2 className="text-xl font-semibold text-center">Sign In</h2>
+        <h2 className="text-xl font-semibold text-center">Sign In Account</h2>
         <p className="text-muted-foreground text-sm text-center mt-1 mb-6">
           Enter your personal data to sign in your account.
         </p>

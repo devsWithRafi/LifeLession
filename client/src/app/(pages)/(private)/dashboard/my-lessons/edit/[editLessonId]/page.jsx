@@ -1,5 +1,10 @@
-import React from 'react';
 import EditLessonForm from './EditLessonForm';
+
+export const metadata = {
+  title: 'LifeLesson | Edit Lesson',
+  description: '',
+};
+
 
 const EditLesson = () => {
   return (

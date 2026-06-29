@@ -119,11 +119,11 @@ const AddLessonForm = () => {
   return (
     <Card
       className={cn(
-        'max-w-200 mx-auto p-3 py-10 rounded-md',
+        'max-w-200 mx-auto sm:px-3 sm:py-10 py-2 rounded-md',
         formPending && 'pointer-events-none opacity-40 select-none',
       )}
     >
-      <CardContent>
+      <CardContent className="sm:px-4 px-2">
         <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             {/* TITLE */}
@@ -379,7 +379,7 @@ const AddLessonForm = () => {
             </div>
           </FieldGroup>
 
-          <Separator className="my-10" />
+          <Separator className="sm:my-10 my-5" />
 
           <span className="flex justify-start gap-3">
             <Button type="submit" className="h-auto py-2 px-5">
