@@ -1,10 +1,8 @@
-'use server';
-
-const API_KEY = process.env.IMGBB_API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
 
 export const uploadImage = async (imageFile) => {
   try {
-    if (!imageFile) return;
+    if (!imageFile) throw new Error('No image selected.');
     const formdata = new FormData();
     formdata.append('image', imageFile);
 
@@ -14,6 +12,11 @@ export const uploadImage = async (imageFile) => {
     });
 
     const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.error?.message || 'Image upload failed.');
+    }
+
     return data.data;
   } catch (error) {
     console.log('Image Uload failed: ', error);
