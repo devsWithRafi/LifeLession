@@ -62,7 +62,7 @@ const UserProfileUpdateModal = ({ open, setOpen }) => {
             toast.error('Image upload failed');
             return;
           }
-          payload.image = url;
+          payload.image = image.url;
         }
         await authClient.updateUser({
           ...payload,
