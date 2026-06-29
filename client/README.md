@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📖 LifeLesson — Frontend
 
-## Getting Started
+> *Preserve the wisdom you've gained through life's experiences.*
 
-First, run the development server:
+LifeLesson is a community-driven platform where people write, share, and discover real-life lessons — personal growth insights, mindset shifts, relationship wisdom, and more. The frontend is built with **Next.js 16** and delivers a fast, modern, dark-themed experience for readers and contributors alike.
+
+---
+
+## 🌐 Live Preview
+
+| Page | Description |
+|------|-------------|
+| `/` | Home — hero, featured lessons, why it matters, discover section |
+| `/public-lessons` | Community Wisdom — browse & filter all public lessons |
+| `/pricing` | Pricing — Free vs Premium comparison + FAQ |
+| `/dashboard` | User dashboard — overview, add lesson, my lessons, favorites, profile |
+| `/dashboard/add-lesson` | Create & publish a new life lesson |
+| `/lessons/[id]` | Lesson detail — full content, engagement, related lessons, comments |
+| `/profile/[id]` | Public contributor profile — lessons, stats, badges |
+
+---
+
+## ✨ Key Features
+
+### For All Users
+- 🏠 **Curated Home Feed** — Featured lessons hand-picked for depth, utility, and resonance
+- 🔍 **Community Wisdom Page** — Search by title, filter by category, emotional tone, and sort order
+- 📖 **Lesson Detail View** — Full lesson content with engagement (likes, saves, shares), comments, and related lessons
+- 👤 **Public Profiles** — View any contributor's lessons, stats (views, likes, saves), and category badges
+- 💡 **Why It Matters Section** — Reflection, Community, Legacy, Clarity pillars explained on the homepage
+- 🌙 **Dark / Light Mode** toggle
+
+### For Registered Users
+- ✍️ **Write & Publish Lessons** — Title, full description, category, emotional tone, featured image, visibility toggle (public/private), and access level (free/premium)
+- ❤️ **Save Favorites** — Bookmark lessons you want to revisit
+- 💬 **Comment** — Engage with the community on lesson detail pages
+- 📊 **Personal Dashboard** — Track your lessons, views, likes, and saves
+- 🏷️ **Free vs Premium Access** — Free users can create up to 10 lessons; Premium unlocks unlimited lessons, community badge, priority support.
+
+### For Admin Users *(3 Extra Controls)*
+Admins get all standard user features **plus** a dedicated admin sidebar with:
+
+| Admin Panel | What It Does |
+|---|---|
+| 👥 **Manage Users** | View all registered users, their roles, plan status, and activity |
+| 📋 **Manage Lessons** | Approve, edit, or remove any public lesson on the platform |
+| 🚩 **Reported Lessons** | Review flagged/reported content and take moderation action |
+
+The admin dashboard also shows platform-wide analytics: total users, public lessons, reported content, new lessons today, lesson growth chart, user growth chart, and a leaderboard of most active contributors.
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool | Purpose |
+|------|---------|
+| [Next.js 16](https://nextjs.org/) | React framework (App Router) |
+| [React 19](https://react.dev/) | UI rendering |
+| [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first styling |
+| [shadcn/ui](https://ui.shadcn.com/) + [Radix UI](https://www.radix-ui.com/) | Accessible component primitives |
+| [Better Auth](https://better-auth.com/) | Authentication |
+| [Recharts](https://recharts.org/) | Dashboard analytics charts |
+| [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) | Form handling & validation |
+| [Stripe](https://stripe.com/) | Premium plan payment checkout |
+| [Embla Carousel](https://www.embla-carousel.com/) | Homepage carousels |
+| [React Dropzone](https://react-dropzone.js.org/) | Featured image upload |
+| [Sonner](https://sonner.emilkowal.ski/) | Toast notifications |
+| [date-fns](https://date-fns.org/) | Date formatting |
+| [next-themes](https://github.com/pacocoursey/next-themes) | Dark/light mode |
+| [Lucide React](https://lucide.dev/) + [React Icons](https://react-icons.github.io/react-icons/) | Icon sets |
+| [MongoDB](https://www.mongodb.com/) | Database client (shared with backend) |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- A running instance of the [LifeLesson Backend](#) (see backend README)
+
+### Installation
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/your-username/lifelesson-frontend.git
+cd lifelesson-frontend
+
+# 2. Install dependencies
+npm install
+
+# 3. Set up environment variables
+cp .env.example .env.local
+# Fill in your values (see Environment Variables below)
+
+# 4. Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+BETTER_AUTH_SECRET=your-better-auth-secret
+BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+SERVER_URL=https:http://localhost:8000
 
-## Learn More
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
 
-To learn more about Next.js, take a look at the following resources:
+STRIPE_SECRET_KEY=your-stripe-secret-key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_IMGBB_API_KEY=your-imagebb-api-key
+MONGODB_URI=your-mongodb-uri
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Build for Production
 
-## Deploy on Vercel
+```bash
+npm run build
+npm start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎨 Design System
+
+- **Color Scheme:** Dark-first (`#000` / `#111` backgrounds, white text, amber/gold accents)
+- **Typography:** Bold italic lesson titles, clean sans-serif body
+- **Cards:** Rounded dark cards with subtle borders, category badge chips, and engagement stats
+- **Badges:** `PREMIUM` (amber), `FREE` (blue/gray), category tags (color-coded by type)
+
+---
+
+## 👥 User Roles
+
+| Role | Capabilities |
+|------|-------------|
+| **Guest** | Browse public lessons |
+| **User** | All guest features + write lessons, comment, like, save, manage own profile |
+| **Admin** | All user features + manage users, manage all lessons, review reported content, platform dashboard |
+
+---
+
+<p align="center">Thanks for yout time</p>
+
