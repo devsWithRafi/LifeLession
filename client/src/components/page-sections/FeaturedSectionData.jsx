@@ -22,12 +22,13 @@ const FeaturedSectionData = async () => {
   return (
     <>
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
-        {data && data.map((l) => <LessonCard key={l._id} lesson={l} />)}
+        {data &&
+          data.slice(0, 6).map((l) => <LessonCard key={l._id} lesson={l} />)}
       </div>
       {data.length > 6 && (
         <Link
           href={'/public-lessons'}
-          className={cn(buttonVariants(), 'rounded-full w-50 mx-auto')}
+          className={cn(buttonVariants(), 'rounded-full w-50 mx-auto mt-10')}
         >
           View all
         </Link>

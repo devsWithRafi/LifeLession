@@ -11,8 +11,7 @@ import { heroSliderData } from '@/lib/dummy-data/heroSlidersData';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '../ui/button';
-import { IoMdArrowForward } from "react-icons/io";
-
+import { IoMdArrowForward } from 'react-icons/io';
 
 export default function HeroSection() {
   const [api, setApi] = useState();
@@ -40,18 +39,18 @@ export default function HeroSection() {
       >
         <CarouselContent className="h-[calc(100vh-15px)]">
           {heroSliderData.map((slide, index) => (
-            <CarouselItem key={slide.title} className="relative">
+            <CarouselItem key={index} className="relative">
               <Image
                 src={slide.image}
                 alt={slide.title}
                 fill
-                priority={index === 0}
+                priority
                 className="object-cover w-full h-full"
               />
               {/* dark gradient so text + navbar stay legible over any photo */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/40" />
 
-              <div className="absolute inset-x-0 bottom-10 flex flex-col gap-8 px-6 pb-10 md:flex-row md:items-end md:justify-between md:px-12 md:pb-14">
+              <div className="absolute inset-x-0 bottom-5 flex flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between md:px-12">
                 <div>
                   <div className="max-w-xl">
                     <span className="mb-4 inline-block rounded-full bg-white/15 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
@@ -65,7 +64,7 @@ export default function HeroSection() {
                     </p>
                     <div className="mt-5 flex items-center gap-3">
                       <Link
-                        href="/add-lessions"
+                        href="/dashboard/add-lesson"
                         className={cn(
                           buttonVariants({ variant: 'secondary' }),
                           'h-auto py-2.5 px-7 rounded-full bg-white text-black hover:bg-white/80',
@@ -81,7 +80,7 @@ export default function HeroSection() {
                         )}
                       >
                         Explore Lessons
-                        <IoMdArrowForward/>
+                        <IoMdArrowForward />
                       </Link>
                     </div>
                     <div className="mt-6 flex items-center gap-2">

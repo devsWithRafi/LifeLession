@@ -31,6 +31,7 @@ import { Check, X } from 'lucide-react';
 import { getUserSession } from '@/lib/auth';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import Footer from '@/components/shared/footer/Footer';
 
 // ======================================================================
 export const metadata = {
@@ -241,6 +242,7 @@ const PricingPage = async () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

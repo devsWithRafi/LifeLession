@@ -5,6 +5,8 @@ import MostSavedLessonsSection from '@/components/page-sections/MostSavedLessons
 import WhyLearningSection from '@/components/page-sections/WhyLearningSection';
 import NavTransparent from '@/components/shared/navber/NavTransparent';
 
+export const dynamic = 'force-dynamic';
+
 const HomePage = () => {
   return (
     <>
@@ -13,7 +15,7 @@ const HomePage = () => {
         <HeroSection />
         <FeaturedSection />
         <WhyLearningSection />
-        <ExploreSection /> 
+        <ExploreSection />
         <MostSavedLessonsSection />
       </section>
     </>

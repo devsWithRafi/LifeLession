@@ -19,7 +19,9 @@ const LessonDetails = () => {
   return fetching ? (
     <PageLoader className="w-full h-[calc(100vh-200px)]" />
   ) : !lesson ? (
-    <div>No data found</div>
+    <div className="w-full h-130 flex items-center justify-center bg-card border border-card rounded-md">
+      No data found
+    </div>
   ) : (
     <div className="flex md:flex-row flex-col gap-5 justify-between w-full">
       {/* left side */}

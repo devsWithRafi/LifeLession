@@ -25,7 +25,8 @@ const Navber = () => {
   return (
     pathName !== '/' && (
       <header className="fixed top-0 w-full z-20 duration-200 ease-in-out bg-background/90 backdrop-blur-md">
-        <nav className="flex items-center justify-between gap-4 md:px-10 px-4 py-5 w-full">
+        
+        <nav className="flex items-center justify-between gap-10 md:px-5 px-4 py-5 w-full mx-auto max-w-375">
           <div className="flex items-center md:gap-10 gap-3">
             {/* menu button */}
             <button

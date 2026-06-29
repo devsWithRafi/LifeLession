@@ -13,7 +13,7 @@ const footerLinks = {
     { name: 'Home', path: '/', access: 'public' },
     { name: 'Public Lessons', path: '/public-lessons', access: 'public' },
     { name: 'Pricing', path: '/pricing', access: 'private' },
-    { name: 'Favorites', path: '/favorites', access: 'private' },
+    { name: 'Favorites', path: '/dashboard/my-favorites', access: 'private' },
   ],
   account: [
     { name: 'Dashboard', path: '/dashboard', access: 'private' },

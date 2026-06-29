@@ -1,7 +1,8 @@
+import { assets } from '@/assets/assets';
+
 export const heroSliderData = [
   {
-    image:
-      'https://images.unsplash.com/photo-1542401886-65d6c61db217?q=80&w=2069&auto=format&fit=crop',
+    image: assets.heroImage.heroImage1,
     tag: 'Destination',
     title: "Turn Your Life's Lessons Into Lasting Wisdom",
     description:
@@ -14,12 +15,11 @@ export const heroSliderData = [
     },
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop',
+    image: assets.heroImage.heroImage2,
     tag: 'Destination',
-    title: 'Chasing Sunsets in the Highlands',
+    title: 'Share Your Knowledge and Inspire Others',
     description:
-      'From misty peaks to golden valleys, discover why every traveler falls in love with the mountains.',
+      'Create meaningful lessons, share your expertise, and help others learn through your experiences. Every insight you share has the power to educate, inspire, and make a lasting impact.',
     author: {
       name: 'Amelia Carter',
       avatar: 'https://i.pravatar.cc/80?img=32',
@@ -28,8 +28,7 @@ export const heroSliderData = [
     },
   },
   {
-    image:
-      'https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=2070&auto=format&fit=crop',
+    image: assets.heroImage.heroImage4,
     tag: 'Destination',
     title: 'Hidden Shores Worth the Journey',
     description:
@@ -39,6 +38,19 @@ export const heroSliderData = [
       avatar: 'https://i.pravatar.cc/80?img=45',
       date: '15 Feb 2024',
       readTime: '5 mins read',
+    },
+  },
+  {
+    image: assets.heroImage.heroImage3,
+    tag: 'Destination',
+    title: 'Learn From Real Stories, Grow With Every Lesson',
+    description:
+      'Explore authentic experiences and practical insights shared by people from around the world. Every lesson offers a new perspective to help you grow.',
+    author: {
+      name: 'Daniel Kim',
+      avatar: 'https://i.pravatar.cc/80?img=58',
+      date: '21 Feb 2024',
+      readTime: '6 mins read',
     },
   },
 ];

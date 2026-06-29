@@ -7,7 +7,6 @@ import { useScrollNavBar } from '@/hooks/useScrollNavBar';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { Crown, TextAlignJustify, X } from 'lucide-react';
-import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import NavProfileAvatar from './NavProfileAvatar';
@@ -34,7 +33,9 @@ const NavTransparent = () => {
           (isScrolled || navMobileOpen) && 'bg-background/90 backdrop-blur-md',
         )}
       >
-        <nav className="flex items-center justify-between gap-10 md:px-5 px-4 py-5 w-full">
+        <nav className={cn("flex items-center justify-between gap-10 md:px-5 px-4 py-5 w-full mx-auto transition-all duration-500 max-w-full",
+          isScrolled && "max-w-375"
+        )}>
           <div className="flex items-center md:gap-10 gap-3">
             {/* menu button */}
             <button
