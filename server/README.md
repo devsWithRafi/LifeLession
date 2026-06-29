@@ -104,7 +104,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Server runs on [http://localhost:5000](http://localhost:8000) by default.
+Server runs on [http://localhost:8000](http://localhost:8000) by default.
 
 ### Environment Variables
 
