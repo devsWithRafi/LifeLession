@@ -1,8 +1,6 @@
 'use client';
 
 import { useContext, useEffect, useState, useTransition } from 'react';
-import { getToken } from '@/lib/auth-client';
-import { toast } from 'sonner';
 import { fetchLessons } from '@/actions/apis/fetchLessons';
 import { AllLessonsContext } from './AllLessonsContext';
 
@@ -12,8 +10,7 @@ const AllLessonsContextProvider = ({ children }) => {
 
   const fetchLessonsData = () => {
     startLoading(async () => {
-      const token = await getToken();
-      const res = await fetchLessons(token);
+      const res = await fetchLessons();
       if (res.success) {
         setLessons(res.data);
       } else {

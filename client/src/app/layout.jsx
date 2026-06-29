@@ -59,7 +59,8 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <UnivercelContextProvider>{children}</UnivercelContextProvider>
+          {/* <UnivercelContextProvider>{children}</UnivercelContextProvider> */}
+          {children}
           <Toaster position="top-center" />
         </ThemeProvider>
       </body>
