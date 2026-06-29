@@ -18,7 +18,6 @@ export const serverMutation = async (path, method, data, token) => {
 
     const res = await fetch(`${server_url}${path}`, {
       ...options,
-      cache: 'no-store',
     });
     const result = await res.json();
     return result;
