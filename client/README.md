@@ -4,9 +4,9 @@
 
 LifeLesson is a community-driven platform where people write, share, and discover real-life lessons — personal growth insights, mindset shifts, relationship wisdom, and more. The frontend is built with **Next.js 16** and delivers a fast, modern, dark-themed experience for readers and contributors alike.
 
----
+🌐 Live Preview: https://life-lession.vercel.app/
 
-## 🌐 Live Preview
+---
 
 | Page | Description |
 |------|-------------|
