@@ -106,7 +106,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 BETTER_AUTH_SECRET=your-better-auth-secret
 BETTER_AUTH_URL=http://localhost:3000
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
-SERVER_URL=https:http://localhost:8000
+SERVER_URL=http://localhost:8000
 
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
